@@ -16,7 +16,14 @@
     {
         "id": "9c854ea3.68416",
         "type": "tab",
-        "label": "Web Apps",
+        "label": "Web Apps 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "ec67d8c2.3f3c98",
+        "type": "tab",
+        "label": "Web Apps 2",
         "disabled": false,
         "info": ""
     },
@@ -594,6 +601,18 @@
         "wholemsg": "false"
     },
     {
+        "id": "40f038e6.5f0818",
+        "type": "websocket-listener",
+        "path": "/blinky-thermo-cam/websocket",
+        "wholemsg": "false"
+    },
+    {
+        "id": "839103c3.87224",
+        "type": "websocket-listener",
+        "path": "/blinky-thermo-cam-archive/websocket",
+        "wholemsg": "false"
+    },
+    {
         "id": "d8aea031.7f89d",
         "type": "http in",
         "z": "dc20c6e0.0feb98",
@@ -864,6 +883,8 @@
         "func": "msg.device.lastArchive = msg.payload.lastArchive;\nmsg.device.timeStamp = new Date().getTime();\nvar keys = Object.keys(msg.device);\nfor (var ii = 0; ii < keys.length; ++ii) msg.payload[keys[ii]] = msg.device[keys[ii]];\n\nvar archiveMsg = null;\nif ((msg.payload.timeStamp - msg.payload.lastArchive) > msg.payload.arcPeriod)\n{\n    msg.payload.lastArchive  = msg.payload.timeStamp;\n    msg.device.lastArchive = msg.payload.lastArchive;\n    var archiveDevice = JSON.parse(JSON.stringify(msg.device));\n    delete archiveDevice.arcPeriod;\n    delete archiveDevice.lastArchive;\n    keys = Object.keys(archiveDevice);\n    for (var ii = 0; ii < keys.length; ++ii)\n    {\n        if (archiveDevice[keys[ii]].hasOwnProperty('type'))\n        {\n            \n            archiveDevice[keys[ii]] = JSON.parse(JSON.stringify(msg.device[keys[ii]].value));\n        }\n    }\n    archiveMsg = {topic:'archiveData',payload: archiveDevice};\n}\nvar updateDeviceMsg = \n{\n    topic:'updateDevice',\n    payload:\n    [\n        {\n            $and   :    \n            [\n                {\n                    deviceType : msg.payload.deviceType\n                },\n                {\n                    name : msg.payload.name\n                }\n            ]\n        }, \n        msg.payload\n    ]\n};\nreturn [updateDeviceMsg,archiveMsg];\n",
         "outputs": 2,
         "noerr": 0,
+        "initialize": "",
+        "finalize": "",
         "x": 940,
         "y": 180,
         "wires": [
@@ -3232,7 +3253,7 @@
         "datatype": "auto",
         "broker": "84d80994.260508",
         "x": 150,
-        "y": 80,
+        "y": 40,
         "wires": [
             [
                 "1de67fe2.40e2e"
@@ -3248,7 +3269,7 @@
         "action": "obj",
         "pretty": false,
         "x": 310,
-        "y": 80,
+        "y": 40,
         "wires": [
             [
                 "ae273eea.d73dc"
@@ -3266,7 +3287,7 @@
         "initialize": "",
         "finalize": "",
         "x": 710,
-        "y": 80,
+        "y": 40,
         "wires": [
             [
                 "ee4c177c.2435b8"
@@ -3351,11 +3372,16 @@
                 "t": "eq",
                 "v": "blinky-ssr-bake",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-thermo-cam",
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 11,
+        "outputs": 12,
         "x": 730,
         "y": 180,
         "wires": [
@@ -3391,6 +3417,9 @@
             ],
             [
                 "72c58cab.a3c494"
+            ],
+            [
+                "60e5baa.26ae444"
             ]
         ]
     },
@@ -4708,7 +4737,7 @@
         "z": "e17f7487.2a78e8",
         "name": "",
         "x": 430,
-        "y": 80,
+        "y": 40,
         "wires": [
             [
                 "ea65f8a7.000ed8"
@@ -4724,7 +4753,7 @@
         "action": "obj",
         "pretty": false,
         "x": 550,
-        "y": 80,
+        "y": 40,
         "wires": [
             [
                 "2f6b8176.8101fe"
@@ -5093,11 +5122,16 @@
                 "t": "eq",
                 "v": "blinky-ssr-bake",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-thermo-cam",
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 11,
+        "outputs": 12,
         "x": 630,
         "y": 340,
         "wires": [
@@ -5133,6 +5167,9 @@
             ],
             [
                 "bad679e2.d62e68"
+            ],
+            [
+                "eaeb8d37.bf69a"
             ]
         ]
     },
@@ -5485,7 +5522,8 @@
             "ebb358f3.95c638",
             "bf657e74.6ac66",
             "ffb80136.883f8",
-            "9ef4d388.4bcf7"
+            "9ef4d388.4bcf7",
+            "26a4f643.fdcefa"
         ],
         "x": 775,
         "y": 1300,
@@ -6626,7 +6664,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "                <div class='card'>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >App</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"application\" onchange=\"appSelected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"blinky-basic\">blinky-basic</option>\n                                    <option value=\"blinky-cosmic-interval\">blinky-cosmic-interval</option>\n                                    <option value=\"blinky-env\">blinky-env</option>\n                                    <option value=\"blinky-power-relay\">blinky-power-relay</option>\n                                    <option value=\"blinky-relay-bake\">blinky-relay-bake</option>\n                                    <option value=\"blinky-shaker\">blinky-shaker</option>\n                                    <option value=\"blinky-shiver-expert\">blinky-shiver-expert</option>\n                                    <option value=\"blinky-shiver-simple\">blinky-shiver-simple</option>\n                                    <option value=\"blinky-stepper\">blinky-stepper</option>\n                                    <option value=\"blinky-ssr-bake\">blinky-ssr-bake</option>\n                                    <option value=\"blinky-thermo\">blinky-thermo</option>\n                                    <option value=\"solar-regulator\">solar-regulator</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >Device</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"deviceA\" onchange=\"deviceAselected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"01\">01</option>\n                                    <option value=\"02\">02</option>\n                                    <option value=\"03\">03</option>\n                                    <option value=\"04\">04</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                                <button class='btn btn-block card-button big-text' id='launchAppButton' onclick=\"launchApp()\" >Launch</button>\n                            </div>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                        </div>\n                    </div>\n                </div>",
+        "template": "                <div class='card'>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >App</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"application\" onchange=\"appSelected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"blinky-basic\">blinky-basic</option>\n                                    <option value=\"blinky-cosmic-interval\">blinky-cosmic-interval</option>\n                                    <option value=\"blinky-env\">blinky-env</option>\n                                    <option value=\"blinky-power-relay\">blinky-power-relay</option>\n                                    <option value=\"blinky-relay-bake\">blinky-relay-bake</option>\n                                    <option value=\"blinky-shaker\">blinky-shaker</option>\n                                    <option value=\"blinky-shiver-expert\">blinky-shiver-expert</option>\n                                    <option value=\"blinky-shiver-simple\">blinky-shiver-simple</option>\n                                    <option value=\"blinky-stepper\">blinky-stepper</option>\n                                    <option value=\"blinky-ssr-bake\">blinky-ssr-bake</option>\n                                    <option value=\"blinky-thermo\">blinky-thermo</option>\n                                    <option value=\"blinky-thermo-cam\">blinky-thermo-cam</option>\n                                    <option value=\"blinky-thermo-cam-archive\">blinky-thermo-cam-archive</option>\n                                    <option value=\"solar-regulator\">solar-regulator</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >Device</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"deviceA\" onchange=\"deviceAselected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"01\">01</option>\n                                    <option value=\"02\">02</option>\n                                    <option value=\"03\">03</option>\n                                    <option value=\"04\">04</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                                <button class='btn btn-block card-button big-text' id='launchAppButton' onclick=\"launchApp()\" >Launch</button>\n                            </div>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                        </div>\n                    </div>\n                </div>",
         "output": "str",
         "x": 920,
         "y": 60,
@@ -7237,7 +7275,8 @@
             "ebb358f3.95c638",
             "bf657e74.6ac66",
             "ffb80136.883f8",
-            "9ef4d388.4bcf7"
+            "9ef4d388.4bcf7",
+            "26a4f643.fdcefa"
         ],
         "x": 895,
         "y": 2000,
@@ -12898,6 +12937,973 @@
         "wires": [
             [
                 "e7fb26ce.45c778"
+            ]
+        ]
+    },
+    {
+        "id": "60e5baa.26ae444",
+        "type": "function",
+        "z": "e17f7487.2a78e8",
+        "name": "blinky-thermo-cam",
+        "func": "if (msg.device.archiveData.value != 1) return null;\nmsg.device.lastArchive = msg.payload.lastArchive;\nmsg.device.timeStamp = new Date().getTime();\nvar keys = Object.keys(msg.device);\nfor (var ii = 0; ii < keys.length; ++ii) msg.payload[keys[ii]] = msg.device[keys[ii]];\n\nvar archiveMsg = null;\nmsg.payload.lastArchive  = msg.payload.timeStamp;\nmsg.device.lastArchive = msg.payload.lastArchive;\nvar archiveDevice = JSON.parse(JSON.stringify(msg.device));\ndelete archiveDevice.arcPeriod;\ndelete archiveDevice.lastArchive;\nkeys = Object.keys(archiveDevice);\nfor (var ii = 0; ii < keys.length; ++ii)\n{\n    if (archiveDevice[keys[ii]].hasOwnProperty('type'))\n    {\n        \n        archiveDevice[keys[ii]] = JSON.parse(JSON.stringify(msg.device[keys[ii]].value));\n    }\n}\narchiveMsg = {topic:'archiveData',payload: archiveDevice};\nvar updateDeviceMsg = \n{\n    topic:'updateDevice',\n    payload:\n    [\n        {\n            $and   :    \n            [\n                {\n                    deviceType : msg.payload.deviceType\n                },\n                {\n                    name : msg.payload.name\n                }\n            ]\n        }, \n        msg.payload\n    ]\n};\nreturn [updateDeviceMsg,archiveMsg];\n",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 930,
+        "y": 280,
+        "wires": [
+            [
+                "bc2507b7.46f4b8"
+            ],
+            [
+                "621ab8d1.42e078"
+            ]
+        ]
+    },
+    {
+        "id": "14b41d0e.53b6e3",
+        "type": "websocket out",
+        "z": "8475ab9.3d26058",
+        "name": "/blinky-thermo-cam/websocket",
+        "server": "40f038e6.5f0818",
+        "client": "",
+        "x": 1070,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "26a4f643.fdcefa",
+        "type": "link in",
+        "z": "8475ab9.3d26058",
+        "name": "blinky-thermo-cam input socket",
+        "links": [
+            "1e710224.de723e",
+            "224d9b05.f92104",
+            "eaeb8d37.bf69a",
+            "54f0f0b.972191"
+        ],
+        "x": 895,
+        "y": 760,
+        "wires": [
+            [
+                "14b41d0e.53b6e3"
+            ]
+        ]
+    },
+    {
+        "id": "eaeb8d37.bf69a",
+        "type": "link out",
+        "z": "8475ab9.3d26058",
+        "name": "blinky-thermo-cam mqtt",
+        "links": [
+            "26a4f643.fdcefa"
+        ],
+        "x": 775,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "65caa0f7.a3423",
+        "type": "http in",
+        "z": "ec67d8c2.3f3c98",
+        "name": "/blinky-thermo-cam",
+        "url": "/blinky-thermo-cam",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 80,
+        "wires": [
+            [
+                "b0e9c72a.4fb088"
+            ]
+        ]
+    },
+    {
+        "id": "b0e9c72a.4fb088",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Allowed Roles",
+        "func": "msg.payload.allowedRoles = ['appView'];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 160,
+        "y": 120,
+        "wires": [
+            [
+                "a2ed66ef.f9e9a8"
+            ]
+        ]
+    },
+    {
+        "id": "a2ed66ef.f9e9a8",
+        "type": "subflow:2d027d69.1fdeb2",
+        "z": "ec67d8c2.3f3c98",
+        "x": 160,
+        "y": 160,
+        "wires": [
+            [
+                "9fb95b48.8ca238"
+            ]
+        ]
+    },
+    {
+        "id": "7b4f6c11.237264",
+        "type": "subflow:8341090a.df9758",
+        "z": "ec67d8c2.3f3c98",
+        "name": "",
+        "x": 1290,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "9fb95b48.8ca238",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Set Name And Device Type",
+        "func": "msg.payload['script'] = {};\nmsg.payload['script']['name'] = msg.payload.name\nmsg.payload['script']['deviceType'] = 'blinky-thermo-cam';\nmsg.payload['script']['project'] = global.get('project');\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 480,
+        "y": 80,
+        "wires": [
+            [
+                "4cf66c85.d63ea4"
+            ]
+        ]
+    },
+    {
+        "id": "61364d65.fcefb4",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Blinky Thermo Cam {{{payload.script.name}}}",
+        "output": "str",
+        "x": 420,
+        "y": 160,
+        "wires": [
+            [
+                "61bde7f1.e35fb8"
+            ]
+        ]
+    },
+    {
+        "id": "a44b82b5.e58c",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var mqttDevice = null;\n        var device = null;\n        var pingInterval = 5000;\n        var lastPing = 0;\n\n        var restfulDevice = \n        {\n            deviceType  : '{{{payload.script.deviceType}}}',\n            name        : '{{{payload.script.name}}}',\n            project     : '{{{payload.script.project}}}'\n        };\n\n        var plotConfig = \n        {\n            trace1Title : 'Temp (C)',\n            trace1Color : '#557a95',\n            trace1GridColor : '#beceda',\n            plotLength  : 600000,\n            width   : '',\n            height  :   '500',\n            htmlId  :   'historyStripChart'\n        };\n        let historyStripChart = new StripChart(plotConfig);\n\n        var colorScale = true;\n        var enhancementLevel = 0;\n        var pgm = null;\n        var imageArray = null;\n        var imageDelayChanged = false;\n\n        function onDocumentReady()\n        {\n            setRemoteApp(true);\n            if (remoteApp)\n            {\n                getCreds();\n                setInterval(function(){getCreds();}, 1000);\n            }\n            else\n            {\n                $('#userCardId').hide();\n            }\n            setInterval(function()\n            {\n                var now = new Date().getTime();\n                if ((now - lastPing) > pingInterval)\n                {\n                    lastPing = now;\n                    var actionMsg = \n                        {\n                            topic   : restfulDevice.project + '/' +  restfulDevice.deviceType + '/' +  restfulDevice.name + '/ping',\n                            payload : true\n                        };\n                    sendActionMsg('ping', 'ping', actionMsg);\n               }\n            }, 1000);\n            $('#imageDelayButtonId').hide();\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    if ((msg.mqttDevice.name == restfulDevice.name) && (msg.mqttDevice.deviceType == restfulDevice.deviceType)  && (msg.mqttDevice.project == restfulDevice.project) )\n                    {\n                        lastPing = new Date().getTime();\n                        heartbeat();\n                        device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                        mqttDevice = msg.mqttDevice;\n                        updateDmaReadings();\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                    }\n                    break;\n                case 'renew':\n                    if (msg.userID == userID)\n                    {\n                        updateCookie(msg);\n                    }\n                    break;\n                case 'permissionError':\n                    if (msg.userID == userID)\n                    {\n                        acknowledgeDialog('Permission', 'Error', msg.payload);\n                    }\n                    break;\n                case 'loginExpired':\n                    if (msg.userID == userID)\n                    {\n                       location.reload();\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function sendSetting()\n        {\n            var actionMsg = \n                {\n                    topic   : mqttDevice.project + '/' +  mqttDevice.deviceType + '/' +  mqttDevice.name + '/setting',\n                    payload : pako.deflate(JSON.stringify(device))\n                };\n            sendActionMsg('setting','setting',actionMsg);\n       }\n        function setScalarValue(settingValue, attrName)\n        {\n            var settingAttr = device[attrName];\n            if ( (settingAttr.alarm.limits.lolo <= settingValue) && (settingValue <= settingAttr.alarm.limits.hihi) )\n            {\n                settingAttr.value = settingValue;\n                sendSetting();\n            } \n            else\n            {\n                acknowledgeDialog('Acknowledge', 'Error', 'Entry outside range! (' + settingAttr.alarm.limits.lolo.toString() + '-' + settingAttr.alarm.limits.hihi.toString() + ' ' + settingAttr.unit);\n            }\n        }\n        function reset(actionFlag)\n        {\n            var headerText = 'Warning';\n            var title = 'Resetting Tray';\n            var text = 'I hope you know what you are doing.';\n            var buttonTexts = ['Reset', 'Cancel'];\n            var buttonFunctions = \n            [\n                function()\n                {\n                    $( this ).dialog( \"close\" );\n                    setScalarValue(actionFlag, 'reset');\n                 }, \n                function()\n                {\n                    $( this ).dialog( \"close\" );\n                }\n            ];\n            if (actionFlag == 2)\n            {\n                title = 'Rebooting Tray';\n                buttonTexts[0] = 'Reboot';\n            }\n            optionDialog(headerText, title, text, buttonTexts, buttonFunctions);\n        }\n",
+        "output": "str",
+        "x": 730,
+        "y": 120,
+        "wires": [
+            [
+                "361e7dd7.2115a2"
+            ]
+        ]
+    },
+    {
+        "id": "cf833416.2daf68",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "script.editDevice",
+        "field": "payload.script.editDevice",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Edit Temp JavaScript\n       $( function() \n        {\n            $( \"#editDeviceDialog\" ).dialog(\n                {\n//                    closeOnEscape: false,\n//                    open: function(event, ui) {$(\".ui-dialog-titlebar-close\", ui.dialog | ui).hide();},\n                    width:    640,\n                    autoOpen: false,\n                    buttons:\n                    [\n                        {\n                            text: \"Set\",\n                            click: function() {setDevice(); $( this ).dialog( \"close\" );},\n                            showText: false\n                        },\n                        {\n                            text: \"Cancel\",\n                            click: function() \n                            {\n                                $( this ).dialog( \"close\" ); \n                            },\n                            showText: false\n                        }\n                    ]\n                });\n        } );\n        function editDevice(attrName)\n        {\n            $( \"#editDeviceDialog\" ).dialog( \"option\", \"title\", \"Edit\"); \n            editedAttribute = attrName;\n            $( \"#editDeviceDialogAttribute\").html(attrName);\n\n            var attr = device[attrName];\n            $( \"#loloAlarm\").val(attr.alarm.limits.lolo);\n            $( \"#lowAlarm\").val(attr.alarm.limits.low);\n            $( \"#highAlarm\").val(attr.alarm.limits.high);\n            $( \"#hihiAlarm\").val(attr.alarm.limits.hihi);\n            $( \"#notifyName\").val(attr.alarm.notify.name);\n            $( \"#notifyNumber\").val(attr.alarm.notify.number);\n\n            $( \"#editDeviceDialog\" ).dialog( \"open\" );\n        }\n        function setDevice()\n        {\n            var attr = device[editedAttribute];\n            if (isNaN($('#loloAlarm').val()) \n                || isNaN($('#lowAlarm').val()) \n                || isNaN($('#highAlarm').val()) \n                || isNaN($('#hihiAlarm').val()))\n            {\n                acknowledgeDialog('Error', 'Entry not a number!', editedAttribute);\n                editedAttribute = '';\n                return;\n            }\n            editedAttribute = '';\n\n            attr.alarm.limits.lolo = Number($( \"#loloAlarm\").val());\n            attr.alarm.limits.low = Number($( \"#lowAlarm\").val());\n            attr.alarm.limits.high = Number($( \"#highAlarm\").val());\n            attr.alarm.limits.hihi = Number($( \"#hihiAlarm\").val());\n            attr.alarm.notify.number =  $( \"#notifyNumber\").val();\n            attr.alarm.notify.name = $( \"#notifyName\").val();\n            sendSetting();\n        }\n",
+        "output": "str",
+        "x": 740,
+        "y": 200,
+        "wires": [
+            [
+                "2037f800.7c3358"
+            ]
+        ]
+    },
+    {
+        "id": "2139ca96.c159f6",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.stripChartWidget}}}\n{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.editDevice}}}\n{{{payload.script.user}}}\n",
+        "output": "str",
+        "x": 720,
+        "y": 280,
+        "wires": [
+            [
+                "b59bd0fd.59d09"
+            ]
+        ]
+    },
+    {
+        "id": "57a5d572.e7136c",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <div width=\"100%\">\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.spectrogram}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.controls}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.history}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12'>\n{{{payload.html.user}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12'>\n{{{payload.html.wifimon}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12'>\n{{{payload.html.reset}}}\n            </div>\n        </div>\n    </div>",
+        "output": "str",
+        "x": 1030,
+        "y": 320,
+        "wires": [
+            [
+                "7b4f6c11.237264"
+            ]
+        ]
+    },
+    {
+        "id": "59c2245f.623f9c",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "html.wifimon",
+        "field": "payload.html.wifimon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Dashboard HTML -->\n                <div class='card'>\n                    <p class='card-title'>WiFi Connection</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'  style='padding-top: 0px;'>\n                            <table width='100%'>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Device Update</span>\n                                    </td>\n                                    <td width='20%' align='center'></td>\n                                    <td width='20%' align='center'>\n                                        <img src='/img/heartRed.png' id='heartBeatID' width='100px' height='100px'/>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Signal Level (dBm)</span>\n                                    </td>\n                                    <td width='20%' align='center'></td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text' id='signalLevelId' >-100</span>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Link Quality (/70)</span>\n                                    </td>\n                                    <td width='20%' align='center'></td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text' id='linkQualityId' >-1</span>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1050,
+        "y": 240,
+        "wires": [
+            [
+                "fd027e9c.77217"
+            ]
+        ]
+    },
+    {
+        "id": "4cf66c85.d63ea4",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "thermoYellow.png",
+        "output": "str",
+        "x": 430,
+        "y": 120,
+        "wires": [
+            [
+                "61364d65.fcefb4"
+            ]
+        ]
+    },
+    {
+        "id": "930fc10c.e3f6f",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "html.user",
+        "field": "payload.html.user",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                <div class='card' id='userCardId'>\n                    <div class='card-body' align=\"center\">\n                        <table width=\"100%\">\n                            <tr>\n                                <td  align=\"left\">\n                                     <span class='card-text' style='color:black;'>User:</span>\n                                </td>\n                                <td  align=\"right\">\n                                     <span class='card-text' id='usernameId'></span>\n                                </td>\n                            </tr>\n                            <tr>\n                                <td  align=\"left\">\n                                    <span class='card-text' style='color:black;'>Time left:</span>\n                                </td>\n                                <td  align=\"right\">\n                                     <span class='card-text' id='expTimeId'></span>\n                                </td>\n                            </tr>\n                        </table>\n                        <table width=\"100%\">\n                            <tr>\n                                <td width=\"40%\">\n                                    <button class='btn btn-block card-button big-text' id='logoutButton' onclick=\"renew()\" >Renew</button>\n                                </td>\n                                <td width=\"10%\"></td>\n                                <td width=\"40%\">\n                                    <button class='btn btn-block card-button big-text' id='logoutButton' onclick=\"logout()\" >Logout</button>\n                                </td>\n                            </tr>\n                        </table>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1040,
+        "y": 200,
+        "wires": [
+            [
+                "59c2245f.623f9c"
+            ]
+        ]
+    },
+    {
+        "id": "2037f800.7c3358",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "script.user",
+        "field": "payload.script.user",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        function getCreds()\n        {\n            var now = new Date().getTime();\n            var expDate = Number(getCookie('ExpDate'));\n            if (expDate > 0)\n            {\n                expDate = expDate - now;\n                if(expDate < 0)\n                {\n                    logout();\n                }\n                else\n                {\n                    var hours = Math.floor(expDate / 3600000);\n                    var minutes = expDate - hours * 3600000;\n                    minutes = Math.floor(minutes / 60000);\n                    var seconds = expDate - (hours * 3600000) - (minutes * 60000);\n                    seconds = Math.floor(seconds / 1000);\n                    hours = hours.toString();\n                    if (hours.length == 1) hours = '0' + hours; \n                    minutes = minutes.toString();\n                    if (minutes.length == 1) minutes = '0' + minutes; \n                    seconds = seconds.toString();\n                    if (seconds.length == 1) seconds = '0' + seconds; \n                    var timeString = hours + ':' + minutes + ':' + seconds;\n                    $('#usernameId').text(getCookie('Username'));\n                    $('#expTimeId').text(timeString);\n                }\n            }\n            else\n            {\n                $('#usernameId').text(getCookie('Username'));\n                $('#expTimeId').text('Forever');\n            }\n        }\n        function logout()\n        {\n            document.cookie = project + \"Role= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            document.cookie = project + \"ExpDate= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            document.cookie = project + \"Username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            window.location.href = \"/\";\n        }\n        function renew()\n        {\n            var actionMsg = {};\n            sendActionMsg('renew', 'renew', actionMsg);\n        }\n        function updateCookie(msg)\n        {\n            document.cookie = project + \"Role=\" + msg.role;\n            document.cookie = project + \"ExpDate=\" + msg.expDate;\n            document.cookie = project + \"Username=\" + msg.username;\n        }\n        function downloadToken()\n        {\n            downloadString(getCookie(\"Role\"), \"text/plain\", project + \"-token.txt\");\n        }\n// from https://gist.github.com/danallison/3ec9d5314788b337b682\n        function downloadString(text, fileType, fileName) \n        {\n            var blob = new Blob([text], { type: fileType });\n            \n            var a = document.createElement('a');\n            a.download = fileName;\n            a.href = URL.createObjectURL(blob);\n            a.dataset.downloadurl = [fileType, a.download, a.href].join(':');\n            a.style.display = \"none\";\n            document.body.appendChild(a);\n            a.click();\n            document.body.removeChild(a);\n            setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);\n        }",
+        "output": "str",
+        "x": 730,
+        "y": 240,
+        "wires": [
+            [
+                "2139ca96.c159f6"
+            ]
+        ]
+    },
+    {
+        "id": "fd027e9c.77217",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "html.reset",
+        "field": "payload.html.reset",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                <div class='card' id='reset'>\n                    <div class='card-body' align=\"center\">\n                         <table width=\"100%\">\n                            <tr>\n                                <td width=\"40%\">\n                                    <button class='btn btn-block card-button big-text' onclick=\"reset(1)\" >Reset</button>\n                                </td>\n                                <td width=\"10%\"></td>\n                                <td width=\"40%\">\n                                    <button class='btn btn-block card-button big-text' onclick=\"reset(2)\" >Reboot</button>\n                                </td>\n                            </tr>\n                        </table>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1040,
+        "y": 280,
+        "wires": [
+            [
+                "57a5d572.e7136c"
+            ]
+        ]
+    },
+    {
+        "id": "361e7dd7.2115a2",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "script.updateReadings",
+        "field": "payload.script.updateReadings",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Update Readings Javascript\n        function updateDmaReadings()\n        {\n            $('#linkQualityId').text(device.linkQuality.value);\n            $('#signalLevelId').text(device.signalLevel.value);\n            if (!imageDelayChanged)$('#imageDelayInputId').val(device.imageDelay.value);\n\n            $('#triggerModeInputId').val(device.triggerMode.value);\n            if (device.triggerMode.value == 0)\n            {\n                $('#manualTrigger').show();\n            }\n            else\n            {\n                $('#manualTrigger').hide();\n            }\n            $('#transposeInputId').val(device.transpose.value);\n            if (device.resMode.value == 1)\n            {\n                $('#chipResolutionId').text('80x60');\n            }\n            else\n            {\n                $('#chipResolutionId').text('160x120');\n            }\n            \n            $('#sensorName').text('Sensor ' + device.name);\n            if (device.archiveData.value  == 1)\n            {\n                historyStripChart.addTracePoints(device.pixelMax.value, device.pixelMin.value);\n                $('#manualTriggerButton').text('Take Image');\n                $('#snapshotTimeStamp').text(new Date(device.timeStamp).toLocaleString('en-SE', { timeZone: 'Europe/Stockholm' }));\n                pgm = JSON.parse(JSON.stringify(device.imageData.value));\n                imageArray = pgm.imageArray;\n                if (device.transpose.value == 0)\n                {\n                    $('#flirCanvas').attr('width', '800');\n                }\n                else\n                {\n                    $('#flirCanvas').attr('width', '450');\n                }\n                plotImage();\n                var image1dArray = [];\n                var ipixel = 0;\n                var plow = (pgm.minval - 27315) / 100;\n                var phigh = (pgm.maxval - 27315) / 100;\n            }\n\n            var buttonColor = 'green';\n            var buttonTextColor = 'black';\n            var buttonText = \"Off\";\n            if (device.flipHorizontal.value > 0) \n            {\n                buttonColor = 'red';\n                buttonText = 'On';\n            }\n            $('#flipHorizontalId').css('color', buttonTextColor); \n            $('#flipHorizontalId').css('background-color', buttonColor); \n            $('#flipHorizontalId').text(buttonText); \n\n            buttonColor = 'green';\n            buttonTextColor = 'black';\n            buttonText = \"Off\";\n            if (device.flipVertical.value > 0) \n            {\n                buttonColor = 'red';\n                buttonText = 'On';\n            }\n            $('#flipVerticalId').css('color', buttonTextColor); \n            $('#flipVerticalId').css('background-color', buttonColor); \n            $('#flipVerticalId').text(buttonText); \n        }\n        function plotImage()\n        {\n            var rgb = [];\n            var plow = (pgm.minval - 27315) / 100;\n            var phigh = (pgm.maxval - 27315) / 100;\n            var pdelta = phigh - plow;\n            for (var ibox = 0; ibox < 9; ++ibox)\n            {\n                var intensity = ibox / 8.0;\n                var pbox = Math.round(((phigh - plow) * intensity + plow) * 10.0) / 10.0;\n                $('#box' + (ibox + 1).toString() + 'Label').text(pbox.toString());\n                if (enhancementLevel == -2) intensity = Math.pow(intensity, 1/3.0);\n                if (enhancementLevel == -1) intensity = Math.pow(intensity, 1/2.0);\n                if (enhancementLevel ==  0) intensity = Math.pow(intensity, 1);\n                if (enhancementLevel ==  1) intensity = Math.pow(intensity, 2.0);\n                if (enhancementLevel ==  2) intensity = Math.pow(intensity, 3.0);\n                if (colorScale)\n                {\n                    rgb = getRGB(intensity);\n                }\n                else\n                {\n                    rgb[0] = Math.floor(255 * intensity);\n                    rgb[1] = Math.floor(255 * intensity);\n                    rgb[2] = Math.floor(255 * intensity);\n                }\n                var style='width:88px;height:50px;background-color:' + 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';\n                $('#box' + (ibox + 1).toString()).attr('style',style);\n            }\n            var canvas = document.getElementById(\"flirCanvas\");\n            var canvasContext = canvas.getContext(\"2d\");\n            var tipPointer = document.getElementById(\"tipPointer\");\n            var tipPointerContext = tipPointer.getContext(\"2d\");\n            var tip = document.getElementById(\"tip\");\n            var tipContext = tip.getContext(\"2d\");\n            tipContext.font = \"30px Arial\";\n            tipContext.fillStyle = \"cyan\";\n            tipPointerContext.fillStyle = \"cyan\";\n            if (colorScale) tipContext.fillStyle = \"black\";\n            if (colorScale) tipPointerContext.fillStyle = \"black\";\n            tipContext.textAlign = \"left\";\n\n            var canvasWidth  = Number($('#flirCanvas').attr('width'));\n            var wrapperWidth = Number($('#wrapper').attr('width'));\n            var xOffsetKluge = Math.round((wrapperWidth - canvasWidth) / 2);\n            var canvasHeight = Number($('#flirCanvas').attr('height'));\n            var rectWidth  = Math.round(canvasWidth  / pgm.ncols);\n            var rectHeight = Math.round(canvasHeight / pgm.nrows);\n            canvas.onmousemove = function (e) \n            {\n                var icol = Math.floor(e.layerX / rectWidth);\n                if (icol < 0) icol = 0;\n                if (icol >= pgm.ncols) icol = pgm.ncols - 1;\n                var irow = Math.floor((canvasHeight - e.layerY) / rectHeight);\n                if (irow < 0) irow = 0;\n                if (irow >= pgm.nrows) irow = pgm.nrows - 1;\n                var temp = Math.floor(100.0 * (pdelta * imageArray[irow][icol] / 256.0 + plow)) / 100;\n\n                tipPointer.style.top = (e.layerY  - tipPointer.height / 2).toString()  + \"px\";\n                tipPointer.style.left = (xOffsetKluge + e.layerX - tipPointer.width / 2).toString() + \"px\";\n                tipPointerContext.clearRect(0, 0, tipPointer.width, tipPointer.height);\n                tipPointerContext.fillRect( 0, 0, tipPointer.width, tipPointer.height);\n\n                tip.style.top = (e.layerY - tip.height - tipPointer.height).toString()  + \"px\";\n                tip.style.left = (xOffsetKluge + e.layerX).toString() + \"px\";\n                tipContext.clearRect(0, 0, tip.width, tip.height);\n                tipContext.fillText(temp.toString() + ' C', 0, 30);\n            };\n\n            for (var irow = 0; irow < pgm.nrows; ++irow)\n            {\n                for (var icol = 0; icol < pgm.ncols; ++icol)\n                {\n                    var intensity = imageArray[irow][icol] / 256.0;\n                    if (enhancementLevel == -2) intensity = Math.pow(intensity, 1/3.0);\n                    if (enhancementLevel == -1) intensity = Math.pow(intensity, 1/2.0);\n                    if (enhancementLevel ==  0) intensity = Math.pow(intensity, 1);\n                    if (enhancementLevel ==  1) intensity = Math.pow(intensity, 2.0);\n                    if (enhancementLevel ==  2) intensity = Math.pow(intensity, 3.0);\n                    if (colorScale)\n                    {\n                        rgb = getRGB(intensity);\n                        rgb[0] = Math.floor(rgb[0]);\n                        rgb[1] = Math.floor(rgb[1]);\n                        rgb[2] = Math.floor(rgb[2]);\n                    }\n                    else\n                    {\n                        rgb[0] = Math.floor(255 * intensity);\n                        rgb[1] = Math.floor(255 * intensity);\n                        rgb[2] = Math.floor(255 * intensity);\n                    }\n                    canvasContext.fillStyle = 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';\n/*\n                    if (intensity > 0.98) \n                    {\n                        canvasContext.fillStyle='magenta';\n                        if (colorScale) canvasContext.fillStyle='white';\n                    }\n*/\n                    canvasContext.fillRect(icol * rectWidth, canvasHeight - rectHeight - irow * rectHeight, rectWidth, rectHeight);\n                }    \n            }\n        }\n        function mouseLeftCanvas()\n        {\n            var tip = document.getElementById(\"tip\");\n            var tipContext = tip.getContext(\"2d\");\n            tipContext.clearRect(0, 0, tip.width, tip.height);\n            var tipPointer = document.getElementById(\"tipPointer\");\n            var tipPointerContext = tipPointer.getContext(\"2d\");\n            tipPointerContext.clearRect(0, 0, tipPointer.width, tipPointer.height);\n        }\n        function getRGB(intensity)\n        {\n          var rgb = [0,0,0];\n          var rgbCoeff = [\n              [  48.6, 349.0,    5.72, -172.0],\n              [-164.0, 705.0, -667.0 ,  379.0],\n              [ 135.0, 332.0, -976.0,   536.0]];\n          var intensityStart = [0.0, 0.3176, 0.0];\n          var power = [1.0, 0.0, 0.0, 0.0];\n          for (var ii = 1; ii < 4; ++ii) power[ii] = power[ii - 1] * intensity;\n          for (var irgb = 0; irgb < 3; ++irgb)\n          {\n              if (intensity >= intensityStart[irgb])\n              {\n                  for (var ipow = 0; ipow < 4; ++ipow)\n                  {\n                      rgb[irgb] = rgb[irgb] + rgbCoeff[irgb][ipow] * power[ipow];\n                  }\n              }\n          }\n          return rgb;\n        }\n        function getRGBRainbow(intensity)\n        {\n          var rgb = [0,0,0];\n          if ( (0 <= intensity) && (intensity <= 0.25) )\n          {\n            rgb[0] = 0;\n            rgb[1] = Math.floor(255 * intensity * 4);    \n            rgb[2] = 255;\n          }\n          if ( (0.25 < intensity) && (intensity <= 0.50) )\n          {\n            rgb[0] = 0;\n            rgb[1] = 255;    \n            rgb[2] = Math.floor(255 * (0.50 - intensity) * 4);\n          }\n          if ( (0.50 < intensity) && (intensity <= 0.75) )\n          {\n            rgb[0] = Math.floor(255 * (intensity - 0.50) * 4);\n            rgb[1] = 255;    \n            rgb[2] = 0;\n          }\n          if ( (0.75 < intensity) && (intensity <= 1.0) )\n          {\n            rgb[0] = 255;\n            rgb[1] = Math.floor(255 * (1.0 - intensity) * 4);    \n            rgb[2] = 0;\n          }\n          return rgb;\n        }\n        function toggleColorScale()\n        {\n            colorScale = !colorScale;\n            if (colorScale)\n            {\n                $('#colorScaleButton').text('Color');\n            }\n            else\n            {\n                $('#colorScaleButton').text('Gray');\n            }\n            plotImage();\n        }\n        function toggleEnhancedScale(deltaEnhanced)\n        {\n            enhancementLevel = enhancementLevel + deltaEnhanced;\n            if (enhancementLevel >  2) enhancementLevel = 2;\n            if (enhancementLevel < -2) enhancementLevel = -2;\n            $('#enhancementLevel').text(enhancementLevel.toString());\n            plotImage();\n        }\n        function clearImage()\n        {\n            var canvas = document.getElementById(\"flirCanvas\");\n            var canvasContext = canvas.getContext(\"2d\");\n            var canvasWidth  = Number($('#flirCanvas').attr('width'));\n            var canvasHeight = Number($('#flirCanvas').attr('height'));\n            canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);        \n            $('#snapshotTimeStamp').text('-');\n            for (var ibox = 0; ibox < 9; ++ibox)\n            {\n                var intensity = ibox / 8.0;\n                var pbox = 0.0;\n                $('#box' + (ibox + 1).toString() + 'Label').text(pbox.toString());\n            } \n            $('#pixelMaxBarPlot').hide();\n        }\n        function flipHorizontal()\n        {\n            if (device.flipHorizontal.value > 0)\n            {\n                device.flipHorizontal.value = 0;\n            }\n            else\n            {\n                device.flipHorizontal.value = 1;\n                \n            }\n            $('#flipHorizontalId').css('color', 'black'); \n            $('#flipHorizontalId').css('background-color', 'grey'); \n            $('#flipHorizontalId').text('?'); \n            sendSetting();\n        }\n        function flipVertical()\n        {\n            if (device.flipVertical.value > 0)\n            {\n                device.flipVertical.value = 0;\n            }\n            else\n            {\n                device.flipVertical.value = 1;\n                \n            }\n            $('#flipVerticalId').css('color', 'black'); \n            $('#flipVerticalId').css('background-color', 'grey'); \n            $('#flipVerticalId').text('?'); \n            sendSetting();\n        }\n        function imageDelayChange()\n        {\n            imageDelayChanged = true;\n            $('#imageDelayButtonId').show();\n        }\n        function imageDelay()\n        {\n            $('#imageDelayButtonId').hide();\n            if (isNaN($('#imageDelayInputId').val()))\n            {\n                imageDelayChanged = false;\n                return;\n            }\n            setScalarValue(Number($('#imageDelayInputId').val()), 'imageDelay');\n            imageDelayChanged = false;\n        }\n        function triggerMode()\n        {\n            if (isNaN($('#triggerModeInputId').val()))\n            {\n                 return;\n            }\n            setScalarValue(Number($('#triggerModeInputId').val()), 'triggerMode');\n        }\n        function manualTrigger()\n        {\n            if (device.manualTrigger.value == 0)\n            {\n                setScalarValue(1, 'manualTrigger');\n                $('#manualTriggerButton').text('ABORT');\n            }\n            else\n            {\n                setScalarValue(0, 'manualTrigger');\n                $('#manualTriggerButton').text('Take Image');\n            }\n        }\n        function transpose()\n        {\n            if (isNaN($('#transposeInputId').val()))\n            {\n                 return;\n            }\n            setScalarValue(Number($('#transposeInputId').val()), 'transpose');\n        }\n",
+        "output": "str",
+        "x": 760,
+        "y": 160,
+        "wires": [
+            [
+                "cf833416.2daf68"
+            ]
+        ]
+    },
+    {
+        "id": "b59bd0fd.59d09",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "html.spectrogram",
+        "field": "payload.html.spectrogram",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Dashboard HTML -->\n                <div class='card'>\n                    <p class='card-title'>Temperature</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"container-fluid \" align=\"center\">\n                                <table width='800px'>\n                                    <tr>\n                                        <td align=\"center\">\n                                            <div id=\"wrapper\" width=\"800\" height=\"600\" style=\"position:relative;\"  onmouseleave=\"mouseLeftCanvas()\">\n                                                <canvas id=\"flirCanvas\" width=\"800\" height=\"600\" style=\"border:1px solid #000000;\"></canvas>\n                                                <canvas id=\"tip\" width=125 height=30 style=\"position:absolute;\"></canvas>\n                                                <canvas id=\"tipPointer\" width=10 height=10 style=\"position:absolute;\"></canvas>\n                                            </div>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </div>\n                            <div class=\"container-fluid \" align=\"center\" style='padding-top: 0px;'>\n                                <table  width='792'>\n                                    <tr>\n                                        <td width=\"88px\">\n                                            <div id='box1' style=\"width:88px;height:50px;background-color:#0000ff\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box2' style=\"width:88px;height:50px;background-color:#0088ff\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box3' style=\"width:88px;height:50px;background-color:#00ffff\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box4' style=\"width:88px;height:50px;background-color:#00ff88\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box5' style=\"width:88px;height:50px;background-color:#00ff00\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box6' style=\"width:88px;height:50px;background-color:#88ff00\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box7' style=\"width:88px;height:50px;background-color:#ffff00\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box8' style=\"width:88px;height:50px;background-color:#ff8800\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box9' style=\"width:88px;height:50px;background-color:#ff0000\"></div>\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box1Label'>1</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box2Label'>2</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box3Label'>3</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box4Label'>4</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box5Label'>5</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box6Label'>6</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box7Label'>7</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box8Label'>8</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box9Label'>9</span>\n                                        </td>\n                                    </tr>\n                                </table>\n                                <div class='row' style='padding-bottom: 15px;' id='manualTrigger'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                           <tr>\n                                                <td width='20%' align='left'> </td>\n                                                <td width='60%' align='center'>\n                                                    <button class='btn btn-block card-button big-text' id=\"manualTriggerButton\" onclick=\"manualTrigger()\" >Take Image</button>\n                                                </td>\n                                                <td width='20%' align='left'> </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                                <div class='row' style='padding-bottom: 15px;'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                           <tr>\n                                                <td width='40%' align='left'>\n                                                    <span  class='card-text' id='sensorName'></span>\n                                                </td>\n                                                <td width='60%' align='right'>\n                                                    <span  class='card-text' id='snapshotTimeStamp'></span>\n                                                </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                                <div class='row' style='padding-bottom: 15px;'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                            <tr>\n                                                <td width=\"60%\" align='left'>\n                                                    <span  class='card-text'>Color Mode</span>\n                                                </td>\n                                                <td width=\"40%\">\n                                                    <button class='btn btn-block card-button big-text' id=\"colorScaleButton\" onclick=\"toggleColorScale()\" >Color</button>\n                                                </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                                <div class='row' style='padding-bottom: 15px;'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                            <tr>\n                                                <td width=\"60%\" align='left'>\n                                                    <span  class='card-text'>Enhancement Level</span>\n                                                </td>\n                                                <td width=\"14%\" >\n                                                    <button class='btn btn-block card-button big-text' onclick=\"toggleEnhancedScale(-1)\">-</button>\n                                                </td>\n                                                <td width=\"12%px\" align='center'>\n                                                    <span  class='card-text' id=\"enhancementLevel\" >0</span>\n                                                </td>\n                                                <td width=\"14%\">\n                                                    <button class='btn btn-block card-button big-text' onclick=\"toggleEnhancedScale(1)\">+</button>\n                                                </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                   </div>\n                </div>\n",
+        "output": "str",
+        "x": 1070,
+        "y": 80,
+        "wires": [
+            [
+                "6562cbce.68eb44"
+            ]
+        ]
+    },
+    {
+        "id": "6562cbce.68eb44",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "html.controls",
+        "field": "payload.html.controls",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Dashboard HTML -->\n                <div class='card'>\n                    <p class='card-title'>Controls</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"container-fluid \" align=\"center\" style='padding-top: 0px;'>\n                                <div class='row' style='padding-bottom: 15px;'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                            <tr>\n                                                <td width='60%' >\n                                                    <span class='card-text' >Flip Horizontal</span>\n                                                </td>\n                                                <td width='40%' align='center'>\n                                                    <button class='btn btn-block big-text' style='background-color:grey;color:black' id='flipHorizontalId' onclick=\"flipHorizontal()\" >?</button>\n                                                </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                                <div class='row' style='padding-bottom: 15px;'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                            <tr>\n                                                <td width='60%' >\n                                                    <span class='card-text' >Flip Vertical</span>\n                                                </td>\n                                                <td width='40%' align='center'>\n                                                    <button class='btn btn-block big-text' style='background-color:grey;color:black' id='flipVerticalId' onclick=\"flipVertical()\" >?</button>\n                                                </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                                <div class='row' style='padding-bottom: 15px;'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                            <tr>\n                                                <td width='60%'>\n                                                    <span class='card-text' >Image Delay (mS)</span>\n                                                </td>\n                                                <td width='20%'>\n                                                    <input id=\"imageDelayInputId\" type=\"text\" value=\"0\" class=\"big-text\"  size=\"8\" oninput=\"imageDelayChange()\"/>\n                                                </td>\n                                                <td width='20%'>\n                                                    <button class='btn btn-block card-button big-text' id=\"imageDelayButtonId\" onclick=\"imageDelay()\" >&#10003;</button>\n                                                </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                                <div class='row' style='padding-bottom: 15px;'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                            <tr>\n                                                <td width='60%'>\n                                                    <span class='card-text' >Display Mode</span>\n                                                </td>\n                                                <td width='40%'>\n                                                    <select class=\"custom-select big-text\"  id=\"transposeInputId\" onchange=\"transpose()\">\n                                                        <option value=\"0\">Landscape</option>\n                                                        <option value=\"1\">Portrait</option>\n                                                    </select>\n                                                </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                                <div class='row' style='padding-bottom: 15px;'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                            <tr>\n                                                <td width='60%'>\n                                                    <span class='card-text' >Trigger Mode</span>\n                                                </td>\n                                                <td width='40%'>\n                                                    <select class=\"custom-select big-text\"  id=\"triggerModeInputId\" onchange=\"triggerMode()\" >\n                                                        <option value=\"0\">Manual</option>\n                                                        <option value=\"1\">Periodic</option>\n                                                    </select>\n                                                </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                                <div class='row' style='padding-bottom: 15px;'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                            <tr>\n                                                <td width='60%'>\n                                                    <span class='card-text' >Chip Resolution</span>\n                                                </td>\n                                                <td width='20%'>\n                                                    <span class='card-text' id=\"chipResolutionId\" >80x60</span>\n                                                </td>\n                                                <td width='20%'>\n                                                </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                   </div>\n                </div>\n                <div id=\"editDeviceDialog\" title=\"Edit Device\" class='card'>\n                    <p class='card-title' id='editDeviceDialogAttribute'>Attribute</p>\n                    <div class='card-body'>\n                        <table>\n                            <tr>\n                                <td width=\"70%\" align=\"left\">  <span class=\"tableHeading tableText\">LoLo</span></td>\n                                <td width=\"30%\" align=\"right\"><input class=\"form-control tableText\" id=\"loloAlarm\" type=\"text\" value=\"0\" /></td>\n                            </tr>\n                            <tr>\n                                <td width=\"70%\" align=\"left\">  <span class=\"tableHeading tableText\">LOW</span></td>\n                                <td width=\"30%\" align=\"right\"><input class=\"form-control tableText\" id=\"lowAlarm\" type=\"text\" value=\"0\" /></td>\n                            </tr>\n                            <tr>\n                                <td width=\"70%\" align=\"left\">  <span class=\"tableHeading tableText\">HIGH</span></td>\n                                <td width=\"30%\" align=\"right\"><input class=\"form-control tableText\" id=\"highAlarm\" type=\"text\" value=\"0\" /></td>\n                            </tr>\n                            <tr>\n                                <td width=\"70%\" align=\"left\">  <span class=\"tableHeading tableText\">HiHi</span></td>\n                                <td width=\"30%\" align=\"right\"><input class=\"form-control tableText\" id=\"hihiAlarm\" type=\"text\" value=\"0\" /></td>\n                            </tr>\n                            <tr>\n                                <td width=\"70%\" align=\"left\">  <span class=\"tableHeading tableText\">Notify Name</span></td>\n                                <td width=\"30%\" align=\"right\"><input class=\"form-control tableText\" id=\"notifyName\" type=\"text\" value=\"\" /></td>\n                            </tr>\n                            <tr>\n                                <td width=\"70%\" align=\"left\">  <span class=\"tableHeading tableText\">Notify Number</span></td>\n                                <td width=\"30%\" align=\"right\"><input class=\"form-control tableText\" id=\"notifyNumber\" type=\"text\" value=\"\" /></td>\n                            </tr>\n                        </table>\n                    </div>\n                </div>",
+        "output": "str",
+        "x": 1050,
+        "y": 120,
+        "wires": [
+            [
+                "fc7dee59.0cbc2"
+            ]
+        ]
+    },
+    {
+        "id": "fc7dee59.0cbc2",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "html.history",
+        "field": "payload.html.history",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- History HTML -->\n                <div class='card'>\n                    <p class='card-title'>History</p>\n                    <div class='card-body' align=\"center\">\n                        <div id=\"historyStripChart\" width=\"100%\" ></div>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1050,
+        "y": 160,
+        "wires": [
+            [
+                "930fc10c.e3f6f"
+            ]
+        ]
+    },
+    {
+        "id": "61bde7f1.e35fb8",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "script.stripChartWidget",
+        "field": "payload.script.stripChartWidget",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// StripChart Widget\n        class StripChart\n        {\n           constructor(plotConfig) \n            {\n                this.plotConfig = plotConfig;\n                this.plotStartTime = new Date().getTime();\n                this.layout =\n                {\n                    showlegend  : true,\n                    legend      : { x: 0, y: 1.15},\n                    height      : plotConfig.height,\n                    width       : plotConfig.width,\n                    xaxis       :\n                    {\n//                        title: 'Seconds since ' + new Date(this.plotStartTime).toLocaleString(),\n                        type: 'date'\n                    },\n                    yaxis:\n                    {\n                        title           : plotConfig.trace1Title,\n                        titlefont       : {color: plotConfig.trace1Color},\n                        tickfont        : {color:plotConfig.trace1Color},\n                        gridcolor       : plotConfig.trace1GridColor,\n                        zerolinecolor   : plotConfig.trace1GridColor,\n                        linecolor       : plotConfig.trace1GridColor,\n//                        range: [0, 2]\n        \n                    },\n                    margin: \n                        {\n                            t: 30, //top margin\n        //                    l: 0, //left margin\n        //                    r: 0, //right margin\n        //                    b: 20 //bottom margin\n                        },\n                };\n                this.trace1 = \n                {\n                    x: [],\n                    y: [],\n                    name: 'Max Temp',\n                    yaxis: 'y1',\n                    type: 'scatter',\n                    mode: 'markers',\n                    marker: {\n                        color: 'red',\n                        size: 10,\n                        symbol: 'circle'\n                    }\n                };\n                this.trace2 = \n                {\n                    x: [],\n                    y: [],\n                    name: 'Min Temp',\n                    yaxis: 'y1',\n                    type: 'scatter',\n                    mode: 'markers',\n                    marker: {\n                        color: 'green',\n                        size: 10,\n                        symbol: 'square'\n                    }\n                };\n            }\n            addTracePoints(trace1Pt, trace2Pt)\n            {\n                var now = new Date().getTime();\n                var plotBeginning = now - this.plotConfig.plotLength;\n                var removeDone = false;\n                while(!removeDone)\n                {\n                    if (this.trace1.x[0] < plotBeginning)\n                    {\n                        this.trace1.x.shift();\n                        this.trace1.y.shift();\n                    }\n                    else\n                    {\n                        removeDone = true;\n                    }\n                }\n                removeDone = false;\n                while(!removeDone)\n                {\n                    if (this.trace2.x[0] < plotBeginning)\n                    {\n                        this.trace2.x.shift();\n                        this.trace2.y.shift();\n                    }\n                    else\n                    {\n                        removeDone = true;\n                    }\n                }\n\n                this.trace1.x.push(now);\n                this.trace1.y.push(trace1Pt);\n                this.trace2.x.push(now);\n                this.trace2.y.push(trace2Pt);\n                Plotly.newPlot(this.plotConfig.htmlId, [this.trace1, this.trace2], this.layout);\n            }\n        }\n",
+        "output": "str",
+        "x": 760,
+        "y": 80,
+        "wires": [
+            [
+                "a44b82b5.e58c"
+            ]
+        ]
+    },
+    {
+        "id": "83e94d54.625e",
+        "type": "http in",
+        "z": "ec67d8c2.3f3c98",
+        "name": "/blinky-thermo-cam-archive",
+        "url": "/blinky-thermo-cam-archive",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 440,
+        "wires": [
+            [
+                "8d9e23ad.3dc5"
+            ]
+        ]
+    },
+    {
+        "id": "8d9e23ad.3dc5",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Allowed Roles",
+        "func": "msg.payload.allowedRoles = ['appView'];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 160,
+        "y": 480,
+        "wires": [
+            [
+                "27c74654.38981a"
+            ]
+        ]
+    },
+    {
+        "id": "27c74654.38981a",
+        "type": "subflow:2d027d69.1fdeb2",
+        "z": "ec67d8c2.3f3c98",
+        "x": 160,
+        "y": 520,
+        "wires": [
+            [
+                "ebcf7083.40b14"
+            ]
+        ]
+    },
+    {
+        "id": "ebcf7083.40b14",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Set Name And Device Type",
+        "func": "msg.payload['script'] = {};\nmsg.payload['script']['name'] = msg.payload.name\nmsg.payload['script']['deviceType'] = 'blinky-thermo-cam';\nmsg.payload['script']['project'] = global.get('project');\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 520,
+        "y": 440,
+        "wires": [
+            [
+                "7c6fb201.923d0c"
+            ]
+        ]
+    },
+    {
+        "id": "9727aab6.c8cd08",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Blinky Thermo Cam {{{payload.script.name}}} Archive",
+        "output": "str",
+        "x": 460,
+        "y": 520,
+        "wires": [
+            [
+                "360761de.f6b01e"
+            ]
+        ]
+    },
+    {
+        "id": "7c6fb201.923d0c",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "thermoYellow.png",
+        "output": "str",
+        "x": 470,
+        "y": 480,
+        "wires": [
+            [
+                "9727aab6.c8cd08"
+            ]
+        ]
+    },
+    {
+        "id": "360761de.f6b01e",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var restfulDevice = \n        {\n            deviceType  : '{{{payload.script.deviceType}}}',\n            name        : '{{{payload.script.name}}}',\n            project     : '{{{payload.script.project}}}'\n        };\n        var colorScale = true;\n        var enhancementLevel = 0;\n        var pgm = null;\n        var imageArray = null;\n        var lastArchiveDate = 0;\n        var programStarted = false;\n\n        var archiveRequestList = [];\n        var archiveList = [];\n        var plotConfig = \n        {\n            trace1Title : 'Max Pixel (C)',\n            trace1Color : '#557a95',\n            trace1GridColor : '#beceda',\n            trace2Title : 'Min Pixel (C)',\n            trace2Color : '#f2a31f',\n            plotLength  : 600000,\n            width   : '',\n            height  :   '500',\n            htmlId  :   'historyStripChart'\n        };\n\n        function onDocumentReady()\n        {\n            setRemoteApp(true);\n            if (remoteApp)\n            {\n                getCreds();\n                setInterval(function(){getCreds();}, 1000);\n            }\n            else\n            {\n                $('#userCardId').hide();\n            }\n            $('#imageView').hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                getArchive(8);\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'image' :\n                    if (msg.userID == userID)\n                    {\n                        $('#imageView').show();\n                        $('#snapshotTimeStamp').text(new Date(msg.payload.timeStamp).toLocaleString('en-SE', { timeZone: 'Europe/Stockholm' }).replace(',', ''));\n                        pgm = JSON.parse(JSON.stringify(msg.payload.imageData));\n                        imageArray = pgm.imageArray;\n                        $('#sensorName').text('Sensor ' + msg.payload.name);\n                        if (msg.payload.transpose == 0)\n                        {\n                            $('#flirCanvas').attr('width', '800');\n                        }\n                        else\n                        {\n                            $('#flirCanvas').attr('width', '450');\n                        }\n                        plotImage();\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        if ((msg.payload.device.deviceType == restfulDevice.deviceType) && (msg.payload.device.name == restfulDevice.name) )\n                            putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'renew':\n                    if (msg.userID == userID)\n                    {\n                        updateCookie(msg);\n                    }\n                    break;\n                case 'permissionError':\n                    if (msg.userID == userID)\n                    {\n                        acknowledgeDialog('Permission', 'Error', msg.payload);\n                    }\n                    break;\n                case 'loginExpired':\n                    if (msg.userID == userID)\n                    {\n                       location.reload();\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function getImage(timeStamp)\n        {\n            var queryMsg = \n            {\n                topic : 'getImage', \n                userID : userID, \n                'restfulDevice': restfulDevice,\n                'timeStamp' : timeStamp,\n            };\n            sendActionMsg('getImage','readDatabase', queryMsg);\n        }\n        function plotImage()\n        {\n            var rgb = [];\n            var plow = (pgm.minval - 27315) / 100;\n            var phigh = (pgm.maxval - 27315) / 100;\n            var pdelta = phigh - plow;\n            for (var ibox = 0; ibox < 9; ++ibox)\n            {\n                var intensity = ibox / 8.0;\n                var pbox = Math.round(((phigh - plow) * intensity + plow) * 10.0) / 10.0;\n                $('#box' + (ibox + 1).toString() + 'Label').text(pbox.toString());\n                if (enhancementLevel == -2) intensity = Math.pow(intensity, 1/3.0);\n                if (enhancementLevel == -1) intensity = Math.pow(intensity, 1/2.0);\n                if (enhancementLevel ==  0) intensity = Math.pow(intensity, 1);\n                if (enhancementLevel ==  1) intensity = Math.pow(intensity, 2.0);\n                if (enhancementLevel ==  2) intensity = Math.pow(intensity, 3.0);\n                if (colorScale)\n                {\n                    rgb = getRGB(intensity);\n                }\n                else\n                {\n                    rgb[0] = Math.floor(255 * intensity);\n                    rgb[1] = Math.floor(255 * intensity);\n                    rgb[2] = Math.floor(255 * intensity);\n                }\n                var style='width:88px;height:50px;background-color:' + 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';\n                $('#box' + (ibox + 1).toString()).attr('style',style);\n            }\n            var canvas = document.getElementById(\"flirCanvas\");\n            var canvasContext = canvas.getContext(\"2d\");\n            var tipPointer = document.getElementById(\"tipPointer\");\n            var tipPointerContext = tipPointer.getContext(\"2d\");\n            var tip = document.getElementById(\"tip\");\n            var tipContext = tip.getContext(\"2d\");\n            tipContext.font = \"30px Arial\";\n            tipContext.fillStyle = \"cyan\";\n            tipPointerContext.fillStyle = \"cyan\";\n            if (colorScale) tipContext.fillStyle = \"black\";\n            if (colorScale) tipPointerContext.fillStyle = \"black\";\n            tipContext.textAlign = \"left\";\n\n            var canvasWidth  = Number($('#flirCanvas').attr('width'));\n            var wrapperWidth = Number($('#wrapper').attr('width'));\n            var xOffsetKluge = Math.round((wrapperWidth - canvasWidth) / 2);\n            var canvasHeight = Number($('#flirCanvas').attr('height'));\n            var rectWidth  = Math.round(canvasWidth  / pgm.ncols);\n            var rectHeight = Math.round(canvasHeight / pgm.nrows);\n            canvas.onmousemove = function (e) \n            {\n                var icol = Math.floor(e.layerX / rectWidth);\n                if (icol < 0) icol = 0;\n                if (icol >= pgm.ncols) icol = pgm.ncols - 1;\n                var irow = Math.floor((canvasHeight - e.layerY) / rectHeight);\n                if (irow < 0) irow = 0;\n                if (irow >= pgm.nrows) irow = pgm.nrows - 1;\n                var temp = Math.floor(100.0 * (pdelta * imageArray[irow][icol] / 256.0 + plow)) / 100;\n\n                tipPointer.style.top = (e.layerY  - tipPointer.height / 2).toString()  + \"px\";\n                tipPointer.style.left = (xOffsetKluge + e.layerX - tipPointer.width / 2).toString() + \"px\";\n                tipPointerContext.clearRect(0, 0, tipPointer.width, tipPointer.height);\n                tipPointerContext.fillRect( 0, 0, tipPointer.width, tipPointer.height);\n\n                tip.style.top = (e.layerY - tip.height - tipPointer.height).toString()  + \"px\";\n                tip.style.left = (xOffsetKluge + e.layerX).toString() + \"px\";\n                tipContext.clearRect(0, 0, tip.width, tip.height);\n                tipContext.fillText(temp.toString() + ' C', 0, 30);\n            };\n\n            for (var irow = 0; irow < pgm.nrows; ++irow)\n            {\n                for (var icol = 0; icol < pgm.ncols; ++icol)\n                {\n                    var intensity = imageArray[irow][icol] / 256.0;\n                    if (enhancementLevel == -2) intensity = Math.pow(intensity, 1/3.0);\n                    if (enhancementLevel == -1) intensity = Math.pow(intensity, 1/2.0);\n                    if (enhancementLevel ==  0) intensity = Math.pow(intensity, 1);\n                    if (enhancementLevel ==  1) intensity = Math.pow(intensity, 2.0);\n                    if (enhancementLevel ==  2) intensity = Math.pow(intensity, 3.0);\n                    if (colorScale)\n                    {\n                        rgb = getRGB(intensity);\n                        rgb[0] = Math.floor(rgb[0]);\n                        rgb[1] = Math.floor(rgb[1]);\n                        rgb[2] = Math.floor(rgb[2]);\n                    }\n                    else\n                    {\n                        rgb[0] = Math.floor(255 * intensity);\n                        rgb[1] = Math.floor(255 * intensity);\n                        rgb[2] = Math.floor(255 * intensity);\n                    }\n                    canvasContext.fillStyle = 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';\n                    if (intensity > 0.98) \n                    {\n                        canvasContext.fillStyle='magenta';\n                        if (colorScale) canvasContext.fillStyle='white';\n                    }\n\n                    canvasContext.fillRect(icol * rectWidth, canvasHeight - rectHeight - irow * rectHeight, rectWidth, rectHeight);\n                }    \n            }\n        }\n       function mouseLeftCanvas()\n        {\n            var tip = document.getElementById(\"tip\");\n            var tipContext = tip.getContext(\"2d\");\n            tipContext.clearRect(0, 0, tip.width, tip.height);\n            var tipPointer = document.getElementById(\"tipPointer\");\n            var tipPointerContext = tipPointer.getContext(\"2d\");\n            tipPointerContext.clearRect(0, 0, tipPointer.width, tipPointer.height);\n        }\n        function getRGB(intensity)\n        {\n          var rgb = [0,0,0];\n          var rgbCoeff = [\n              [  48.6, 349.0,    5.72, -172.0],\n              [-164.0, 705.0, -667.0 ,  379.0],\n              [ 135.0, 332.0, -976.0,   536.0]];\n          var intensityStart = [0.0, 0.3176, 0.0];\n          var power = [1.0, 0.0, 0.0, 0.0];\n          for (var ii = 1; ii < 4; ++ii) power[ii] = power[ii - 1] * intensity;\n          for (var irgb = 0; irgb < 3; ++irgb)\n          {\n              if (intensity >= intensityStart[irgb])\n              {\n                  for (var ipow = 0; ipow < 4; ++ipow)\n                  {\n                      rgb[irgb] = rgb[irgb] + rgbCoeff[irgb][ipow] * power[ipow];\n                  }\n              }\n          }\n          return rgb;\n        }\n        function getRGBRainbow(intensity)\n        {\n          var rgb = [0,0,0];\n          if ( (0 <= intensity) && (intensity <= 0.25) )\n          {\n            rgb[0] = 0;\n            rgb[1] = Math.floor(255 * intensity * 4);    \n            rgb[2] = 255;\n          }\n          if ( (0.25 < intensity) && (intensity <= 0.50) )\n          {\n            rgb[0] = 0;\n            rgb[1] = 255;    \n            rgb[2] = Math.floor(255 * (0.50 - intensity) * 4);\n          }\n          if ( (0.50 < intensity) && (intensity <= 0.75) )\n          {\n            rgb[0] = Math.floor(255 * (intensity - 0.50) * 4);\n            rgb[1] = 255;    \n            rgb[2] = 0;\n          }\n          if ( (0.75 < intensity) && (intensity <= 1.0) )\n          {\n            rgb[0] = 255;\n            rgb[1] = Math.floor(255 * (1.0 - intensity) * 4);    \n            rgb[2] = 0;\n          }\n          return rgb;\n        }\n        function toggleColorScale()\n        {\n            colorScale = !colorScale;\n            if (colorScale)\n            {\n                $('#colorScaleButton').text('Color');\n            }\n            else\n            {\n                $('#colorScaleButton').text('Gray');\n            }\n            plotImage();\n        }\n        function toggleEnhancedScale(deltaEnhanced)\n        {\n            enhancementLevel = enhancementLevel + deltaEnhanced;\n            if (enhancementLevel >  2) enhancementLevel = 2;\n            if (enhancementLevel < -2) enhancementLevel = -2;\n            $('#enhancementLevel').text(enhancementLevel.toString());\n            plotImage();\n        }\n        function clearImage()\n        {\n            var canvas = document.getElementById(\"flirCanvas\");\n            var canvasContext = canvas.getContext(\"2d\");\n            var canvasWidth  = Number($('#flirCanvas').attr('width'));\n            var canvasHeight = Number($('#flirCanvas').attr('height'));\n            canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);        \n            $('#snapshotTimeStamp').text('-');\n            for (var ibox = 0; ibox < 9; ++ibox)\n            {\n                var intensity = ibox / 8.0;\n                var pbox = 0.0;\n                $('#box' + (ibox + 1).toString() + 'Label').text(pbox.toString());\n            } \n        }\n",
+        "output": "str",
+        "x": 790,
+        "y": 440,
+        "wires": [
+            [
+                "f331d94b.bd2cd8"
+            ]
+        ]
+    },
+    {
+        "id": "f373ee80.ab274",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.global}}}\n{{{payload.script.archive}}}\n{{{payload.script.user}}}\n",
+        "output": "str",
+        "x": 780,
+        "y": 560,
+        "wires": [
+            [
+                "238e6259.7712fe"
+            ]
+        ]
+    },
+    {
+        "id": "187d0bb4.cbe6d4",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "html.user",
+        "field": "payload.html.user",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                <div class='card' id='userCardId'>\n                    <div class='card-body' align=\"center\">\n                        <table width=\"100%\">\n                            <tr>\n                                <td  align=\"left\">\n                                     <span class='card-text' style='color:black;'>User:</span>\n                                </td>\n                                <td  align=\"right\">\n                                     <span class='card-text' id='usernameId'></span>\n                                </td>\n                            </tr>\n                            <tr>\n                                <td  align=\"left\">\n                                    <span class='card-text' style='color:black;'>Time left:</span>\n                                </td>\n                                <td  align=\"right\">\n                                     <span class='card-text' id='expTimeId'></span>\n                                </td>\n                            </tr>\n                        </table>\n                        <table width=\"100%\">\n                            <tr>\n                                <td width=\"40%\">\n                                    <button class='btn btn-block card-button big-text' id='logoutButton' onclick=\"renew()\" >Renew</button>\n                                </td>\n                                <td width=\"10%\"></td>\n                                <td width=\"40%\">\n                                    <button class='btn btn-block card-button big-text' id='logoutButton' onclick=\"logout()\" >Logout</button>\n                                </td>\n                            </tr>\n                        </table>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1020,
+        "y": 520,
+        "wires": [
+            [
+                "b340ff33.cf6a9"
+            ]
+        ]
+    },
+    {
+        "id": "b340ff33.cf6a9",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <div width=\"100%\">\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.archive}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.imageView}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12'>\n{{{payload.html.user}}}\n            </div>\n        </div>\n    </div>",
+        "output": "str",
+        "x": 1010,
+        "y": 560,
+        "wires": [
+            [
+                "92815673.e76d28"
+            ]
+        ]
+    },
+    {
+        "id": "92815673.e76d28",
+        "type": "subflow:8341090a.df9758",
+        "z": "ec67d8c2.3f3c98",
+        "name": "",
+        "x": 1270,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "238e6259.7712fe",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "html.imageView",
+        "field": "payload.html.imageView",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- imageView HTML -->\n                <div class='card' id='imageView'>\n                    <p class='card-title'>Image View</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"container-fluid \" align=\"center\">\n                                <table width='800px'>\n                                    <tr>\n                                        <td align=\"center\">\n                                            <div id=\"wrapper\" width=\"800\" height=\"600\" style=\"position:relative;\"  onmouseleave=\"mouseLeftCanvas()\">\n                                                <canvas id=\"flirCanvas\" width=\"800\" height=\"600\" style=\"border:1px solid #000000;\"></canvas>\n                                                <canvas id=\"tip\" width=125 height=30 style=\"position:absolute;\"></canvas>\n                                                <canvas id=\"tipPointer\" width=10 height=10 style=\"position:absolute;\"></canvas>\n                                            </div>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </div>\n                            <div class=\"container-fluid \" align=\"center\" style='padding-top: 0px;'>\n                                <table  width='792'>\n                                    <tr>\n                                        <td width=\"88px\">\n                                            <div id='box1' style=\"width:88px;height:50px;background-color:#0000ff\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box2' style=\"width:88px;height:50px;background-color:#0088ff\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box3' style=\"width:88px;height:50px;background-color:#00ffff\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box4' style=\"width:88px;height:50px;background-color:#00ff88\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box5' style=\"width:88px;height:50px;background-color:#00ff00\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box6' style=\"width:88px;height:50px;background-color:#88ff00\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box7' style=\"width:88px;height:50px;background-color:#ffff00\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box8' style=\"width:88px;height:50px;background-color:#ff8800\"></div>\n                                        </td>\n                                        <td width=\"88px\">\n                                            <div id='box9' style=\"width:88px;height:50px;background-color:#ff0000\"></div>\n                                        </td>\n                                    </tr>\n                                    <tr>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box1Label'>1</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box2Label'>2</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box3Label'>3</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box4Label'>4</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box5Label'>5</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box6Label'>6</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box7Label'>7</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box8Label'>8</span>\n                                        </td>\n                                        <td align='center' width=\"88px\">\n                                            <span style='font-size: 200%;' id='box9Label'>9</span>\n                                        </td>\n                                    </tr>\n                                </table>\n                                <div class='row' style='padding-bottom: 15px;'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                           <tr>\n                                                <td width='40%' align='left'>\n                                                    <span  class='card-text' id='sensorName'>Sensor xx</span>\n                                                </td>\n                                                <td width='60%' align='right'>\n                                                    <span  class='card-text' id='snapshotTimeStamp'></span>\n                                                </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                                <div class='row' style='padding-bottom: 15px;'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                            <tr>\n                                                <td width=\"60%\" align='left'>\n                                                    <span  class='card-text'>Color Mode</span>\n                                                </td>\n                                                <td width=\"40%\">\n                                                    <button class='btn btn-block card-button big-text' id=\"colorScaleButton\" onclick=\"toggleColorScale()\" >Color</button>\n                                                </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                                <div class='row' style='padding-bottom: 15px;'>\n                                    <div class=\"container-fluid \" align=\"center\">\n                                        <table  width='100%'>\n                                            <tr>\n                                                <td width=\"60%\" align='left'>\n                                                    <span  class='card-text'>Enhancement Level</span>\n                                                </td>\n                                                <td width=\"14%\" >\n                                                    <button class='btn btn-block card-button big-text' onclick=\"toggleEnhancedScale(-1)\">-</button>\n                                                </td>\n                                                <td width=\"12%px\" align='center'>\n                                                    <span  class='card-text' id=\"enhancementLevel\" >0</span>\n                                                </td>\n                                                <td width=\"14%\">\n                                                    <button class='btn btn-block card-button big-text' onclick=\"toggleEnhancedScale(1)\">+</button>\n                                                </td>\n                                            </tr>\n                                        </table>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                   </div>\n                </div>\n",
+        "output": "str",
+        "x": 1040,
+        "y": 440,
+        "wires": [
+            [
+                "32ad5489.8f854c"
+            ]
+        ]
+    },
+    {
+        "id": "66c44ad5.334974",
+        "type": "websocket in",
+        "z": "8475ab9.3d26058",
+        "name": "/blinky-thermo-cam/websocket",
+        "server": "40f038e6.5f0818",
+        "client": "",
+        "x": 160,
+        "y": 1640,
+        "wires": [
+            [
+                "e6d1a4ad.2186e8"
+            ]
+        ]
+    },
+    {
+        "id": "315d6482.66f2bc",
+        "type": "websocket in",
+        "z": "ec67d8c2.3f3c98",
+        "name": "/blinky-thermo-cam-archive/websocket",
+        "server": "839103c3.87224",
+        "client": "",
+        "x": 190,
+        "y": 740,
+        "wires": [
+            [
+                "4d89b11e.1f982"
+            ]
+        ]
+    },
+    {
+        "id": "aa05725a.410af",
+        "type": "websocket out",
+        "z": "ec67d8c2.3f3c98",
+        "name": "/blinky-thermo-cam-archive/websocket",
+        "server": "839103c3.87224",
+        "client": "",
+        "x": 1670,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "4d89b11e.1f982",
+        "type": "subflow:fee416c.fb205e8",
+        "z": "ec67d8c2.3f3c98",
+        "x": 470,
+        "y": 740,
+        "wires": [
+            [
+                "c757d741.7589a8"
+            ],
+            [
+                "a5997c28.605b"
+            ]
+        ]
+    },
+    {
+        "id": "c757d741.7589a8",
+        "type": "switch",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Action Switch",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "readDatabase",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "getImage",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "renew",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 680,
+        "y": 740,
+        "wires": [
+            [
+                "38fa6289.b2a88e"
+            ],
+            [
+                "e30e28ce.b88308"
+            ],
+            [
+                "ee3977a8.365b78"
+            ]
+        ]
+    },
+    {
+        "id": "ee3977a8.365b78",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Renew Token",
+        "func": "msg.token.expDate = new Date().getTime() + msg.token.timeoutMin * 60000;\ndelete msg.token['iat']\nmsg.payload = JSON.parse(JSON.stringify(msg.token));\ndelete msg['token'];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 860,
+        "y": 800,
+        "wires": [
+            [
+                "c5b76ea3.e0d94"
+            ]
+        ]
+    },
+    {
+        "id": "c5b76ea3.e0d94",
+        "type": "JsonWebToken",
+        "z": "ec67d8c2.3f3c98",
+        "name": "encrypt token",
+        "tokenconfig": "6acefdd9.69f124",
+        "x": 1080,
+        "y": 800,
+        "wires": [
+            [
+                "111fdc76.128134"
+            ]
+        ]
+    },
+    {
+        "id": "111fdc76.128134",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Renew Cookies",
+        "func": "var newMsg = \n{\n    topic : 'renew',\n    payload: \n    {\n        topic       : 'renew',\n        userID      : msg.userID,\n        role        : msg.token,\n        expDate     : msg.payload.expDate.toString(),\n        username    : msg.payload.username\n    }\n}\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1360,
+        "y": 800,
+        "wires": [
+            [
+                "aa05725a.410af"
+            ]
+        ]
+    },
+    {
+        "id": "7c3ffc99.96fbd4",
+        "type": "mongodb3 in",
+        "z": "ec67d8c2.3f3c98",
+        "service": "_ext_",
+        "configNode": "9cd5ff5e.caf86",
+        "name": "",
+        "collection": "archiver",
+        "operation": "find.toArray",
+        "x": 1130,
+        "y": 680,
+        "wires": [
+            [
+                "ba2963fe.1f95a"
+            ]
+        ]
+    },
+    {
+        "id": "38fa6289.b2a88e",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Setup Archive Query",
+        "func": "var projectionFilter =  \n{\n    projection:\n    {\n        _id                         :   0, \n        deviceType                  :   1,  \n        name                        :   1,  \n        timeStamp                   :   1 \n    } \n};\nfor (var ii = 0; ii < msg.payload.device.attr.length; ++ii)\n{\n    projectionFilter.projection[msg.payload.device.attr[ii]] = 1;\n}\nvar queryFilter = \n{\n    $and :\n    [\n        {\n            deviceType: msg.payload.device.deviceType\n        },\n        {\n            name: msg.payload.device.name\n        },\n        {\n            timeStamp :\n            {\n                $gte: msg.payload.device.startDate,\n                $lte: msg.payload.device.stopDate\n            }\n        }\n    ] \n    \n}\nvar newMsg = \n{\n    topic           : msg.topic,\n    userID          : msg.userID,\n    payload         : [queryFilter, projectionFilter],\n    device          : msg.payload.device,\n};\nreturn newMsg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 880,
+        "y": 680,
+        "wires": [
+            [
+                "7c3ffc99.96fbd4"
+            ]
+        ]
+    },
+    {
+        "id": "ba2963fe.1f95a",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Sort Archive Data",
+        "func": "function objectLength( object ) {\n    var length = 0;\n    for( var key in object ) {\n        if( object.hasOwnProperty(key) ) {\n            ++length;\n        }\n    }\n    return length;\n}\n\nfunction sortByKey(arr, key) \n{\n    return arr.sort( function(a, b) \n        {\n            var x = a[key]; \n            var y = b[key];\n            return ((x < y) ? -1 : ((x > y) ? 1 : 0));\n        } );\n}\n\nvar numRecords = objectLength(msg.payload);\nif (numRecords < 1)\n{\n    return {\n        topic : msg.device.deviceType,\n        payload:{\n            topic           : 'getArchiveValues',\n            payload         : {device: msg.device, trace:null},\n            userID          : msg.userID,\n        }\n    };\n}\nvar records = [];\nfor (var ii = 0; ii < numRecords; ++ii) records[ii] = msg.payload[ii]; \nsortByKey(records, 'timeStamp');\nvar trace = [];\nfor (var ii = 0; ii < numRecords; ++ii)\n{\n    trace[ii] = {timeStamp: records[ii].timeStamp};\n    for (var ij = 0; ij < msg.device.attr.length; ++ij)\n    {\n        trace[ii][msg.device.attr[ij]] = records[ii][msg.device.attr[ij]];\n    }\n}\n\nreturn {\n    topic : msg.device.deviceType,\n    payload:{\n        topic           : msg.topic,\n        payload         : {device: msg.device, trace: trace},\n        userID          : msg.userID,\n    }\n};\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1370,
+        "y": 680,
+        "wires": [
+            [
+                "aa05725a.410af"
+            ]
+        ]
+    },
+    {
+        "id": "4eb61a0f.944494",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "script.user",
+        "field": "payload.script.user",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        function getCreds()\n        {\n            var now = new Date().getTime();\n            var expDate = Number(getCookie('ExpDate'));\n            if (expDate > 0)\n            {\n                expDate = expDate - now;\n                if(expDate < 0)\n                {\n                    logout();\n                }\n                else\n                {\n                    var hours = Math.floor(expDate / 3600000);\n                    var minutes = expDate - hours * 3600000;\n                    minutes = Math.floor(minutes / 60000);\n                    var seconds = expDate - (hours * 3600000) - (minutes * 60000);\n                    seconds = Math.floor(seconds / 1000);\n                    hours = hours.toString();\n                    if (hours.length == 1) hours = '0' + hours; \n                    minutes = minutes.toString();\n                    if (minutes.length == 1) minutes = '0' + minutes; \n                    seconds = seconds.toString();\n                    if (seconds.length == 1) seconds = '0' + seconds; \n                    var timeString = hours + ':' + minutes + ':' + seconds;\n                    $('#usernameId').text(getCookie('Username'));\n                    $('#expTimeId').text(timeString);\n                }\n            }\n            else\n            {\n                $('#usernameId').text(getCookie('Username'));\n                $('#expTimeId').text('Forever');\n            }\n        }\n        function logout()\n        {\n            document.cookie = project + \"Role= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            document.cookie = project + \"ExpDate= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            document.cookie = project + \"Username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            window.location.href = \"/\";\n        }\n        function renew()\n        {\n            var actionMsg = {};\n            sendActionMsg('renew', 'renew', actionMsg);\n        }\n        function updateCookie(msg)\n        {\n            document.cookie = project + \"Role=\" + msg.role;\n            document.cookie = project + \"ExpDate=\" + msg.expDate;\n            document.cookie = project + \"Username=\" + msg.username;\n        }\n        function downloadToken()\n        {\n            downloadString(getCookie(\"Role\"), \"text/plain\", project + \"-token.txt\");\n        }\n// from https://gist.github.com/danallison/3ec9d5314788b337b682\n        function downloadString(text, fileType, fileName) \n        {\n            var blob = new Blob([text], { type: fileType });\n            \n            var a = document.createElement('a');\n            a.download = fileName;\n            a.href = URL.createObjectURL(blob);\n            a.dataset.downloadurl = [fileType, a.download, a.href].join(':');\n            a.style.display = \"none\";\n            document.body.appendChild(a);\n            a.click();\n            document.body.removeChild(a);\n            setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);\n        }",
+        "output": "str",
+        "x": 790,
+        "y": 520,
+        "wires": [
+            [
+                "f373ee80.ab274"
+            ]
+        ]
+    },
+    {
+        "id": "f331d94b.bd2cd8",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "script.archive",
+        "field": "payload.script.archive",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive2hrButton').attr(\"disabled\", true); \n            $('#archive4hrButton').attr(\"disabled\", true); \n            $('#archive8hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive72hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive2hrButton').css('color', 'var(--color5)'); \n            $('#archive2hrButton').css('background-color', 'var(--color1)'); \n            $('#archive4hrButton').css('color', 'var(--color5)'); \n            $('#archive4hrButton').css('background-color', 'var(--color1)'); \n            $('#archive8hrButton').css('color', 'var(--color5)'); \n            $('#archive8hrButton').css('background-color', 'var(--color1)'); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive72hrButton').css('color', 'var(--color5)'); \n            $('#archive72hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 2:\n                    $('#archive2hrButton').css('color', 'var(--color1)'); \n                    $('#archive2hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 4:\n                    $('#archive4hrButton').css('color', 'var(--color1)'); \n                    $('#archive4hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 8:\n                    $('#archive8hrButton').css('color', 'var(--color1)'); \n                    $('#archive8hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 72:\n                    $('#archive72hrButton').css('color', 'var(--color1)'); \n                    $('#archive72hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : restfulDevice.deviceType,\n                name : restfulDevice.name, \n                attr : ['pixelMax','pixelMin'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n//            $( \"#messageDialog\" ).dialog( \"close\" );\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '500',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : plotConfig.trace1Title,\n                    titlefont       : {color: plotConfig.trace1Color},\n                    tickfont        : {color:plotConfig.trace1Color},\n                    gridcolor       : plotConfig.trace1GridColor,\n                    zerolinecolor   : plotConfig.trace1GridColor,\n                    linecolor       : plotConfig.trace1GridColor\n\n                },\n                yaxis2:\n                {\n                    title           : plotConfig.trace2Title,\n                    titlefont       : {color: plotConfig.trace2Color},\n                    tickfont        : {color:plotConfig.trace2Color},\n                    gridcolor       : plotConfig.trace2GridColor,\n                    zerolinecolor   : plotConfig.trace2GridColor,\n                    linecolor       : plotConfig.trace2GridColor,\n                    overlaying: 'y',\n                    side: 'right'\n                },\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            this.trace1 = \n            {\n                x: [],\n                y: [],\n                name: plotConfig.trace1Title,\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'markers',\n                marker: {\n                    color: this.plotConfig.trace1Color,\n                    size: 10,\n                    symbol: 'circle'\n                }        \n    \n            };\n            this.trace2 = \n            {\n                x: [],\n                y: [],\n                name: plotConfig.trace2Title,\n                yaxis: 'y2',\n                type: 'scatter',\n                mode: 'markers',\n                marker: {\n                    color: this.plotConfig.trace2Color,\n                    size: 10,\n                    symbol: 'square'\n                }        \n         \n            };\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                var x = archiveList[0].trace[ii].timeStamp;\n                trace1.x[ii] = x;\n                trace1.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[0]] ;\n                trace2.x[ii] = x;\n                trace2.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[1]];\n            }\n\n\n            Plotly.newPlot('archiveChart', [trace1,trace2], layout);\n            var myPlot = document.getElementById('archiveChart');\n            myPlot.on('plotly_click', function(data)\n            {\n//                console.log(archiveList[data.points[0].curveNumber].trace[data.points[0].pointIndex].timeStamp);\n                getImage(archiveList[data.points[0].curveNumber].trace[data.points[0].pointIndex].timeStamp); \n            });\n\n\n            $('#archive2hrButton').attr(\"disabled\", false); \n            $('#archive4hrButton').attr(\"disabled\", false); \n            $('#archive8hrButton').attr(\"disabled\", false); \n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive72hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n        }\n",
+        "output": "str",
+        "x": 790,
+        "y": 480,
+        "wires": [
+            [
+                "4eb61a0f.944494"
+            ]
+        ]
+    },
+    {
+        "id": "32ad5489.8f854c",
+        "type": "template",
+        "z": "ec67d8c2.3f3c98",
+        "name": "html.archive",
+        "field": "payload.html.archive",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Archive HTML -->\n                <div class='card' id=archiveCardId>\n                    <p class='card-title'>Archive</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' >\n                            <table width='100%'>\n                                <tr>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive2hrButton\" onclick=\"getArchive(2)\" >2</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive4hrButton\" onclick=\"getArchive(4)\" >4</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive8hrButton\" onclick=\"getArchive(8)\" >8</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive24hrButton\" onclick=\"getArchive(24)\" >24</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive72hrButton\" onclick=\"getArchive(72)\" >72</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive168hrButton\" onclick=\"getArchive(168)\" >168</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <span class='big-text' >Hours</span>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                        <div class='row vert-pad'>\n                            <div class='col-md-12'>\n                                <div id=\"archiveChart\" width=\"100%\" ></div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1030,
+        "y": 480,
+        "wires": [
+            [
+                "187d0bb4.cbe6d4"
+            ]
+        ]
+    },
+    {
+        "id": "3aa20620.d13dea",
+        "type": "mongodb3 in",
+        "z": "ec67d8c2.3f3c98",
+        "service": "_ext_",
+        "configNode": "9cd5ff5e.caf86",
+        "name": "",
+        "collection": "archiver",
+        "operation": "find.toArray",
+        "x": 1130,
+        "y": 740,
+        "wires": [
+            [
+                "e8256063.2a1f6"
+            ]
+        ]
+    },
+    {
+        "id": "e30e28ce.b88308",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "parse getImage",
+        "func": "if (msg.payload.topic != 'getImage') return null;\nvar projectionFilter =  \n{\n    projection:\n    {\n        _id                         :   0 \n    } \n};\nvar queryFilter = \n{\n    $and :\n    [\n        {\n            deviceType: msg.payload.restfulDevice.deviceType\n        },\n        {\n            name: msg.payload.restfulDevice.name\n        },\n        {\n            timeStamp : msg.payload.timeStamp\n        }\n    ] \n    \n}\nvar newMsg = \n{\n    topic           : msg.payload.topic,\n    userID          : msg.payload.userID,\n    payload         : [queryFilter, projectionFilter],\n};\nreturn newMsg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 860,
+        "y": 740,
+        "wires": [
+            [
+                "3aa20620.d13dea"
+            ]
+        ]
+    },
+    {
+        "id": "e8256063.2a1f6",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Parse image results",
+        "func": "var imageMsg = \n{\n    topic:'image' ,\n    userID:msg.userID,\n    payload:msg.payload[0]\n}\nreturn {topic : msg.topic, payload:imageMsg};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1380,
+        "y": 740,
+        "wires": [
+            [
+                "aa05725a.410af"
+            ]
+        ]
+    },
+    {
+        "id": "a5997c28.605b",
+        "type": "link out",
+        "z": "ec67d8c2.3f3c98",
+        "name": "thermo-cam-archive-permission out",
+        "links": [
+            "cdb5603b.12621"
+        ],
+        "x": 635,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "cdb5603b.12621",
+        "type": "link in",
+        "z": "ec67d8c2.3f3c98",
+        "name": "blinky-thermo-cam-archive websocket in",
+        "links": [
+            "a5997c28.605b"
+        ],
+        "x": 1495,
+        "y": 860,
+        "wires": [
+            [
+                "aa05725a.410af"
             ]
         ]
     }
