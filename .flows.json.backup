@@ -5522,8 +5522,7 @@
             "ebb358f3.95c638",
             "bf657e74.6ac66",
             "ffb80136.883f8",
-            "9ef4d388.4bcf7",
-            "26a4f643.fdcefa"
+            "9ef4d388.4bcf7"
         ],
         "x": 775,
         "y": 1300,
@@ -7275,8 +7274,7 @@
             "ebb358f3.95c638",
             "bf657e74.6ac66",
             "ffb80136.883f8",
-            "9ef4d388.4bcf7",
-            "26a4f643.fdcefa"
+            "9ef4d388.4bcf7"
         ],
         "x": 895,
         "y": 2000,
@@ -12978,10 +12976,7 @@
         "z": "8475ab9.3d26058",
         "name": "blinky-thermo-cam input socket",
         "links": [
-            "1e710224.de723e",
-            "224d9b05.f92104",
-            "eaeb8d37.bf69a",
-            "54f0f0b.972191"
+            "eaeb8d37.bf69a"
         ],
         "x": 895,
         "y": 760,
@@ -13171,7 +13166,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Global Javascript\n        useWebSockets(true);\n        var restfulDevice = \n        {\n            deviceType  : '{{{payload.script.deviceType}}}',\n            name        : '{{{payload.script.name}}}',\n            project     : '{{{payload.script.project}}}'\n        };\n        var colorScale = true;\n        var enhancementLevel = 0;\n        var pgm = null;\n        var imageArray = null;\n        var lastArchiveDate = 0;\n        var programStarted = false;\n\n        var archiveRequestList = [];\n        var archiveList = [];\n        var plotConfig = \n        {\n            trace1Title : 'Max Pixel (C)',\n            trace1Color : '#557a95',\n            trace1GridColor : '#beceda',\n            trace2Title : 'Min Pixel (C)',\n            trace2Color : '#f2a31f',\n            plotLength  : 600000,\n            width   : '',\n            height  :   '500',\n            htmlId  :   'historyStripChart'\n        };\n\n        function onDocumentReady()\n        {\n            setRemoteApp(true);\n            if (remoteApp)\n            {\n                getCreds();\n                setInterval(function(){getCreds();}, 1000);\n            }\n            else\n            {\n                $('#userCardId').hide();\n            }\n            $('#imageView').show();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                sendActionMsg('getLastImage','readDatabase', restfulDevice);\n                getArchive(8);\n            }\n         }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'image' :\n                    if (msg.userID == userID)\n                    {\n                        $('#imageView').show();\n                        $('#snapshotTimeStamp').text(new Date(msg.payload.timeStamp).toLocaleString('en-SE', { timeZone: 'Europe/Stockholm' }).replace(',', ''));\n                        pgm = JSON.parse(JSON.stringify(msg.payload.imageData));\n                        imageArray = pgm.imageArray;\n                        $('#sensorName').text('Sensor ' + msg.payload.name);\n                        if (msg.payload.transpose == 0)\n                        {\n                            $('#flirCanvas').attr('width', '800');\n                        }\n                        else\n                        {\n                            $('#flirCanvas').attr('width', '450');\n                        }\n                        plotImage();\n                    }\n                    break;\n                case 'getLastImage':\n                    if (msg.userID == userID)\n                    {\n                        device = msg.payload;\n                        if (device.imageData.value != null)\n                        {\n                            $('#snapshotTimeStamp').text(new Date(device.timeStamp).toLocaleString('en-SE', { timeZone: 'Europe/Stockholm' }));\n                            pgm = JSON.parse(JSON.stringify(device.imageData.value));\n                            imageArray = pgm.imageArray;\n                            $('#sensorName').text('Sensor ' + device.name);\n                            if (device.transpose.value == 0)\n                            {\n                                $('#flirCanvas').attr('width', '800');\n                            }\n                            else\n                            {\n                                $('#flirCanvas').attr('width', '450');\n                            }\n                            plotImage();\n                        }\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        if ((msg.payload.device.deviceType == restfulDevice.deviceType) && (msg.payload.device.name == restfulDevice.name) )\n                            putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'renew':\n                    if (msg.userID == userID)\n                    {\n                        updateCookie(msg);\n                    }\n                    break;\n                case 'permissionError':\n                    if (msg.userID == userID)\n                    {\n                        acknowledgeDialog('Permission', 'Error', msg.payload);\n                    }\n                    break;\n                case 'loginExpired':\n                    if (msg.userID == userID)\n                    {\n                       location.reload();\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function processImage(msg)\n        {\n        }\n        function getImage(timeStamp)\n        {\n            var queryMsg = \n            {\n                topic : 'getImage', \n                userID : userID, \n                'restfulDevice': restfulDevice,\n                'timeStamp' : timeStamp,\n            };\n            sendActionMsg('getImage','readDatabase', queryMsg);\n        }\n        function plotImage()\n        {\n            var rgb = [];\n            var plow = (pgm.minval - 27315) / 100;\n            var phigh = (pgm.maxval - 27315) / 100;\n            var pdelta = phigh - plow;\n            for (var ibox = 0; ibox < 9; ++ibox)\n            {\n                var intensity = ibox / 8.0;\n                var pbox = Math.round(((phigh - plow) * intensity + plow) * 10.0) / 10.0;\n                $('#box' + (ibox + 1).toString() + 'Label').text(pbox.toString());\n                if (enhancementLevel == -2) intensity = Math.pow(intensity, 1/3.0);\n                if (enhancementLevel == -1) intensity = Math.pow(intensity, 1/2.0);\n                if (enhancementLevel ==  0) intensity = Math.pow(intensity, 1);\n                if (enhancementLevel ==  1) intensity = Math.pow(intensity, 2.0);\n                if (enhancementLevel ==  2) intensity = Math.pow(intensity, 3.0);\n                if (colorScale)\n                {\n                    rgb = getRGB(intensity);\n                }\n                else\n                {\n                    rgb[0] = Math.floor(255 * intensity);\n                    rgb[1] = Math.floor(255 * intensity);\n                    rgb[2] = Math.floor(255 * intensity);\n                }\n                var style='width:88px;height:50px;background-color:' + 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';\n                $('#box' + (ibox + 1).toString()).attr('style',style);\n            }\n            var canvas = document.getElementById(\"flirCanvas\");\n            var canvasContext = canvas.getContext(\"2d\");\n            var tipPointer = document.getElementById(\"tipPointer\");\n            var tipPointerContext = tipPointer.getContext(\"2d\");\n            var tip = document.getElementById(\"tip\");\n            var tipContext = tip.getContext(\"2d\");\n            tipContext.font = \"30px Arial\";\n            tipContext.fillStyle = \"cyan\";\n            tipPointerContext.fillStyle = \"cyan\";\n            if (colorScale) tipContext.fillStyle = \"black\";\n            if (colorScale) tipPointerContext.fillStyle = \"black\";\n            tipContext.textAlign = \"left\";\n\n            var canvasWidth  = Number($('#flirCanvas').attr('width'));\n            var wrapperWidth = Number($('#wrapper').attr('width'));\n            var xOffsetKluge = Math.round((wrapperWidth - canvasWidth) / 2);\n            var canvasHeight = Number($('#flirCanvas').attr('height'));\n            var rectWidth  = Math.round(canvasWidth  / pgm.ncols);\n            var rectHeight = Math.round(canvasHeight / pgm.nrows);\n            canvas.onmousemove = function (e) \n            {\n                var icol = Math.floor(e.layerX / rectWidth);\n                if (icol < 0) icol = 0;\n                if (icol >= pgm.ncols) icol = pgm.ncols - 1;\n                var irow = Math.floor((canvasHeight - e.layerY) / rectHeight);\n                if (irow < 0) irow = 0;\n                if (irow >= pgm.nrows) irow = pgm.nrows - 1;\n                var temp = Math.floor(100.0 * (pdelta * imageArray[irow][icol] / 256.0 + plow)) / 100;\n\n                tipPointer.style.top = (e.layerY  - tipPointer.height / 2).toString()  + \"px\";\n                tipPointer.style.left = (xOffsetKluge + e.layerX - tipPointer.width / 2).toString() + \"px\";\n                tipPointerContext.clearRect(0, 0, tipPointer.width, tipPointer.height);\n                tipPointerContext.fillRect( 0, 0, tipPointer.width, tipPointer.height);\n\n                tip.style.top = (e.layerY - tip.height - tipPointer.height).toString()  + \"px\";\n                tip.style.left = (xOffsetKluge + e.layerX).toString() + \"px\";\n                tipContext.clearRect(0, 0, tip.width, tip.height);\n                tipContext.fillText(temp.toString() + ' C', 0, 30);\n            };\n\n            for (var irow = 0; irow < pgm.nrows; ++irow)\n            {\n                for (var icol = 0; icol < pgm.ncols; ++icol)\n                {\n                    var intensity = imageArray[irow][icol] / 256.0;\n                    if (enhancementLevel == -2) intensity = Math.pow(intensity, 1/3.0);\n                    if (enhancementLevel == -1) intensity = Math.pow(intensity, 1/2.0);\n                    if (enhancementLevel ==  0) intensity = Math.pow(intensity, 1);\n                    if (enhancementLevel ==  1) intensity = Math.pow(intensity, 2.0);\n                    if (enhancementLevel ==  2) intensity = Math.pow(intensity, 3.0);\n                    if (colorScale)\n                    {\n                        rgb = getRGB(intensity);\n                        rgb[0] = Math.floor(rgb[0]);\n                        rgb[1] = Math.floor(rgb[1]);\n                        rgb[2] = Math.floor(rgb[2]);\n                    }\n                    else\n                    {\n                        rgb[0] = Math.floor(255 * intensity);\n                        rgb[1] = Math.floor(255 * intensity);\n                        rgb[2] = Math.floor(255 * intensity);\n                    }\n                    canvasContext.fillStyle = 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';\n                    if (intensity > 0.98) \n                    {\n                        canvasContext.fillStyle='magenta';\n                        if (colorScale) canvasContext.fillStyle='white';\n                    }\n\n                    canvasContext.fillRect(icol * rectWidth, canvasHeight - rectHeight - irow * rectHeight, rectWidth, rectHeight);\n                }    \n            }\n        }\n       function mouseLeftCanvas()\n        {\n            var tip = document.getElementById(\"tip\");\n            var tipContext = tip.getContext(\"2d\");\n            tipContext.clearRect(0, 0, tip.width, tip.height);\n            var tipPointer = document.getElementById(\"tipPointer\");\n            var tipPointerContext = tipPointer.getContext(\"2d\");\n            tipPointerContext.clearRect(0, 0, tipPointer.width, tipPointer.height);\n        }\n        function getRGB(intensity)\n        {\n          var rgb = [0,0,0];\n          var rgbCoeff = [\n              [  48.6, 349.0,    5.72, -172.0],\n              [-164.0, 705.0, -667.0 ,  379.0],\n              [ 135.0, 332.0, -976.0,   536.0]];\n          var intensityStart = [0.0, 0.3176, 0.0];\n          var power = [1.0, 0.0, 0.0, 0.0];\n          for (var ii = 1; ii < 4; ++ii) power[ii] = power[ii - 1] * intensity;\n          for (var irgb = 0; irgb < 3; ++irgb)\n          {\n              if (intensity >= intensityStart[irgb])\n              {\n                  for (var ipow = 0; ipow < 4; ++ipow)\n                  {\n                      rgb[irgb] = rgb[irgb] + rgbCoeff[irgb][ipow] * power[ipow];\n                  }\n              }\n          }\n          return rgb;\n        }\n        function getRGBRainbow(intensity)\n        {\n          var rgb = [0,0,0];\n          if ( (0 <= intensity) && (intensity <= 0.25) )\n          {\n            rgb[0] = 0;\n            rgb[1] = Math.floor(255 * intensity * 4);    \n            rgb[2] = 255;\n          }\n          if ( (0.25 < intensity) && (intensity <= 0.50) )\n          {\n            rgb[0] = 0;\n            rgb[1] = 255;    \n            rgb[2] = Math.floor(255 * (0.50 - intensity) * 4);\n          }\n          if ( (0.50 < intensity) && (intensity <= 0.75) )\n          {\n            rgb[0] = Math.floor(255 * (intensity - 0.50) * 4);\n            rgb[1] = 255;    \n            rgb[2] = 0;\n          }\n          if ( (0.75 < intensity) && (intensity <= 1.0) )\n          {\n            rgb[0] = 255;\n            rgb[1] = Math.floor(255 * (1.0 - intensity) * 4);    \n            rgb[2] = 0;\n          }\n          return rgb;\n        }\n        function toggleColorScale()\n        {\n            colorScale = !colorScale;\n            if (colorScale)\n            {\n                $('#colorScaleButton').text('Color');\n            }\n            else\n            {\n                $('#colorScaleButton').text('Gray');\n            }\n            plotImage();\n        }\n        function toggleEnhancedScale(deltaEnhanced)\n        {\n            enhancementLevel = enhancementLevel + deltaEnhanced;\n            if (enhancementLevel >  2) enhancementLevel = 2;\n            if (enhancementLevel < -2) enhancementLevel = -2;\n            $('#enhancementLevel').text(enhancementLevel.toString());\n            plotImage();\n        }\n        function clearImage()\n        {\n            var canvas = document.getElementById(\"flirCanvas\");\n            var canvasContext = canvas.getContext(\"2d\");\n            var canvasWidth  = Number($('#flirCanvas').attr('width'));\n            var canvasHeight = Number($('#flirCanvas').attr('height'));\n            canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);        \n            $('#snapshotTimeStamp').text('-');\n            for (var ibox = 0; ibox < 9; ++ibox)\n            {\n                var intensity = ibox / 8.0;\n                var pbox = 0.0;\n                $('#box' + (ibox + 1).toString() + 'Label').text(pbox.toString());\n            } \n        }\n",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var restfulDevice = \n        {\n            deviceType  : '{{{payload.script.deviceType}}}',\n            name        : '{{{payload.script.name}}}',\n            project     : '{{{payload.script.project}}}'\n        };\n        var colorScale = true;\n        var enhancementLevel = 0;\n        var pgm = null;\n        var imageArray = null;\n        var lastArchiveDate = 0;\n        var programStarted = false;\n\n        var archiveRequestList = [];\n        var archiveList = [];\n        var plotConfig = \n        {\n            trace1Title : 'Max Pixel (C)',\n            trace1Color : '#557a95',\n            trace1GridColor : '#beceda',\n            trace2Title : 'Min Pixel (C)',\n            trace2Color : '#f2a31f',\n            plotLength  : 600000,\n            width   : '',\n            height  :   '500',\n            htmlId  :   'historyStripChart'\n        };\n\n        function onDocumentReady()\n        {\n            setRemoteApp(true);\n            if (remoteApp)\n            {\n                getCreds();\n                setInterval(function(){getCreds();}, 1000);\n            }\n            else\n            {\n                $('#userCardId').hide();\n            }\n            $('#imageView').show();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                sendActionMsg('getLastImage','readDatabase', restfulDevice);\n                getArchive(8);\n            }\n         }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'image' :\n                    if (msg.userID == userID)\n                    {\n                        $('#imageView').show();\n                        $('#snapshotTimeStamp').text(new Date(msg.payload.timeStamp).toLocaleString('en-SE', { timeZone: 'Europe/Stockholm' }).replace(',', ''));\n                        pgm = JSON.parse(JSON.stringify(msg.payload.imageData));\n                        imageArray = pgm.imageArray;\n                        $('#sensorName').text('Sensor ' + msg.payload.name);\n                        if (msg.payload.transpose == 0)\n                        {\n                            $('#flirCanvas').attr('width', '800');\n                        }\n                        else\n                        {\n                            $('#flirCanvas').attr('width', '450');\n                        }\n                        plotImage();\n                    }\n                    break;\n                case 'getLastImage':\n                    if (msg.userID == userID)\n                    {\n                        device = msg.payload;\n                        if (device.imageData.value != null)\n                        {\n                            $('#snapshotTimeStamp').text(new Date(device.timeStamp).toLocaleString('en-SE', { timeZone: 'Europe/Stockholm' }));\n                            pgm = JSON.parse(JSON.stringify(device.imageData.value));\n                            imageArray = pgm.imageArray;\n                            $('#sensorName').text('Sensor ' + device.name);\n                            if (device.transpose.value == 0)\n                            {\n                                $('#flirCanvas').attr('width', '800');\n                            }\n                            else\n                            {\n                                $('#flirCanvas').attr('width', '450');\n                            }\n                            plotImage();\n                        }\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        if ((msg.payload.device.deviceType == restfulDevice.deviceType) && (msg.payload.device.name == restfulDevice.name) )\n                            putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'renew':\n                    if (msg.userID == userID)\n                    {\n                        updateCookie(msg);\n                    }\n                    break;\n                case 'permissionError':\n                    if (msg.userID == userID)\n                    {\n                        acknowledgeDialog('Permission', 'Error', msg.payload);\n                    }\n                    break;\n                case 'loginExpired':\n                    if (msg.userID == userID)\n                    {\n                       location.reload();\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function processImage(msg)\n        {\n        }\n        function getImage(timeStamp)\n        {\n            var queryMsg = \n            {\n                topic : 'getImage', \n                userID : userID, \n                'restfulDevice': restfulDevice,\n                'timeStamp' : timeStamp,\n            };\n            sendActionMsg('getImage','readDatabase', queryMsg);\n        }\n        function plotImage()\n        {\n            var rgb = [];\n            var plow = (pgm.minval - 27315) / 100;\n            var phigh = (pgm.maxval - 27315) / 100;\n            var pdelta = phigh - plow;\n            for (var ibox = 0; ibox < 9; ++ibox)\n            {\n                var intensity = ibox / 8.0;\n                var pbox = Math.round(((phigh - plow) * intensity + plow) * 10.0) / 10.0;\n                $('#box' + (ibox + 1).toString() + 'Label').text(pbox.toString());\n                if (enhancementLevel == -2) intensity = Math.pow(intensity, 1/3.0);\n                if (enhancementLevel == -1) intensity = Math.pow(intensity, 1/2.0);\n                if (enhancementLevel ==  0) intensity = Math.pow(intensity, 1);\n                if (enhancementLevel ==  1) intensity = Math.pow(intensity, 2.0);\n                if (enhancementLevel ==  2) intensity = Math.pow(intensity, 3.0);\n                if (colorScale)\n                {\n                    rgb = getRGB(intensity);\n                }\n                else\n                {\n                    rgb[0] = Math.floor(255 * intensity);\n                    rgb[1] = Math.floor(255 * intensity);\n                    rgb[2] = Math.floor(255 * intensity);\n                }\n                var style='width:88px;height:50px;background-color:' + 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';\n                $('#box' + (ibox + 1).toString()).attr('style',style);\n            }\n            var canvas = document.getElementById(\"flirCanvas\");\n            var canvasContext = canvas.getContext(\"2d\");\n            var tipPointer = document.getElementById(\"tipPointer\");\n            var tipPointerContext = tipPointer.getContext(\"2d\");\n            var tip = document.getElementById(\"tip\");\n            var tipContext = tip.getContext(\"2d\");\n            tipContext.font = \"30px Arial\";\n            tipContext.fillStyle = \"cyan\";\n            tipPointerContext.fillStyle = \"cyan\";\n            if (colorScale) tipContext.fillStyle = \"black\";\n            if (colorScale) tipPointerContext.fillStyle = \"black\";\n            tipContext.textAlign = \"left\";\n\n            var canvasWidth  = Number($('#flirCanvas').attr('width'));\n            var wrapperWidth = Number($('#wrapper').attr('width'));\n            var xOffsetKluge = Math.round((wrapperWidth - canvasWidth) / 2);\n            var canvasHeight = Number($('#flirCanvas').attr('height'));\n            var rectWidth  = Math.round(canvasWidth  / pgm.ncols);\n            var rectHeight = Math.round(canvasHeight / pgm.nrows);\n            canvas.onmousemove = function (e) \n            {\n                var icol = Math.floor(e.layerX / rectWidth);\n                if (icol < 0) icol = 0;\n                if (icol >= pgm.ncols) icol = pgm.ncols - 1;\n                var irow = Math.floor((canvasHeight - e.layerY) / rectHeight);\n                if (irow < 0) irow = 0;\n                if (irow >= pgm.nrows) irow = pgm.nrows - 1;\n                var temp = Math.floor(100.0 * (pdelta * imageArray[irow][icol] / 256.0 + plow)) / 100;\n\n                tipPointer.style.top = (e.layerY  - tipPointer.height / 2).toString()  + \"px\";\n                tipPointer.style.left = (xOffsetKluge + e.layerX - tipPointer.width / 2).toString() + \"px\";\n                tipPointerContext.clearRect(0, 0, tipPointer.width, tipPointer.height);\n                tipPointerContext.fillRect( 0, 0, tipPointer.width, tipPointer.height);\n\n                tip.style.top = (e.layerY - tip.height - tipPointer.height).toString()  + \"px\";\n                tip.style.left = (xOffsetKluge + e.layerX).toString() + \"px\";\n                tipContext.clearRect(0, 0, tip.width, tip.height);\n                tipContext.fillText(temp.toString() + ' C', 0, 30);\n            };\n\n            for (var irow = 0; irow < pgm.nrows; ++irow)\n            {\n                for (var icol = 0; icol < pgm.ncols; ++icol)\n                {\n                    var intensity = imageArray[irow][icol] / 256.0;\n                    if (enhancementLevel == -2) intensity = Math.pow(intensity, 1/3.0);\n                    if (enhancementLevel == -1) intensity = Math.pow(intensity, 1/2.0);\n                    if (enhancementLevel ==  0) intensity = Math.pow(intensity, 1);\n                    if (enhancementLevel ==  1) intensity = Math.pow(intensity, 2.0);\n                    if (enhancementLevel ==  2) intensity = Math.pow(intensity, 3.0);\n                    if (colorScale)\n                    {\n                        rgb = getRGB(intensity);\n                        rgb[0] = Math.floor(rgb[0]);\n                        rgb[1] = Math.floor(rgb[1]);\n                        rgb[2] = Math.floor(rgb[2]);\n                    }\n                    else\n                    {\n                        rgb[0] = Math.floor(255 * intensity);\n                        rgb[1] = Math.floor(255 * intensity);\n                        rgb[2] = Math.floor(255 * intensity);\n                    }\n                    canvasContext.fillStyle = 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';\n\n                    canvasContext.fillRect(icol * rectWidth, canvasHeight - rectHeight - irow * rectHeight, rectWidth, rectHeight);\n                }    \n            }\n        }\n       function mouseLeftCanvas()\n        {\n            var tip = document.getElementById(\"tip\");\n            var tipContext = tip.getContext(\"2d\");\n            tipContext.clearRect(0, 0, tip.width, tip.height);\n            var tipPointer = document.getElementById(\"tipPointer\");\n            var tipPointerContext = tipPointer.getContext(\"2d\");\n            tipPointerContext.clearRect(0, 0, tipPointer.width, tipPointer.height);\n        }\n        function getRGB(intensity)\n        {\n          var rgb = [0,0,0];\n          var rgbCoeff = [\n              [  48.6, 349.0,    5.72, -172.0],\n              [-164.0, 705.0, -667.0 ,  379.0],\n              [ 135.0, 332.0, -976.0,   536.0]];\n          var intensityStart = [0.0, 0.3176, 0.0];\n          var power = [1.0, 0.0, 0.0, 0.0];\n          for (var ii = 1; ii < 4; ++ii) power[ii] = power[ii - 1] * intensity;\n          for (var irgb = 0; irgb < 3; ++irgb)\n          {\n              if (intensity >= intensityStart[irgb])\n              {\n                  for (var ipow = 0; ipow < 4; ++ipow)\n                  {\n                      rgb[irgb] = rgb[irgb] + rgbCoeff[irgb][ipow] * power[ipow];\n                  }\n              }\n          }\n          return rgb;\n        }\n        function getRGBRainbow(intensity)\n        {\n          var rgb = [0,0,0];\n          if ( (0 <= intensity) && (intensity <= 0.25) )\n          {\n            rgb[0] = 0;\n            rgb[1] = Math.floor(255 * intensity * 4);    \n            rgb[2] = 255;\n          }\n          if ( (0.25 < intensity) && (intensity <= 0.50) )\n          {\n            rgb[0] = 0;\n            rgb[1] = 255;    \n            rgb[2] = Math.floor(255 * (0.50 - intensity) * 4);\n          }\n          if ( (0.50 < intensity) && (intensity <= 0.75) )\n          {\n            rgb[0] = Math.floor(255 * (intensity - 0.50) * 4);\n            rgb[1] = 255;    \n            rgb[2] = 0;\n          }\n          if ( (0.75 < intensity) && (intensity <= 1.0) )\n          {\n            rgb[0] = 255;\n            rgb[1] = Math.floor(255 * (1.0 - intensity) * 4);    \n            rgb[2] = 0;\n          }\n          return rgb;\n        }\n        function toggleColorScale()\n        {\n            colorScale = !colorScale;\n            if (colorScale)\n            {\n                $('#colorScaleButton').text('Color');\n            }\n            else\n            {\n                $('#colorScaleButton').text('Gray');\n            }\n            plotImage();\n        }\n        function toggleEnhancedScale(deltaEnhanced)\n        {\n            enhancementLevel = enhancementLevel + deltaEnhanced;\n            if (enhancementLevel >  2) enhancementLevel = 2;\n            if (enhancementLevel < -2) enhancementLevel = -2;\n            $('#enhancementLevel').text(enhancementLevel.toString());\n            plotImage();\n        }\n        function clearImage()\n        {\n            var canvas = document.getElementById(\"flirCanvas\");\n            var canvasContext = canvas.getContext(\"2d\");\n            var canvasWidth  = Number($('#flirCanvas').attr('width'));\n            var canvasHeight = Number($('#flirCanvas').attr('height'));\n            canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);        \n            $('#snapshotTimeStamp').text('-');\n            for (var ibox = 0; ibox < 9; ++ibox)\n            {\n                var intensity = ibox / 8.0;\n                var pbox = 0.0;\n                $('#box' + (ibox + 1).toString() + 'Label').text(pbox.toString());\n            } \n        }\n",
         "output": "str",
         "x": 790,
         "y": 440,
@@ -13267,21 +13262,6 @@
         ]
     },
     {
-        "id": "66c44ad5.334974",
-        "type": "websocket in",
-        "z": "8475ab9.3d26058",
-        "name": "/blinky-thermo-cam/websocket",
-        "server": "40f038e6.5f0818",
-        "client": "",
-        "x": 160,
-        "y": 1640,
-        "wires": [
-            [
-                "e6d1a4ad.2186e8"
-            ]
-        ]
-    },
-    {
         "id": "315d6482.66f2bc",
         "type": "websocket in",
         "z": "ec67d8c2.3f3c98",
@@ -13289,7 +13269,7 @@
         "server": "839103c3.87224",
         "client": "",
         "x": 190,
-        "y": 740,
+        "y": 960,
         "wires": [
             [
                 "4d89b11e.1f982"
@@ -13303,8 +13283,8 @@
         "name": "/blinky-thermo-cam-archive/websocket",
         "server": "839103c3.87224",
         "client": "",
-        "x": 1670,
-        "y": 740,
+        "x": 1710,
+        "y": 960,
         "wires": []
     },
     {
@@ -13312,7 +13292,7 @@
         "type": "subflow:fee416c.fb205e8",
         "z": "ec67d8c2.3f3c98",
         "x": 470,
-        "y": 740,
+        "y": 960,
         "wires": [
             [
                 "c757d741.7589a8"
@@ -13330,6 +13310,16 @@
         "property": "topic",
         "propertyType": "msg",
         "rules": [
+            {
+                "t": "eq",
+                "v": "setting",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "ping",
+                "vt": "str"
+            },
             {
                 "t": "eq",
                 "v": "readDatabase",
@@ -13353,10 +13343,16 @@
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 4,
+        "outputs": 6,
         "x": 680,
-        "y": 740,
+        "y": 960,
         "wires": [
+            [
+                "80aa41c3.d30e5"
+            ],
+            [
+                "a42b1a3c.843ec8"
+            ],
             [
                 "38fa6289.b2a88e"
             ],
@@ -13381,8 +13377,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 860,
-        "y": 860,
+        "x": 900,
+        "y": 1080,
         "wires": [
             [
                 "c5b76ea3.e0d94"
@@ -13395,8 +13391,8 @@
         "z": "ec67d8c2.3f3c98",
         "name": "encrypt token",
         "tokenconfig": "6acefdd9.69f124",
-        "x": 1080,
-        "y": 860,
+        "x": 1120,
+        "y": 1080,
         "wires": [
             [
                 "111fdc76.128134"
@@ -13413,8 +13409,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1360,
-        "y": 860,
+        "x": 1400,
+        "y": 1080,
         "wires": [
             [
                 "aa05725a.410af"
@@ -13430,8 +13426,8 @@
         "name": "",
         "collection": "archiver",
         "operation": "find.toArray",
-        "x": 1130,
-        "y": 680,
+        "x": 1170,
+        "y": 900,
         "wires": [
             [
                 "ba2963fe.1f95a"
@@ -13448,8 +13444,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 880,
-        "y": 680,
+        "x": 920,
+        "y": 900,
         "wires": [
             [
                 "7c3ffc99.96fbd4"
@@ -13466,8 +13462,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1370,
-        "y": 680,
+        "x": 1410,
+        "y": 900,
         "wires": [
             [
                 "aa05725a.410af"
@@ -13540,8 +13536,8 @@
         "name": "",
         "collection": "archiver",
         "operation": "find.toArray",
-        "x": 1130,
-        "y": 740,
+        "x": 1170,
+        "y": 960,
         "wires": [
             [
                 "e8256063.2a1f6"
@@ -13558,8 +13554,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 880,
-        "y": 740,
+        "x": 900,
+        "y": 960,
         "wires": [
             [
                 "3aa20620.d13dea"
@@ -13576,8 +13572,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1380,
-        "y": 740,
+        "x": 1420,
+        "y": 960,
         "wires": [
             [
                 "aa05725a.410af"
@@ -13593,7 +13589,7 @@
             "cdb5603b.12621"
         ],
         "x": 635,
-        "y": 860,
+        "y": 1080,
         "wires": []
     },
     {
@@ -13604,8 +13600,8 @@
         "links": [
             "a5997c28.605b"
         ],
-        "x": 1495,
-        "y": 860,
+        "x": 1535,
+        "y": 1080,
         "wires": [
             [
                 "aa05725a.410af"
@@ -13942,7 +13938,7 @@
         "server": "40f038e6.5f0818",
         "client": "",
         "x": 160,
-        "y": 800,
+        "y": 1020,
         "wires": [
             [
                 "4d89b11e.1f982"
@@ -13959,8 +13955,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 880,
-        "y": 800,
+        "x": 900,
+        "y": 1020,
         "wires": [
             [
                 "3bd8b507.46762a"
@@ -13974,8 +13970,8 @@
         "name": "/blinky-thermo-cam/websocket",
         "server": "40f038e6.5f0818",
         "client": "",
-        "x": 1690,
-        "y": 780,
+        "x": 1730,
+        "y": 1000,
         "wires": []
     },
     {
@@ -13987,8 +13983,8 @@
         "name": "",
         "collection": "devices",
         "operation": "findOne",
-        "x": 1110,
-        "y": 800,
+        "x": 1150,
+        "y": 1020,
         "wires": [
             [
                 "27e599eb.a81766"
@@ -14005,12 +14001,99 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1360,
-        "y": 800,
+        "x": 1400,
+        "y": 1020,
         "wires": [
             [
                 "3a28e7a2.81b978",
                 "aa05725a.410af"
+            ]
+        ]
+    },
+    {
+        "id": "ba585b6e.7fbaa8",
+        "type": "mqtt out",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Publish Setting",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "broker": "84d80994.260508",
+        "x": 1080,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "7a072fe5.f88b9",
+        "type": "subflow:e13648d6.d698c8",
+        "z": "ec67d8c2.3f3c98",
+        "x": 1310,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "5b969f38.37807",
+        "type": "gzip",
+        "z": "ec67d8c2.3f3c98",
+        "name": "",
+        "x": 1050,
+        "y": 760,
+        "wires": [
+            [
+                "3a953236.ce8f3e"
+            ]
+        ]
+    },
+    {
+        "id": "3a953236.ce8f3e",
+        "type": "json",
+        "z": "ec67d8c2.3f3c98",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 1170,
+        "y": 760,
+        "wires": [
+            [
+                "7a072fe5.f88b9"
+            ]
+        ]
+    },
+    {
+        "id": "80aa41c3.d30e5",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Prep MQTT",
+        "func": "var newMsg = msg.payload;\nnewMsg.userID = msg.userID\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 890,
+        "y": 780,
+        "wires": [
+            [
+                "ba585b6e.7fbaa8",
+                "5b969f38.37807"
+            ]
+        ]
+    },
+    {
+        "id": "a42b1a3c.843ec8",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Prep MQTT",
+        "func": "var newMsg = msg.payload;\nnewMsg.userID = msg.userID\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 890,
+        "y": 840,
+        "wires": [
+            [
+                "ba585b6e.7fbaa8"
             ]
         ]
     }

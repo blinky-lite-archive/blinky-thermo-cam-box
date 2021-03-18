@@ -16,14 +16,14 @@
     {
         "id": "9c854ea3.68416",
         "type": "tab",
-        "label": "Web Apps 1",
+        "label": "Web Apps",
         "disabled": false,
         "info": ""
     },
     {
         "id": "ec67d8c2.3f3c98",
         "type": "tab",
-        "label": "Web Apps 2",
+        "label": "Cam Web Apps",
         "disabled": false,
         "info": ""
     },
@@ -5522,8 +5522,7 @@
             "ebb358f3.95c638",
             "bf657e74.6ac66",
             "ffb80136.883f8",
-            "9ef4d388.4bcf7",
-            "26a4f643.fdcefa"
+            "9ef4d388.4bcf7"
         ],
         "x": 775,
         "y": 1300,
@@ -7275,8 +7274,7 @@
             "ebb358f3.95c638",
             "bf657e74.6ac66",
             "ffb80136.883f8",
-            "9ef4d388.4bcf7",
-            "26a4f643.fdcefa"
+            "9ef4d388.4bcf7"
         ],
         "x": 895,
         "y": 2000,
@@ -12978,10 +12976,7 @@
         "z": "8475ab9.3d26058",
         "name": "blinky-thermo-cam input socket",
         "links": [
-            "1e710224.de723e",
-            "224d9b05.f92104",
-            "eaeb8d37.bf69a",
-            "54f0f0b.972191"
+            "eaeb8d37.bf69a"
         ],
         "x": 895,
         "y": 760,
@@ -13267,21 +13262,6 @@
         ]
     },
     {
-        "id": "66c44ad5.334974",
-        "type": "websocket in",
-        "z": "8475ab9.3d26058",
-        "name": "/blinky-thermo-cam/websocket",
-        "server": "40f038e6.5f0818",
-        "client": "",
-        "x": 160,
-        "y": 1640,
-        "wires": [
-            [
-                "e6d1a4ad.2186e8"
-            ]
-        ]
-    },
-    {
         "id": "315d6482.66f2bc",
         "type": "websocket in",
         "z": "ec67d8c2.3f3c98",
@@ -13289,7 +13269,7 @@
         "server": "839103c3.87224",
         "client": "",
         "x": 190,
-        "y": 740,
+        "y": 960,
         "wires": [
             [
                 "4d89b11e.1f982"
@@ -13303,8 +13283,8 @@
         "name": "/blinky-thermo-cam-archive/websocket",
         "server": "839103c3.87224",
         "client": "",
-        "x": 1670,
-        "y": 740,
+        "x": 1710,
+        "y": 960,
         "wires": []
     },
     {
@@ -13312,7 +13292,7 @@
         "type": "subflow:fee416c.fb205e8",
         "z": "ec67d8c2.3f3c98",
         "x": 470,
-        "y": 740,
+        "y": 960,
         "wires": [
             [
                 "c757d741.7589a8"
@@ -13330,6 +13310,16 @@
         "property": "topic",
         "propertyType": "msg",
         "rules": [
+            {
+                "t": "eq",
+                "v": "setting",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "ping",
+                "vt": "str"
+            },
             {
                 "t": "eq",
                 "v": "readDatabase",
@@ -13353,10 +13343,16 @@
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 4,
+        "outputs": 6,
         "x": 680,
-        "y": 740,
+        "y": 960,
         "wires": [
+            [
+                "80aa41c3.d30e5"
+            ],
+            [
+                "a42b1a3c.843ec8"
+            ],
             [
                 "38fa6289.b2a88e"
             ],
@@ -13381,8 +13377,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 860,
-        "y": 860,
+        "x": 900,
+        "y": 1080,
         "wires": [
             [
                 "c5b76ea3.e0d94"
@@ -13395,8 +13391,8 @@
         "z": "ec67d8c2.3f3c98",
         "name": "encrypt token",
         "tokenconfig": "6acefdd9.69f124",
-        "x": 1080,
-        "y": 860,
+        "x": 1120,
+        "y": 1080,
         "wires": [
             [
                 "111fdc76.128134"
@@ -13413,8 +13409,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1360,
-        "y": 860,
+        "x": 1400,
+        "y": 1080,
         "wires": [
             [
                 "aa05725a.410af"
@@ -13430,8 +13426,8 @@
         "name": "",
         "collection": "archiver",
         "operation": "find.toArray",
-        "x": 1130,
-        "y": 680,
+        "x": 1170,
+        "y": 900,
         "wires": [
             [
                 "ba2963fe.1f95a"
@@ -13448,8 +13444,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 880,
-        "y": 680,
+        "x": 920,
+        "y": 900,
         "wires": [
             [
                 "7c3ffc99.96fbd4"
@@ -13466,8 +13462,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1370,
-        "y": 680,
+        "x": 1410,
+        "y": 900,
         "wires": [
             [
                 "aa05725a.410af"
@@ -13540,8 +13536,8 @@
         "name": "",
         "collection": "archiver",
         "operation": "find.toArray",
-        "x": 1130,
-        "y": 740,
+        "x": 1170,
+        "y": 960,
         "wires": [
             [
                 "e8256063.2a1f6"
@@ -13558,8 +13554,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 880,
-        "y": 740,
+        "x": 900,
+        "y": 960,
         "wires": [
             [
                 "3aa20620.d13dea"
@@ -13576,8 +13572,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1380,
-        "y": 740,
+        "x": 1420,
+        "y": 960,
         "wires": [
             [
                 "aa05725a.410af"
@@ -13593,7 +13589,7 @@
             "cdb5603b.12621"
         ],
         "x": 635,
-        "y": 860,
+        "y": 1080,
         "wires": []
     },
     {
@@ -13604,8 +13600,8 @@
         "links": [
             "a5997c28.605b"
         ],
-        "x": 1495,
-        "y": 860,
+        "x": 1535,
+        "y": 1080,
         "wires": [
             [
                 "aa05725a.410af"
@@ -13942,7 +13938,7 @@
         "server": "40f038e6.5f0818",
         "client": "",
         "x": 160,
-        "y": 800,
+        "y": 1020,
         "wires": [
             [
                 "4d89b11e.1f982"
@@ -13959,8 +13955,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 880,
-        "y": 800,
+        "x": 900,
+        "y": 1020,
         "wires": [
             [
                 "3bd8b507.46762a"
@@ -13974,8 +13970,8 @@
         "name": "/blinky-thermo-cam/websocket",
         "server": "40f038e6.5f0818",
         "client": "",
-        "x": 1690,
-        "y": 780,
+        "x": 1730,
+        "y": 1000,
         "wires": []
     },
     {
@@ -13987,8 +13983,8 @@
         "name": "",
         "collection": "devices",
         "operation": "findOne",
-        "x": 1110,
-        "y": 800,
+        "x": 1150,
+        "y": 1020,
         "wires": [
             [
                 "27e599eb.a81766"
@@ -14005,12 +14001,99 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1360,
-        "y": 800,
+        "x": 1400,
+        "y": 1020,
         "wires": [
             [
                 "3a28e7a2.81b978",
                 "aa05725a.410af"
+            ]
+        ]
+    },
+    {
+        "id": "ba585b6e.7fbaa8",
+        "type": "mqtt out",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Publish Setting",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "broker": "84d80994.260508",
+        "x": 1080,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "7a072fe5.f88b9",
+        "type": "subflow:e13648d6.d698c8",
+        "z": "ec67d8c2.3f3c98",
+        "x": 1310,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "5b969f38.37807",
+        "type": "gzip",
+        "z": "ec67d8c2.3f3c98",
+        "name": "",
+        "x": 1050,
+        "y": 760,
+        "wires": [
+            [
+                "3a953236.ce8f3e"
+            ]
+        ]
+    },
+    {
+        "id": "3a953236.ce8f3e",
+        "type": "json",
+        "z": "ec67d8c2.3f3c98",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 1170,
+        "y": 760,
+        "wires": [
+            [
+                "7a072fe5.f88b9"
+            ]
+        ]
+    },
+    {
+        "id": "80aa41c3.d30e5",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Prep MQTT",
+        "func": "var newMsg = msg.payload;\nnewMsg.userID = msg.userID\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 890,
+        "y": 780,
+        "wires": [
+            [
+                "ba585b6e.7fbaa8",
+                "5b969f38.37807"
+            ]
+        ]
+    },
+    {
+        "id": "a42b1a3c.843ec8",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Prep MQTT",
+        "func": "var newMsg = msg.payload;\nnewMsg.userID = msg.userID\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 890,
+        "y": 840,
+        "wires": [
+            [
+                "ba585b6e.7fbaa8"
             ]
         ]
     }
