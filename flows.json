@@ -613,6 +613,14 @@
         "wholemsg": "false"
     },
     {
+        "id": "e2cece33.d4cad",
+        "type": "mongodb3",
+        "uri": "$(MONGODBCAMIP)",
+        "name": "blinky-thermo-cam",
+        "options": "",
+        "parallelism": "-1"
+    },
+    {
         "id": "d8aea031.7f89d",
         "type": "http in",
         "z": "dc20c6e0.0feb98",
@@ -885,7 +893,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 940,
+        "x": 1120,
         "y": 180,
         "wires": [
             [
@@ -934,11 +942,11 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 560,
-        "y": 180,
+        "x": 1120,
+        "y": 120,
         "wires": [
             [
-                "4e3763f1.63282c"
+                "72c58cab.a3c494"
             ]
         ]
     },
@@ -951,8 +959,8 @@
         "name": "",
         "collection": "devices",
         "operation": "findOne",
-        "x": 330,
-        "y": 180,
+        "x": 1290,
+        "y": 40,
         "wires": [
             [
                 "e020461d.044ee8"
@@ -968,8 +976,8 @@
         "name": "",
         "collection": "devices",
         "operation": "update",
-        "x": 1210,
-        "y": 140,
+        "x": 1390,
+        "y": 160,
         "wires": [
             []
         ]
@@ -983,7 +991,7 @@
         "name": "",
         "collection": "archiver",
         "operation": "insertOne",
-        "x": 1220,
+        "x": 1400,
         "y": 220,
         "wires": [
             []
@@ -1344,8 +1352,8 @@
         "topic": "project",
         "payload": "PROJECT",
         "payloadType": "env",
-        "x": 130,
-        "y": 280,
+        "x": 140,
+        "y": 320,
         "wires": [
             [
                 "e06b15ee.c3bf78"
@@ -1362,8 +1370,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 310,
-        "y": 280,
+        "x": 320,
+        "y": 320,
         "wires": [
             []
         ]
@@ -2184,8 +2192,8 @@
         "topic": "maxDbSize",
         "payload": "MAXDBSIZE",
         "payloadType": "env",
-        "x": 130,
-        "y": 340,
+        "x": 140,
+        "y": 380,
         "wires": [
             [
                 "2208dd06.5d2ba2"
@@ -2200,8 +2208,8 @@
         "func": "global.set(msg.topic,Number(msg.payload));\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 350,
-        "y": 340,
+        "x": 360,
+        "y": 380,
         "wires": [
             []
         ]
@@ -3253,7 +3261,7 @@
         "datatype": "auto",
         "broker": "84d80994.260508",
         "x": 150,
-        "y": 40,
+        "y": 100,
         "wires": [
             [
                 "1de67fe2.40e2e"
@@ -3269,7 +3277,7 @@
         "action": "obj",
         "pretty": false,
         "x": 310,
-        "y": 40,
+        "y": 100,
         "wires": [
             [
                 "ae273eea.d73dc"
@@ -3287,10 +3295,10 @@
         "initialize": "",
         "finalize": "",
         "x": 710,
-        "y": 40,
+        "y": 100,
         "wires": [
             [
-                "ee4c177c.2435b8"
+                "fec4a75b.95ea48"
             ]
         ]
     },
@@ -3302,124 +3310,11 @@
         "func": "return {\n    topic   :msg.payload.name, \n    payload : \n    [\n        {\n            $and   :    \n            [\n                {\n                    deviceType : msg.payload.deviceType\n                },\n                {\n                    name : msg.payload.name\n                }\n            ]\n        }, \n        {\n            projection  :\n            {\n                _id :   0\n                \n            }\n        }\n    ],\n    'device'    :   msg.payload\n};\n\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 130,
-        "y": 180,
+        "x": 1090,
+        "y": 40,
         "wires": [
             [
                 "731fcbcd.96f0a4"
-            ]
-        ]
-    },
-    {
-        "id": "4e3763f1.63282c",
-        "type": "switch",
-        "z": "e17f7487.2a78e8",
-        "name": "",
-        "property": "device.deviceType",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "blinky-basic",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "blinky-stepper",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "blinky-power-relay",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "blinky-shiver",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "blinky-shaker",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "blinky-thermo",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "solar-regulator",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "blinky-cosmic-interval",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "blinky-relay-bake",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "blinky-env",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "blinky-ssr-bake",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "blinky-thermo-cam",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 12,
-        "x": 730,
-        "y": 180,
-        "wires": [
-            [
-                "72c58cab.a3c494"
-            ],
-            [
-                "72c58cab.a3c494"
-            ],
-            [
-                "72c58cab.a3c494"
-            ],
-            [
-                "72c58cab.a3c494"
-            ],
-            [
-                "72c58cab.a3c494"
-            ],
-            [
-                "72c58cab.a3c494"
-            ],
-            [
-                "72c58cab.a3c494"
-            ],
-            [
-                "72c58cab.a3c494"
-            ],
-            [
-                "72c58cab.a3c494"
-            ],
-            [
-                "72c58cab.a3c494"
-            ],
-            [
-                "72c58cab.a3c494"
-            ],
-            [
-                "60e5baa.26ae444"
             ]
         ]
     },
@@ -3461,8 +3356,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 160,
-        "y": 480,
+        "x": 170,
+        "y": 520,
         "wires": [
             [
                 "6d14548b.92e89c"
@@ -3478,8 +3373,8 @@
         "name": "",
         "collection": "archiver",
         "operation": "stats",
-        "x": 390,
-        "y": 480,
+        "x": 400,
+        "y": 520,
         "wires": [
             [
                 "cdfc8294.43d83"
@@ -3495,8 +3390,8 @@
         "name": "",
         "collection": "archiver",
         "operation": "find.toArray",
-        "x": 930,
-        "y": 480,
+        "x": 940,
+        "y": 520,
         "wires": [
             [
                 "f226d7aa.824b28"
@@ -3513,8 +3408,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 650,
-        "y": 480,
+        "x": 660,
+        "y": 520,
         "wires": [
             [
                 "eae07f83.bcf2c"
@@ -3529,8 +3424,8 @@
         "func": "function objectLength( object ) {\n    var length = 0;\n    for( var key in object ) {\n        if( object.hasOwnProperty(key) ) {\n            ++length;\n        }\n    }\n    return length;\n}\nvar numDevices = objectLength(msg.payload);\nvar timeStampList = [];\n\nfor (var idevice = 0; idevice < numDevices; ++idevice)\n{\n    timeStampList[idevice] = msg.payload[idevice].timeStamp;\n}\ntimeStampList.sort();\n\n\nvar newMsg = \n{\n    topic           : 'test',\n    payload         : [{timeStamp: {\"$lte\": timeStampList[msg.cutRecords]}},{projection:{timeStamp:1, _id:0}}],\n};\nreturn newMsg;\n",
         "outputs": 1,
         "noerr": 0,
-        "x": 900,
-        "y": 540,
+        "x": 910,
+        "y": 580,
         "wires": [
             [
                 "6532f8b6.6c31b8"
@@ -3546,8 +3441,8 @@
         "name": "",
         "collection": "archiver",
         "operation": "removeMany",
-        "x": 930,
-        "y": 600,
+        "x": 940,
+        "y": 640,
         "wires": [
             []
         ]
@@ -3564,8 +3459,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 120,
-        "y": 660,
+        "x": 130,
+        "y": 700,
         "wires": [
             [
                 "729cd6f7.ca5578"
@@ -3577,16 +3472,16 @@
         "type": "function",
         "z": "e17f7487.2a78e8",
         "name": "Find Device Type",
-        "func": "var queryFilter = \n{\n    $and :\n    [\n        {\n            \"deviceType\": \"blinky-basic\"\n        },\n        {\n            \"name\": \"01\"\n        }\n    ] \n    \n}\nvar newMsg = \n{\n    topic           : 'getArchiveValues',\n    payload         :  [queryFilter,{projection:{timeStamp:1, _id:0}}]\n};\nreturn newMsg",
+        "func": "var queryFilter = \n{\n    $and :\n    [\n        {\n            \"deviceType\": \"blinky-thermo-cam\"\n        },\n        {\n            \"name\": \"01\"\n        }\n    ] \n    \n}\nvar newMsg = \n{\n    topic           : 'getArchiveValues',\n    payload         :  [queryFilter,{projection:{timeStamp:1, _id:0}}]\n};\nreturn newMsg",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 290,
-        "y": 660,
+        "x": 300,
+        "y": 700,
         "wires": [
             [
-                "2d28afa.778ba5"
+                "cf34c25.b29984"
             ]
         ]
     },
@@ -3599,10 +3494,12 @@
         "name": "",
         "collection": "archiver",
         "operation": "removeMany",
-        "x": 530,
-        "y": 700,
+        "x": 540,
+        "y": 740,
         "wires": [
-            []
+            [
+                "4dd34a88.974344"
+            ]
         ]
     },
     {
@@ -3614,8 +3511,8 @@
         "name": "",
         "collection": "archiver",
         "operation": "find.toArray",
-        "x": 530,
-        "y": 620,
+        "x": 540,
+        "y": 660,
         "wires": [
             [
                 "4dd34a88.974344"
@@ -3632,8 +3529,8 @@
         "console": false,
         "tostatus": false,
         "complete": "false",
-        "x": 770,
-        "y": 680,
+        "x": 780,
+        "y": 720,
         "wires": []
     },
     {
@@ -4471,8 +4368,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 300,
-        "y": 780,
+        "x": 310,
+        "y": 820,
         "wires": [
             [
                 "f40aa393.052ae"
@@ -4488,8 +4385,8 @@
         "name": "",
         "collection": "archiver",
         "operation": "updateMany",
-        "x": 550,
-        "y": 780,
+        "x": 560,
+        "y": 820,
         "wires": [
             [
                 "5d7e61b7.94062"
@@ -4508,8 +4405,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 120,
-        "y": 780,
+        "x": 130,
+        "y": 820,
         "wires": [
             [
                 "91235a13.6c4198"
@@ -4526,8 +4423,8 @@
         "console": false,
         "tostatus": false,
         "complete": "false",
-        "x": 790,
-        "y": 780,
+        "x": 800,
+        "y": 820,
         "wires": []
     },
     {
@@ -4737,7 +4634,7 @@
         "z": "e17f7487.2a78e8",
         "name": "",
         "x": 430,
-        "y": 40,
+        "y": 100,
         "wires": [
             [
                 "ea65f8a7.000ed8"
@@ -4753,7 +4650,7 @@
         "action": "obj",
         "pretty": false,
         "x": 550,
-        "y": 40,
+        "y": 100,
         "wires": [
             [
                 "2f6b8176.8101fe"
@@ -5056,7 +4953,8 @@
         "y": 340,
         "wires": [
             [
-                "764116fd.f6e648"
+                "764116fd.f6e648",
+                "35181b40.f4b854"
             ]
         ]
     },
@@ -5122,16 +5020,11 @@
                 "t": "eq",
                 "v": "blinky-ssr-bake",
                 "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "blinky-thermo-cam",
-                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 12,
+        "outputs": 11,
         "x": 630,
         "y": 340,
         "wires": [
@@ -5167,9 +5060,6 @@
             ],
             [
                 "bad679e2.d62e68"
-            ],
-            [
-                "eaeb8d37.bf69a"
             ]
         ]
     },
@@ -12373,8 +12263,8 @@
         "topic": "ipRefWeb",
         "payload": "IPREFWEB",
         "payloadType": "env",
-        "x": 120,
-        "y": 400,
+        "x": 130,
+        "y": 440,
         "wires": [
             [
                 "daa5f679.c0a968"
@@ -12391,8 +12281,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 340,
-        "y": 400,
+        "x": 350,
+        "y": 440,
         "wires": [
             []
         ]
@@ -12939,66 +12829,6 @@
         ]
     },
     {
-        "id": "60e5baa.26ae444",
-        "type": "function",
-        "z": "e17f7487.2a78e8",
-        "name": "blinky-thermo-cam",
-        "func": "if (msg.device.archiveData.value != 1) return null;\nmsg.device.lastArchive = msg.payload.lastArchive;\nmsg.device.timeStamp = new Date().getTime();\nvar keys = Object.keys(msg.device);\nfor (var ii = 0; ii < keys.length; ++ii) msg.payload[keys[ii]] = msg.device[keys[ii]];\n\nvar archiveMsg = null;\nmsg.payload.lastArchive  = msg.payload.timeStamp;\nmsg.device.lastArchive = msg.payload.lastArchive;\nvar archiveDevice = JSON.parse(JSON.stringify(msg.device));\ndelete archiveDevice.arcPeriod;\ndelete archiveDevice.lastArchive;\nkeys = Object.keys(archiveDevice);\nfor (var ii = 0; ii < keys.length; ++ii)\n{\n    if (archiveDevice[keys[ii]].hasOwnProperty('type'))\n    {\n        \n        archiveDevice[keys[ii]] = JSON.parse(JSON.stringify(msg.device[keys[ii]].value));\n    }\n}\narchiveMsg = {topic:'archiveData',payload: archiveDevice};\nvar updateDeviceMsg = \n{\n    topic:'updateDevice',\n    payload:\n    [\n        {\n            $and   :    \n            [\n                {\n                    deviceType : msg.payload.deviceType\n                },\n                {\n                    name : msg.payload.name\n                }\n            ]\n        }, \n        msg.payload\n    ]\n};\nreturn [updateDeviceMsg,archiveMsg];\n",
-        "outputs": 2,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 930,
-        "y": 280,
-        "wires": [
-            [
-                "bc2507b7.46f4b8"
-            ],
-            [
-                "621ab8d1.42e078"
-            ]
-        ]
-    },
-    {
-        "id": "14b41d0e.53b6e3",
-        "type": "websocket out",
-        "z": "8475ab9.3d26058",
-        "name": "/blinky-thermo-cam/websocket",
-        "server": "40f038e6.5f0818",
-        "client": "",
-        "x": 1070,
-        "y": 760,
-        "wires": []
-    },
-    {
-        "id": "26a4f643.fdcefa",
-        "type": "link in",
-        "z": "8475ab9.3d26058",
-        "name": "blinky-thermo-cam input socket",
-        "links": [
-            "eaeb8d37.bf69a"
-        ],
-        "x": 895,
-        "y": 760,
-        "wires": [
-            [
-                "14b41d0e.53b6e3"
-            ]
-        ]
-    },
-    {
-        "id": "eaeb8d37.bf69a",
-        "type": "link out",
-        "z": "8475ab9.3d26058",
-        "name": "blinky-thermo-cam mqtt",
-        "links": [
-            "26a4f643.fdcefa"
-        ],
-        "x": 775,
-        "y": 760,
-        "wires": []
-    },
-    {
         "id": "65caa0f7.a3423",
         "type": "http in",
         "z": "ec67d8c2.3f3c98",
@@ -13283,7 +13113,7 @@
         "name": "/blinky-thermo-cam-archive/websocket",
         "server": "839103c3.87224",
         "client": "",
-        "x": 1710,
+        "x": 1790,
         "y": 960,
         "wires": []
     },
@@ -13422,11 +13252,11 @@
         "type": "mongodb3 in",
         "z": "ec67d8c2.3f3c98",
         "service": "_ext_",
-        "configNode": "9cd5ff5e.caf86",
+        "configNode": "e2cece33.d4cad",
         "name": "",
         "collection": "archiver",
         "operation": "find.toArray",
-        "x": 1170,
+        "x": 1200,
         "y": 900,
         "wires": [
             [
@@ -13462,7 +13292,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1410,
+        "x": 1470,
         "y": 900,
         "wires": [
             [
@@ -13532,11 +13362,11 @@
         "type": "mongodb3 in",
         "z": "ec67d8c2.3f3c98",
         "service": "_ext_",
-        "configNode": "9cd5ff5e.caf86",
+        "configNode": "e2cece33.d4cad",
         "name": "",
         "collection": "archiver",
         "operation": "find.toArray",
-        "x": 1170,
+        "x": 1200,
         "y": 960,
         "wires": [
             [
@@ -13572,7 +13402,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1420,
+        "x": 1480,
         "y": 960,
         "wires": [
             [
@@ -13970,7 +13800,7 @@
         "name": "/blinky-thermo-cam/websocket",
         "server": "40f038e6.5f0818",
         "client": "",
-        "x": 1730,
+        "x": 1770,
         "y": 1000,
         "wires": []
     },
@@ -13979,11 +13809,11 @@
         "type": "mongodb3 in",
         "z": "ec67d8c2.3f3c98",
         "service": "_ext_",
-        "configNode": "9cd5ff5e.caf86",
+        "configNode": "e2cece33.d4cad",
         "name": "",
         "collection": "devices",
         "operation": "findOne",
-        "x": 1150,
+        "x": 1180,
         "y": 1020,
         "wires": [
             [
@@ -14001,7 +13831,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 1400,
+        "x": 1480,
         "y": 1020,
         "wires": [
             [
@@ -14095,6 +13925,451 @@
             [
                 "ba585b6e.7fbaa8"
             ]
+        ]
+    },
+    {
+        "id": "35181b40.f4b854",
+        "type": "link out",
+        "z": "8475ab9.3d26058",
+        "name": "MQTT Subscribe Readings",
+        "links": [
+            "d57148fa.5bf7b8"
+        ],
+        "x": 315,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "d57148fa.5bf7b8",
+        "type": "link in",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Cam Web Apps MQTT Readings In",
+        "links": [
+            "35181b40.f4b854"
+        ],
+        "x": 85,
+        "y": 1260,
+        "wires": [
+            [
+                "ad3cb7fa.59db58"
+            ]
+        ]
+    },
+    {
+        "id": "7abde9ff.1c9608",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Split MQTT topic",
+        "func": "var mqttArray = msg.topic.split('/');\nvar device = \n{\n    project     : mqttArray[0],\n    deviceType  : mqttArray[1],\n    name        : mqttArray[2],\n    prop        : mqttArray[3],\n};\nreturn {topic : msg.topic, payload:{topic:'readings', mqttDevice : device, payload:msg.payload}};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 510,
+        "y": 1260,
+        "wires": [
+            [
+                "faab8c77.1766b"
+            ]
+        ]
+    },
+    {
+        "id": "faab8c77.1766b",
+        "type": "websocket out",
+        "z": "ec67d8c2.3f3c98",
+        "name": "/blinky-thermo-cam/websocket",
+        "server": "40f038e6.5f0818",
+        "client": "",
+        "x": 770,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "ced7c8c1.d693f8",
+        "type": "gzip",
+        "z": "ec67d8c2.3f3c98",
+        "name": "",
+        "x": 170,
+        "y": 1360,
+        "wires": [
+            [
+                "946061e7.e73d1"
+            ]
+        ]
+    },
+    {
+        "id": "946061e7.e73d1",
+        "type": "json",
+        "z": "ec67d8c2.3f3c98",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 290,
+        "y": 1360,
+        "wires": [
+            [
+                "c5416540.288158"
+            ]
+        ]
+    },
+    {
+        "id": "c5416540.288158",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Split MQTT topic",
+        "func": "var mqttArray = msg.topic.split('/');\nvar device = \n{\n    project     : mqttArray[0],\n    deviceType  : mqttArray[1],\n    name        : mqttArray[2],\n    prop        : mqttArray[3],\n};\nreturn {topic : msg.topic, mqttDevice : device, payload:msg.payload};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 450,
+        "y": 1360,
+        "wires": [
+            [
+                "fafeb157.c43ba"
+            ]
+        ]
+    },
+    {
+        "id": "fafeb157.c43ba",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "parse topic",
+        "func": "return {\n    topic   :msg.payload.name, \n    payload : \n    [\n        {\n            $and   :    \n            [\n                {\n                    deviceType : msg.payload.deviceType\n                },\n                {\n                    name : msg.payload.name\n                }\n            ]\n        }, \n        {\n            projection  :\n            {\n                _id :   0\n                \n            }\n        }\n    ],\n    'device'    :   msg.payload\n};\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 630,
+        "y": 1360,
+        "wires": [
+            [
+                "ebd143a8.f13f"
+            ]
+        ]
+    },
+    {
+        "id": "ebd143a8.f13f",
+        "type": "mongodb3 in",
+        "z": "ec67d8c2.3f3c98",
+        "service": "_ext_",
+        "configNode": "e2cece33.d4cad",
+        "name": "",
+        "collection": "devices",
+        "operation": "findOne",
+        "x": 860,
+        "y": 1360,
+        "wires": [
+            [
+                "c86093b2.d6733"
+            ]
+        ]
+    },
+    {
+        "id": "c86093b2.d6733",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Check if Device Exists",
+        "func": "function isEmpty(obj) \n{\n    for(var key in obj) \n    {\n        if(obj.hasOwnProperty(key))\n            return false;\n    }\n    return true;\n}\nif (isEmpty(msg.payload)) return null;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1120,
+        "y": 1360,
+        "wires": [
+            [
+                "9f488080.9d1d6"
+            ]
+        ]
+    },
+    {
+        "id": "9f488080.9d1d6",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "blinky-thermo-cam",
+        "func": "if (msg.device.archiveData.value != 1) return null;\nmsg.device.lastArchive = msg.payload.lastArchive;\nmsg.device.timeStamp = new Date().getTime();\nvar keys = Object.keys(msg.device);\nfor (var ii = 0; ii < keys.length; ++ii) msg.payload[keys[ii]] = msg.device[keys[ii]];\n\nvar archiveMsg = null;\nmsg.payload.lastArchive  = msg.payload.timeStamp;\nmsg.device.lastArchive = msg.payload.lastArchive;\nvar archiveDevice = JSON.parse(JSON.stringify(msg.device));\ndelete archiveDevice.arcPeriod;\ndelete archiveDevice.lastArchive;\nkeys = Object.keys(archiveDevice);\nfor (var ii = 0; ii < keys.length; ++ii)\n{\n    if (archiveDevice[keys[ii]].hasOwnProperty('type'))\n    {\n        \n        archiveDevice[keys[ii]] = JSON.parse(JSON.stringify(msg.device[keys[ii]].value));\n    }\n}\narchiveMsg = {topic:'archiveData',payload: archiveDevice};\nvar updateDeviceMsg = \n{\n    topic:'updateDevice',\n    payload:\n    [\n        {\n            $and   :    \n            [\n                {\n                    deviceType : msg.payload.deviceType\n                },\n                {\n                    name : msg.payload.name\n                }\n            ]\n        }, \n        msg.payload\n    ]\n};\nreturn [updateDeviceMsg,archiveMsg];\n",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1330,
+        "y": 1360,
+        "wires": [
+            [
+                "404e4d24.8cce14"
+            ],
+            [
+                "ca2c2a9f.1f6738"
+            ]
+        ]
+    },
+    {
+        "id": "fec4a75b.95ea48",
+        "type": "switch",
+        "z": "e17f7487.2a78e8",
+        "name": "",
+        "property": "mqttDevice.deviceType",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "blinky-basic",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-stepper",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-power-relay",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-shiver",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-shaker",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-thermo",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "solar-regulator",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-cosmic-interval",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-relay-bake",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-env",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-ssr-bake",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 11,
+        "x": 870,
+        "y": 100,
+        "wires": [
+            [
+                "ee4c177c.2435b8"
+            ],
+            [
+                "ee4c177c.2435b8"
+            ],
+            [
+                "ee4c177c.2435b8"
+            ],
+            [
+                "ee4c177c.2435b8"
+            ],
+            [
+                "ee4c177c.2435b8"
+            ],
+            [
+                "ee4c177c.2435b8"
+            ],
+            [
+                "ee4c177c.2435b8"
+            ],
+            [
+                "ee4c177c.2435b8"
+            ],
+            [
+                "ee4c177c.2435b8"
+            ],
+            [
+                "ee4c177c.2435b8"
+            ],
+            [
+                "ee4c177c.2435b8"
+            ]
+        ]
+    },
+    {
+        "id": "ad3cb7fa.59db58",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Filter blinky-thermo-cam",
+        "func": "if (msg.topic.split('/')[1] != 'blinky-thermo-cam') return null;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 230,
+        "y": 1260,
+        "wires": [
+            [
+                "7abde9ff.1c9608",
+                "ced7c8c1.d693f8"
+            ]
+        ]
+    },
+    {
+        "id": "404e4d24.8cce14",
+        "type": "mongodb3 in",
+        "z": "ec67d8c2.3f3c98",
+        "service": "_ext_",
+        "configNode": "e2cece33.d4cad",
+        "name": "",
+        "collection": "devices",
+        "operation": "update",
+        "x": 1620,
+        "y": 1320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ca2c2a9f.1f6738",
+        "type": "mongodb3 in",
+        "z": "ec67d8c2.3f3c98",
+        "service": "_ext_",
+        "configNode": "e2cece33.d4cad",
+        "name": "",
+        "collection": "archiver",
+        "operation": "insertOne",
+        "x": 1630,
+        "y": 1380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d5ebd569.f06318",
+        "type": "inject",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Prune every 2 hours",
+        "props": [
+            {
+                "p": "payload",
+                "v": "",
+                "vt": "date"
+            },
+            {
+                "p": "topic",
+                "v": "",
+                "vt": "string"
+            }
+        ],
+        "repeat": "7200",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "10",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 1500,
+        "wires": [
+            [
+                "240b25f5.bdaa0a"
+            ]
+        ]
+    },
+    {
+        "id": "240b25f5.bdaa0a",
+        "type": "mongodb3 in",
+        "z": "ec67d8c2.3f3c98",
+        "service": "_ext_",
+        "configNode": "e2cece33.d4cad",
+        "name": "",
+        "collection": "archiver",
+        "operation": "stats",
+        "x": 430,
+        "y": 1500,
+        "wires": [
+            [
+                "f97be279.34dee"
+            ]
+        ]
+    },
+    {
+        "id": "e1e78820.2c18f8",
+        "type": "mongodb3 in",
+        "z": "ec67d8c2.3f3c98",
+        "service": "_ext_",
+        "configNode": "e2cece33.d4cad",
+        "name": "",
+        "collection": "archiver",
+        "operation": "find.toArray",
+        "x": 1020,
+        "y": 1500,
+        "wires": [
+            [
+                "91c6fd13.236f7"
+            ]
+        ]
+    },
+    {
+        "id": "f97be279.34dee",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Find Number of Records to cut",
+        "func": "var maxDbSize = global.get('maxDbSize');\nif (maxDbSize == undefined) return null;\nif (msg.payload.size < maxDbSize) return null;\nvar cutRecords = Math.round( (msg.payload.size - 0.9 * maxDbSize) / msg.payload.avgObjSize);\nvar newMsg = \n{\n    topic           : 'test',\n    payload         : [{},{projection:{timeStamp:1, _id:0}}],\n    cutRecords      : cutRecords\n};\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 710,
+        "y": 1500,
+        "wires": [
+            [
+                "e1e78820.2c18f8"
+            ]
+        ]
+    },
+    {
+        "id": "91c6fd13.236f7",
+        "type": "function",
+        "z": "ec67d8c2.3f3c98",
+        "name": "Find latest Time Stamp",
+        "func": "function objectLength( object ) {\n    var length = 0;\n    for( var key in object ) {\n        if( object.hasOwnProperty(key) ) {\n            ++length;\n        }\n    }\n    return length;\n}\nvar numDevices = objectLength(msg.payload);\nvar timeStampList = [];\n\nfor (var idevice = 0; idevice < numDevices; ++idevice)\n{\n    timeStampList[idevice] = msg.payload[idevice].timeStamp;\n}\ntimeStampList.sort();\n\n\nvar newMsg = \n{\n    topic           : 'test',\n    payload         : [{timeStamp: {\"$lte\": timeStampList[msg.cutRecords]}},{projection:{timeStamp:1, _id:0}}],\n};\nreturn newMsg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 960,
+        "y": 1560,
+        "wires": [
+            [
+                "32d106b5.a58a3a"
+            ]
+        ]
+    },
+    {
+        "id": "32d106b5.a58a3a",
+        "type": "mongodb3 in",
+        "z": "ec67d8c2.3f3c98",
+        "service": "_ext_",
+        "configNode": "e2cece33.d4cad",
+        "name": "",
+        "collection": "archiver",
+        "operation": "removeMany",
+        "x": 1020,
+        "y": 1620,
+        "wires": [
+            []
         ]
     }
 ]
