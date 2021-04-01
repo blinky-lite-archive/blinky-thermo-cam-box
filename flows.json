@@ -10228,7 +10228,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Body HTML -->\n    <div width=\"100%\" >\n        <div class='row no-gutters' >\n            <div class='col-12' align='center'>\n                <img src=\"/img/BlinkySplashScreen.png\" width=\"900px\" style=\"padding-bottom:20px;\"/>\n            </div>\n        </div>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\">\n                    <tr>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\" href='/overview'>Overview</a></td>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/features'>Features</a></td>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/examples'>Examples</a></td>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/apps'>Apps</a></td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n        <hr>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <span class=\"card-text\">Contact: blinky-lite@blinky-lite.io</span>\n            </div>\n        </div>\n    </div>\n",
+        "template": "<!-- Body HTML -->\n    <div width=\"100%\" >\n        <div class='row no-gutters' >\n            <div class='col-12' align='center'>\n                <img src=\"/img/BlinkySplashScreen.png\" width=\"900px\" style=\"padding-bottom:20px;\"/>\n            </div>\n        </div>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\">\n                    <tr>\n                        <td width=\"33%\"><a class=\"btn btn-primary btn-lg btn-block\" href='/overview'>Overview</a></td>\n                        <td width=\"33%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/features'>Features</a></td>\n                        <td width=\"33%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/apps'>Apps</a></td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\">\n                    <tr>\n                        <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/examples'>Examples</a></td>\n                        <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/blinky-thermal-suite'>Blinky Thermal Suite</a></td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n        <hr>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <span class=\"card-text\">Contact: blinky-lite@blinky-lite.io</span>\n            </div>\n        </div>\n    </div>\n",
         "output": "str",
         "x": 350,
         "y": 440,
@@ -10292,7 +10292,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- navBar -->\n    <div class=\"jumbotron navbar-fixed-top\" style=\"background-color:white;color: #547792;padding-top:10px; padding-bottom:10px;\" width=\"100%\" >\n        <div class='row'>\n            <div class='col-md-2' align='left'>\n                <a href='https://www.blinky-lite.io/' target='_blank'>\n                    <img src=\"/img/BlinkyLogo.gif\" height=\"75px\"/>\n                </a>                \n            </div>\n            <div class='col-md-8' align='center'>\n                <h1 class=\"jumbotron-title big-text bold-text\">\n                    <span>{{{payload.title}}}</span>\n                </h1>\n            </div>\n            <div class='col-md-2' align='right'>\n                <a href='/'>\n                    <img src=\"/img/homeBlue.png\" height=\"75px\"/>\n                </a>                \n            </div>\n        </div>\n    </div>\n",
+        "template": "<!-- navBar -->\n    <div class=\"jumbotron navbar-fixed-top\" style=\"background-color:white;color: #547792;padding-top:10px; padding-bottom:10px;\" width=\"100%\" >\n        <div class='row'>\n            <div class='col-md-2' align='left'>\n                <a href='/'>\n                    <img src=\"/img/BlinkyLogo.gif\" height=\"75px\"/>\n                </a>                \n            </div>\n            <div class='col-md-8' align='center'>\n                <h1 class=\"jumbotron-title big-text bold-text\">\n                    <span>{{{payload.title}}}</span>\n                </h1>\n            </div>\n            <div class='col-md-2' align='right'>\n                <a href='/'>\n                    <img src=\"/img/homeBlue.png\" height=\"75px\"/>\n                </a>                \n            </div>\n        </div>\n    </div>\n",
         "output": "str",
         "x": 320,
         "y": 80,
@@ -12213,7 +12213,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "                    <div class='card' id=\"blinkyEnvCard\">\n                        <table width='900px'>\n                            <tr>\n                                <td  width='800px' align='left'><a href='/examples?example=blinkyEnv'><span class='card-title'>Blinky Enviroment</span></a></td>\n                                <td  width='100px'><button class=\"btn btn-block card-text\" style=\"background-color:var(--color1);color:white\" type=\"button\" id=\"blinkyEnvBtn\" onclick=\"blinkyEnv()\">Open</button></td>\n                            </tr>\n                        </table>\n                        <div class='card-body' id=\"blinkyEnv\">\n                            <div class='row'>\n                                <div class=\"col-12 justify\">\n                                     <span class=\"card-text\" >Wirelessly controlled enviroment monitor with three temperature monitors, one humidity detector, and one moisture monitor</span>\n                                </div>\n                            </div>\n                            <div class=\"jumbotron\" style=\"background-color:#9eb5c7;color: white;padding-top:10px; padding-bottom:10px;padding-left:10px;padding-right:10px;\" align=\"center\">\n                                <table width=\"200px\">\n                                    <tr>\n                                        <td align=\"center\">\n                                            <img src=\"/img/examples/blinky-env.png\" width=\"822px\" style=\"padding-right:1px;\"/>\n                                        </td>\n                                    </tr> \n                                </table>\n                            </div>\n                        </div>\n                    </div>\n",
+        "template": "                    <div class='card' id=\"blinkyEnvCard\">\n                        <table width='900px'>\n                            <tr>\n                                <td  width='800px' align='left'><a href='/examples?example=blinkyEnv'><span class='card-title'>Blinky Environment</span></a></td>\n                                <td  width='100px'><button class=\"btn btn-block card-text\" style=\"background-color:var(--color1);color:white\" type=\"button\" id=\"blinkyEnvBtn\" onclick=\"blinkyEnv()\">Open</button></td>\n                            </tr>\n                        </table>\n                        <div class='card-body' id=\"blinkyEnv\">\n                            <div class='row'>\n                                <div class=\"col-12 justify\">\n                                     <span class=\"card-text\" >Wirelessly controlled enviroment monitor with three temperature monitors, one humidity detector, and one moisture monitor</span>\n                                </div>\n                            </div>\n                            <div class=\"jumbotron\" style=\"background-color:#9eb5c7;color: white;padding-top:10px; padding-bottom:10px;padding-left:10px;padding-right:10px;\" align=\"center\">\n                                <table width=\"200px\">\n                                    <tr>\n                                        <td align=\"center\">\n                                            <img src=\"/img/examples/blinky-env.png\" width=\"822px\" style=\"padding-right:1px;\"/>\n                                        </td>\n                                    </tr> \n                                </table>\n                            </div>\n                        </div>\n                    </div>\n",
         "output": "str",
         "x": 600,
         "y": 780,
@@ -15315,5 +15315,182 @@
         "x": 1270,
         "y": 1200,
         "wires": []
+    },
+    {
+        "id": "48c06b92.646de4",
+        "type": "http in",
+        "z": "a858ad3a.95706",
+        "name": "/blinky-thermal-suite",
+        "url": "/blinky-thermal-suite",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 1240,
+        "wires": [
+            [
+                "10ef2264.684eee"
+            ]
+        ]
+    },
+    {
+        "id": "10ef2264.684eee",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Blinky Thermal Suite",
+        "output": "str",
+        "x": 450,
+        "y": 1240,
+        "wires": [
+            [
+                "de071160.f05ae"
+            ]
+        ]
+    },
+    {
+        "id": "b77331df.01354",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        useWebSockets(false);\n\n        var blinkyThermoVisible = false;\n        var blinkyThermoCamVisible = false;\n        var blinkySsrBakeVisible = false;\n        var blinkyPowerRelayVisible = false;\n        var blinkyEnvVisible = false;\n\n        function onDocumentReady()\n        {\n            $('#blinkySsrBake').hide();\n            $('#blinkyThermo').hide();\n            $('#blinkyThermoCam').hide();\n            $('#blinkyPowerRelay').hide();\n            $('#blinkyEnv').hide();\n            blinkySsrBakeVisible = false;\n            blinkyThermoVisible = false;\n            blinkyThermoCamVisible = false;\n            blinkyPowerRelayVisible = false;\n            blinkyEnvVisible = false;\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n        function blinkyThermo()\n        {\n            if (blinkyThermoVisible)\n            {\n                $('#blinkyThermo').hide();\n                blinkyThermoVisible = false;\n                $('#blinkyThermoBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyThermo').show();\n                blinkyThermoVisible = true;\n                $('#blinkyThermoBtn').text('Close');\n            }\n        }\n        function blinkyThermoCam()\n        {\n            if (blinkyThermoCamVisible)\n            {\n                $('#blinkyThermoCam').hide();\n                blinkyThermoCamVisible = false;\n                $('#blinkyThermoCamBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyThermoCam').show();\n                blinkyThermoCamVisible = true;\n                $('#blinkyThermoCamBtn').text('Close');\n            }\n        }\n        function blinkySsrBake()\n        {\n            if (blinkySsrBakeVisible)\n            {\n                $('#blinkySsrBake').hide();\n                blinkySsrBakeVisible = false;\n                $('#blinkySsrBakeBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkySsrBake').show();\n                blinkySsrBakeVisible = true;\n                $('#blinkySsrBakeBtn').text('Close');\n            }\n        }\n        function blinkyPowerRelay()\n        {\n            if (blinkyPowerRelayVisible)\n            {\n                $('#blinkyPowerRelay').hide();\n                blinkyPowerRelayVisible = false;\n                $('#blinkyPowerRelayBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyPowerRelay').show();\n                blinkyPowerRelayVisible = true;\n                $('#blinkyPowerRelayBtn').text('Close');\n            }\n        }\n        function blinkyEnv()\n        {\n            if (blinkyEnvVisible)\n            {\n                $('#blinkyEnv').hide();\n                blinkyEnvVisible = false;\n                $('#blinkyEnvBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyEnv').show();\n                blinkyEnvVisible = true;\n                $('#blinkyEnvBtn').text('Close');\n            }\n        }\n\n",
+        "output": "str",
+        "x": 940,
+        "y": 1400,
+        "wires": [
+            [
+                "7cc91c00.cc8964"
+            ]
+        ]
+    },
+    {
+        "id": "cb9ebad8.3a5648",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Body HTML -->\n    <div width=\"100%\" id=\"bodyContentId\" align=\"center\" >\n        <table width=\"100px\">\n            <tr style='padding-bottom: 10px;'>\n                <td  align=\"center\">\n                    <img src=\"/img/examples/blinky-thermo-suite-drk-blue.png\" width=\"900px\" style='padding-bottom: 20px;'/>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyThermo}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkySsrBake}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyEnv}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyThermoCam}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyPowerRelay}}}\n                    <hr>\n                </td>\n            </tr>\n        </table>\n    </div>\n    <div width=\"100%\" align=\"center\">\n        <hr>\n        <div class='row'>\n            <div class='col-md-12' align='center'>\n                <span class=\"card-text\">Contact: blinky-lite@blinky-lite.io</span>\n            </div>\n        </div>\n    </div>\n",
+        "output": "str",
+        "x": 810,
+        "y": 1400,
+        "wires": [
+            [
+                "b77331df.01354"
+            ]
+        ]
+    },
+    {
+        "id": "7cc91c00.cc8964",
+        "type": "subflow:d7162906.0afcd8",
+        "z": "a858ad3a.95706",
+        "x": 1090,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "591cb92e.100cf8",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "html.blinkyPowerRelay",
+        "field": "payload.html.blinkyPowerRelay",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                    <div class='card' id='blinkyPowerRelayCard'>\n                        <table width='900px'>\n                            <tr>\n                                <td  width='800px' align='left'><span class='card-title'>Blinky Power Relay</span></td>\n                                <td  width='100px'><button class=\"btn btn-block card-text\" style=\"background-color:var(--color1);color:white\" type=\"button\" id=\"blinkyPowerRelayBtn\" onclick=\"blinkyPowerRelay()\">Open</button></td>\n                            </tr>\n                        </table>\n                        <div class='card-body' id='blinkyPowerRelay'>\n                            <div class='row'>\n                                <div class=\"col-12 justify\">\n                                     <span class=\"card-text\">Wirelessly controlled  1200 Watt, 240 Volt relay with power meter</span>\n                                </div>\n                            </div>\n                            <div class=\"jumbotron\" style=\"background-color:#9eb5c7;color: white;padding-top:10px; padding-bottom:10px;padding-left:10px;padding-right:10px;\" align=\"center\">\n                                <table width=\"200px\">\n                                    <tr>\n                                        <td>\n                                            <img src=\"/img/examples/blinky-power-relay/blinky-power-relay-screen.png\" height=\"292px\" style=\"padding-right:10px;\"/>\n                                        </td>\n                                        <td>\n                                            <img src=\"/img/examples/blinky-power-relay/blinky-power-relay-pcb.png\" height=\"292px\" style=\"padding-right:10px;\"/>\n                                        </td>\n                                        <td>\n                                            <table width=\"100%\">\n                                                <tr>\n                                                    <td  width=\"100%\">\n                                                        <img src=\"/img/examples/blinky-power-relay/blinky-power-relay-flow.png\" height=\"99px\"/>\n                                                    </td>\n                                                </tr>\n                                                <tr>\n                                                    <td  width=\"100%\">\n                                                        <img src=\"/img/examples/blinky-power-relay/blinky-power-relay-schem.png\" height=\"193px\"/>\n                                                    </td>\n                                                </tr>\n                                            </table>\n                                        </td>\n                                    </tr>\n                                </table>\n                            </div>\n                        </div>\n                    </div>\n",
+        "output": "str",
+        "x": 620,
+        "y": 1360,
+        "wires": [
+            [
+                "7b9ecdb6.18a094"
+            ]
+        ]
+    },
+    {
+        "id": "7b9ecdb6.18a094",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "html.blinkyEnv",
+        "field": "payload.html.blinkyEnv",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                    <div class='card' id=\"blinkyEnvCard\">\n                        <table width='900px'>\n                            <tr>\n                                <td  width='800px' align='left'><span class='card-title'>Blinky Environment</span></td>\n                                <td  width='100px'><button class=\"btn btn-block card-text\" style=\"background-color:var(--color1);color:white\" type=\"button\" id=\"blinkyEnvBtn\" onclick=\"blinkyEnv()\">Open</button></td>\n                            </tr>\n                        </table>\n                        <div class='card-body' id=\"blinkyEnv\">\n                            <div class='row'>\n                                <div class=\"col-12 justify\">\n                                     <span class=\"card-text\" >Wirelessly controlled enviroment monitor with three temperature monitors, one humidity detector, and one moisture monitor</span>\n                                </div>\n                            </div>\n                            <div class=\"jumbotron\" style=\"background-color:#9eb5c7;color: white;padding-top:10px; padding-bottom:10px;padding-left:10px;padding-right:10px;\" align=\"center\">\n                                <table width=\"200px\">\n                                    <tr>\n                                        <td align=\"center\">\n                                            <img src=\"/img/examples/blinky-env.png\" width=\"822px\" style=\"padding-right:1px;\"/>\n                                        </td>\n                                    </tr> \n                                </table>\n                            </div>\n                        </div>\n                    </div>\n",
+        "output": "str",
+        "x": 600,
+        "y": 1400,
+        "wires": [
+            [
+                "cb9ebad8.3a5648"
+            ]
+        ]
+    },
+    {
+        "id": "bbf9822c.411e8",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "html.blinkySsrBake",
+        "field": "payload.html.blinkySsrBake",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                    <div class='card' id=\"blinkySsrBakeCard\">\n                        <table width='900px'>\n                            <tr>\n                                <td  width='800px' align='left'><span class='card-title'>Blinky SSR Bake</span></td>\n                                <td  width='100px'><button class=\"btn btn-block card-text\" style=\"background-color:var(--color1);color:white\" type=\"button\" id=\"blinkySsrBakeBtn\" onclick=\"blinkySsrBake()\">Open</button></td>\n                            </tr>\n                        </table>\n                        <div class='card-body' id=\"blinkySsrBake\">\n                            <div class='row'>\n                                <div class=\"col-12 justify\">\n                                     <span class=\"card-text\" >Wirelessly controlled ultra-high-vacuum bake-out system with programmable temperature ramp and 2500 Watts of heater power. The system uses solid state switching to give temperature regulation to within 0.1 degrees</span>\n                                </div>\n                            </div>\n                            <div class=\"jumbotron\" style=\"background-color:#9eb5c7;color: white;padding-top:10px; padding-bottom:10px;padding-left:10px;padding-right:10px;\" align=\"center\">\n                                <table width=\"200px\">\n                                    <tr>\n                                        <td align=\"center\">\n                                            <img src=\"/img/examples/blinky-ssr-bake.png\" width=\"822px\" style=\"padding-right:1px;\"/>\n                                        </td>\n                                    </tr> \n                                </table>\n                            </div>\n                        </div>\n                    </div>\n",
+        "output": "str",
+        "x": 610,
+        "y": 1320,
+        "wires": [
+            [
+                "591cb92e.100cf8"
+            ]
+        ]
+    },
+    {
+        "id": "de071160.f05ae",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "html.blinkyThermo",
+        "field": "payload.html.blinkyThermo",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                    <div class='card' id=\"blinkyThermoCard\">\n                        <table width='900px'>\n                            <tr>\n                                <td  width='800px' align='left'><span class='card-title'>Blinky Thermo</span></td>\n                                <td  width='100px'><button class=\"btn btn-block card-text\" style=\"background-color:var(--color1);color:white\" type=\"button\" id=\"blinkyThermoBtn\" onclick=\"blinkyThermo()\">Open</button></td>\n                            </tr>\n                        </table>\n                        <div class='card-body' id=\"blinkyThermo\">\n                            <div class='row'>\n                                <div class=\"col-12 justify\">\n                                     <span class=\"card-text\">Wireless temperature monitor with two K-Type thermocouples(Range: -200C to 1200C, Resolution: 0.25C) and two solid state temperature monitors (Range: -55C to 125C, Resolution: 0.05C). 100 hours of operation with a 5Amp-hour battery</span>\n                                </div>\n                            </div>\n                            <div class=\"jumbotron\" style=\"background-color:#9eb5c7;color: white;padding-top:10px; padding-bottom:10px;padding-left:10px;padding-right:10px;\" align=\"center\">\n                                <table width=\"200px\">\n                                    <tr>\n                                        <td align=\"center\">\n                                            <img src=\"/img/examples/blinky-thermo.png\" width=\"822px\" style=\"padding-right:1px;\"/>\n                                        </td>\n                                    </tr> \n                                </table>\n                            </div>\n                        </div>\n                    </div>\n",
+        "output": "str",
+        "x": 610,
+        "y": 1240,
+        "wires": [
+            [
+                "fe171121.ee3a5"
+            ]
+        ]
+    },
+    {
+        "id": "fe171121.ee3a5",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "html.blinkyThermoCam",
+        "field": "payload.html.blinkyThermoCam",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                    <div class='card' id=\"blinkyThermoCamCard\">\n                        <table width='900px'>\n                            <tr>\n                                <td  width='800px' align='left'><span class='card-title'>Blinky Thermo Cam</span></td>\n                                <td  width='100px'><button class=\"btn btn-block card-text\" style=\"background-color:var(--color1);color:white\" type=\"button\" id=\"blinkyThermoCamBtn\" onclick=\"blinkyThermoCam()\">Open</button></td>\n                            </tr>\n                        </table>\n                        <div class='card-body' id=\"blinkyThermoCam\">\n                            <div class='row'>\n                                <div class=\"col-12 justify\">\n                                     <span class=\"card-text\">Extremely inexpensive infrared camera with cloud archiving capability and time-lapse features. Also equiped with its own wireless server for isolated operation</span>\n                                </div>\n                            </div>\n                            <div class=\"jumbotron\" style=\"background-color:#9eb5c7;color: white;padding-top:10px; padding-bottom:10px;padding-left:10px;padding-right:10px;\" align=\"center\">\n                                <table width=\"200px\">\n                                    <tr>\n                                        <td align=\"center\">\n                                            <img src=\"/img/examples/blinky-thermo-cam.png\" width=\"822px\" style=\"padding-right:1px;\"/>\n                                        </td>\n                                    </tr> \n                                </table>\n                            </div>\n                        </div>\n                    </div>\n",
+        "output": "str",
+        "x": 630,
+        "y": 1280,
+        "wires": [
+            [
+                "bbf9822c.411e8"
+            ]
+        ]
     }
 ]
