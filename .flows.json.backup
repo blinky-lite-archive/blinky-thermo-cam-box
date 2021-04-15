@@ -646,6 +646,12 @@
         "wholemsg": "false"
     },
     {
+        "id": "fc576385.12f95",
+        "type": "websocket-listener",
+        "path": "/blinky-DS18B20/websocket",
+        "wholemsg": "false"
+    },
+    {
         "id": "d8aea031.7f89d",
         "type": "http in",
         "z": "dc20c6e0.0feb98",
@@ -2265,8 +2271,8 @@
         "qos": "0",
         "retain": "false",
         "broker": "84d80994.260508",
-        "x": 1040,
-        "y": 1140,
+        "x": 1060,
+        "y": 1400,
         "wires": []
     },
     {
@@ -2341,8 +2347,8 @@
         "id": "ee0ee61b.770a18",
         "type": "subflow:e13648d6.d698c8",
         "z": "8475ab9.3d26058",
-        "x": 1250,
-        "y": 1080,
+        "x": 1270,
+        "y": 1340,
         "wires": []
     },
     {
@@ -3269,7 +3275,7 @@
         "collection": "archiver",
         "operation": "find.toArray",
         "x": 710,
-        "y": 1920,
+        "y": 2400,
         "wires": [
             [
                 "28d7885b.29ba58"
@@ -5055,11 +5061,16 @@
                 "t": "eq",
                 "v": "blinky-wind",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-DS18B20",
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 13,
+        "outputs": 14,
         "x": 630,
         "y": 340,
         "wires": [
@@ -5101,6 +5112,9 @@
             ],
             [
                 "304b3835.9b6918"
+            ],
+            [
+                "a988b405.392318"
             ]
         ]
     },
@@ -5170,8 +5184,8 @@
         "type": "gzip",
         "z": "8475ab9.3d26058",
         "name": "",
-        "x": 990,
-        "y": 1080,
+        "x": 1010,
+        "y": 1340,
         "wires": [
             [
                 "d0fb8153.688bb"
@@ -5186,8 +5200,8 @@
         "property": "payload",
         "action": "obj",
         "pretty": false,
-        "x": 1110,
-        "y": 1080,
+        "x": 1130,
+        "y": 1340,
         "wires": [
             [
                 "ee0ee61b.770a18"
@@ -5236,7 +5250,7 @@
         "initialize": "",
         "finalize": "",
         "x": 440,
-        "y": 1920,
+        "y": 2400,
         "wires": [
             [
                 "a3efdc0a.76eff"
@@ -5254,7 +5268,7 @@
         "initialize": "",
         "finalize": "",
         "x": 970,
-        "y": 1920,
+        "y": 2400,
         "wires": [
             [
                 "36088082.3139d"
@@ -5328,13 +5342,18 @@
                 "t": "eq",
                 "v": "blinky-wind",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "blinky-DS18B20",
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 12,
+        "outputs": 13,
         "x": 1150,
-        "y": 1920,
+        "y": 2400,
         "wires": [
             [
                 "e1a8363e.6beae8"
@@ -5371,6 +5390,9 @@
             ],
             [
                 "6d200160.afc65"
+            ],
+            [
+                "62fb9e33.02bff"
             ]
         ]
     },
@@ -5383,7 +5405,7 @@
             "7e343bf8.8fec14"
         ],
         "x": 1295,
-        "y": 1740,
+        "y": 2160,
         "wires": []
     },
     {
@@ -5394,7 +5416,7 @@
         "server": "e71c9288.03dd3",
         "client": "",
         "x": 140,
-        "y": 920,
+        "y": 1140,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -5433,8 +5455,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 4,
-        "x": 640,
-        "y": 1160,
+        "x": 660,
+        "y": 1420,
         "wires": [
             [
                 "d6984859.a267c8"
@@ -5472,10 +5494,11 @@
             "9ef4d388.4bcf7",
             "80c07ebe.4f177",
             "8c18e9cd.f40f08",
-            "435b9182.cc3ac"
+            "435b9182.cc3ac",
+            "8d0f331.1da14d"
         ],
-        "x": 775,
-        "y": 1300,
+        "x": 795,
+        "y": 1560,
         "wires": []
     },
     {
@@ -5488,8 +5511,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 830,
-        "y": 1120,
+        "x": 850,
+        "y": 1380,
         "wires": [
             [
                 "2132a017.ba23f",
@@ -5561,8 +5584,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 830,
-        "y": 1160,
+        "x": 850,
+        "y": 1420,
         "wires": [
             [
                 "2132a017.ba23f"
@@ -5577,8 +5600,8 @@
         "links": [
             "c4595efc.a717b"
         ],
-        "x": 775,
-        "y": 1200,
+        "x": 795,
+        "y": 1460,
         "wires": []
     },
     {
@@ -5590,7 +5613,7 @@
             "cc1f29ab.67bb78"
         ],
         "x": 295,
-        "y": 1920,
+        "y": 2400,
         "wires": [
             [
                 "b6b8b063.9f62f"
@@ -5666,8 +5689,8 @@
         "id": "e6d1a4ad.2186e8",
         "type": "subflow:fee416c.fb205e8",
         "z": "8475ab9.3d26058",
-        "x": 470,
-        "y": 1260,
+        "x": 490,
+        "y": 1520,
         "wires": [
             [
                 "4bda293b.6a4c38"
@@ -6768,7 +6791,7 @@
         "server": "c4d6389f.42aca8",
         "client": "",
         "x": 150,
-        "y": 980,
+        "y": 1200,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -7124,7 +7147,7 @@
             "d0705889.a79d18"
         ],
         "x": 1295,
-        "y": 1780,
+        "y": 2200,
         "wires": []
     },
     {
@@ -7138,7 +7161,7 @@
         "initialize": "",
         "finalize": "",
         "x": 420,
-        "y": 2000,
+        "y": 2480,
         "wires": [
             [
                 "5b671f90.f02c1"
@@ -7152,7 +7175,7 @@
         "name": "encrypt token",
         "tokenconfig": "6acefdd9.69f124",
         "x": 600,
-        "y": 2000,
+        "y": 2480,
         "wires": [
             [
                 "7569e60e.54a608"
@@ -7170,7 +7193,7 @@
         "initialize": "",
         "finalize": "",
         "x": 780,
-        "y": 2000,
+        "y": 2480,
         "wires": [
             [
                 "224d9b05.f92104"
@@ -7186,7 +7209,7 @@
             "14b7f9da.2d7c86"
         ],
         "x": 295,
-        "y": 2000,
+        "y": 2480,
         "wires": [
             [
                 "28ebc7b7.46b498"
@@ -7201,8 +7224,8 @@
         "links": [
             "f4326ad5.3e47e8"
         ],
-        "x": 775,
-        "y": 1240,
+        "x": 795,
+        "y": 1500,
         "wires": []
     },
     {
@@ -7227,10 +7250,11 @@
             "9ef4d388.4bcf7",
             "80c07ebe.4f177",
             "8c18e9cd.f40f08",
-            "435b9182.cc3ac"
+            "435b9182.cc3ac",
+            "8d0f331.1da14d"
         ],
         "x": 895,
-        "y": 2000,
+        "y": 2480,
         "wires": []
     },
     {
@@ -7284,7 +7308,7 @@
             "80b48a2e.fb2228"
         ],
         "x": 1295,
-        "y": 1820,
+        "y": 2240,
         "wires": []
     },
     {
@@ -7673,7 +7697,7 @@
         "server": "3c0c4adc.e7b956",
         "client": "",
         "x": 160,
-        "y": 1040,
+        "y": 1260,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -8331,7 +8355,7 @@
         "server": "557f40b4.fc262",
         "client": "",
         "x": 170,
-        "y": 1100,
+        "y": 1320,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -8348,7 +8372,7 @@
             "a8a88b3.a878478"
         ],
         "x": 1295,
-        "y": 1860,
+        "y": 2280,
         "wires": []
     },
     {
@@ -8359,7 +8383,7 @@
         "server": "19f426d.ba145d9",
         "client": "",
         "x": 170,
-        "y": 1160,
+        "y": 1380,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -8985,7 +9009,7 @@
         "server": "11409eb4.88d3c1",
         "client": "",
         "x": 150,
-        "y": 1220,
+        "y": 1440,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -9344,7 +9368,7 @@
         "server": "c9f0eb6c.93d8d8",
         "client": "",
         "x": 150,
-        "y": 1280,
+        "y": 1500,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -9360,7 +9384,7 @@
             "ae6d0749.651b58"
         ],
         "x": 1295,
-        "y": 1900,
+        "y": 2320,
         "wires": []
     },
     {
@@ -9791,7 +9815,7 @@
         "server": "8a054889.379478",
         "client": "",
         "x": 150,
-        "y": 1340,
+        "y": 1560,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -9807,7 +9831,7 @@
             "d8b0e2fe.3e47e"
         ],
         "x": 1295,
-        "y": 1940,
+        "y": 2360,
         "wires": []
     },
     {
@@ -10335,7 +10359,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "        useWebSockets(false);\n        var exampleTag = '{{{payload.exampleTag}}}';\n\n        var modeZeroVisible = false;\n        var blinkyRelayBakeVisible = false;\n        var blinkyThermoVisible = false;\n        var blinkyThermoCamVisible = false;\n        var blinkySsrBakeVisible = false;\n        var blinkyPowerRelayVisible = false;\n        var blinkyStepperVisible = false;\n        var blinkyShiverVisible = false;\n        var blinkyShakerVisible = false;\n        var blinkyFeverVisible = false;\n        var blinkyWindVisible = false;\n        var blinkySolarSystemVisible = false;\n        var blinkyBasicVisible = false;\n        var blinkyEnvVisible = false;\n        var blinkyCosmicIntervalVisible = false;\n        var nbFreezerMonVisible = false;\n\n        function onDocumentReady()\n        {\n            $('#modeZero').hide();\n            $('#blinkySsrBake').hide();\n            $('#blinkyRelayBake').hide();\n            $('#blinkyThermo').hide();\n            $('#blinkyThermoCam').hide();\n            $('#blinkyPowerRelay').hide();\n            $('#blinkyStepper').hide();\n            $('#blinkyShiver').hide();\n            $('#blinkyShaker').hide();\n            $('#blinkyFever').hide();\n            $('#blinkyWind').hide();\n            $('#blinkySolarSystem').hide();\n            $('#blinkyBasic').hide();\n            $('#blinkyEnv').hide();\n            $('#blinkyCosmicInterval').hide();\n            $('#nbFreezerMon').hide();\n            modeZeroVisible = false;\n            blinkySsrBakeVisible = false;\n            blinkyRelayBakeVisible = false;\n            blinkyThermoVisible = false;\n            blinkyThermoCamVisible = false;\n            blinkyPowerRelayVisible = false;\n            blinkyStepperVisible = false;\n            blinkyShiverVisible = false;\n            blinkyShakerVisible = false;\n            blinkyFeverVisible = false;\n            blinkyWindVisible = false;\n            blinkyBasicVisible = false;\n            blinkySolarSystemVisible = false;\n            blinkyEnvVisible = false;\n            blinkyCosmicIntervalVisible = false;\n            nbFreezerMonVisible = false;\n            \n            console.log($( window ).height());\n            var scrollHeight = $( window ).height() - 250;\n            $(\"#bodyContentId\").css(\"height\", scrollHeight.toString() +'px');\n\n            switch (exampleTag) \n            {\n                case 'modeZero':\n                    $('#modeZero').show();\n                    $('#modeZeroBtn').text('Close');\n                    modeZeroVisible = true;\n                    scrollBlurb('#modeZeroCard');\n                    break;\n                case 'blinkySsrBake':\n                    $('#blinkySsrBake').show();\n                    $('#blinkySsrBakeBtn').text('Close');\n                    blinkySsrBakeVisible = true;\n                    scrollBlurb('#blinkySsrBakeCard');\n                    break;\n                case 'blinkyRelayBake':\n                    $('#blinkyRelayBake').show();\n                    $('#blinkyRelayBakeBtn').text('Close');\n                    blinkyRelayBakeVisible = true;\n                    scrollBlurb('#blinkyRelayBakeCard');\n                    break;\n                 case 'blinkyThermo':\n                    $('#blinkyThermo').show();\n                    $('#blinkyThermoBtn').text('Close');\n                    blinkyThermoVisible = true;\n                    scrollBlurb('#blinkyThermoCard');\n                    break;\n                 case 'blinkyThermoCam':\n                    $('#blinkyThermoCam').show();\n                    $('#blinkyThermoCamBtn').text('Close');\n                    blinkyThermoCamVisible = true;\n                    scrollBlurb('#blinkyThermoCamCard');\n                    break;\n                 case 'blinkyPowerRelay':\n                    $('#blinkyPowerRelay').show();\n                    $('#blinkyPowerRelayBtn').text('Close');\n                    blinkyPowerRelayVisible = true;\n                    scrollBlurb('#blinkyPowerRelayCard');\n                    break;\n                 case 'blinkyStepper':\n                    $('#blinkyStepper').show();\n                    $('#blinkyStepperBtn').text('Close');\n                    blinkyStepperVisible = true;\n                    scrollBlurb('#blinkyStepperCard');\n                    break;\n                 case 'blinkyShiver':\n                    $('#blinkyShiver').show();\n                    $('#blinkyShiverBtn').text('Close');\n                    blinkyShiverVisible = true;\n                    scrollBlurb('#blinkyShiverCard');\n                    break;\n                 case 'blinkyShaker':\n                    $('#blinkyShaker').show();\n                    $('#blinkyShakerBtn').text('Close');\n                    blinkyShakerVisible = true;\n                    scrollBlurb('#blinkyShakerCard');\n                    break;\n                 case 'blinkyFever':\n                    $('#blinkyFever').show();\n                    $('#blinkyFeverBtn').text('Close');\n                    blinkyFeverVisible = true;\n                    scrollBlurb('#blinkyFeverCard');\n                    break;\n                 case 'blinkyWind':\n                    $('#blinkyWind').show();\n                    $('#blinkyWindBtn').text('Close');\n                    blinkyWindVisible = true;\n                    scrollBlurb('#blinkyWindCard');\n                    break;\n                 case 'blinkySolarSystem':\n                    $('#blinkySolarSystem').show();\n                    $('#blinkySolarSystemBtn').text('Close');\n                    blinkySolarSystemVisible = true;\n                    scrollBlurb('#blinkySolarSystemCard');\n                    break;\n                 case 'blinkyBasic':\n                    $('#blinkyBasic').show();\n                    $('#blinkyBasicBtn').text('Close');\n                    blinkyBasicVisible = true;\n                    scrollBlurb('#blinkyBasicCard');\n                    break;\n                 case 'blinkyEnv':\n                    $('#blinkyEnv').show();\n                    $('#blinkyEnvBtn').text('Close');\n                    blinkyEnvVisible = true;\n                    scrollBlurb('#blinkyEnvCard');\n                    break;\n                 case 'blinkyCosmicInterval':\n                    $('#blinkyCosmicInterval').show();\n                    $('#blinkyCosmicIntervalBtn').text('Close');\n                    blinkyCosmicIntervalVisible = true;\n                    scrollBlurb('#blinkyCosmicIntervalCard');\n                    break;\n                 case 'nbFreezerMon':\n                    $('#nbFreezerMon').show();\n                    $('#nbFreezerMonBtn').text('Close');\n                    nbFreezerMonVisible = true;\n                    scrollBlurb('#nbFreezerMonCard');\n                    break;\n                default:\n                    break;\n            }\n            \n        }\n        function scrollBlurb(poundblurbCardId)\n        {\n            setTimeout(function()\n            {\n                var scrollTo = $(poundblurbCardId); \n                var container = $('#bodyContentId'); \n\n                // Calculating new position of scrollbar \n                var position = scrollTo.offset().top  \n                        - container.offset().top  \n                        + container.scrollTop(); \n          \n                container.scrollTop(position); \n            }, 100);\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n        function modeZero()\n        {\n            if (modeZeroVisible)\n            {\n                $('#modeZero').hide();\n                modeZeroVisible = false;\n                $('#modeZeroBtn').text('Open');\n            }\n            else\n            {\n                $('#modeZero').show();\n                modeZeroVisible = true;\n                $('#modeZeroBtn').text('Close');\n            }\n        }\n        function blinkyThermo()\n        {\n            if (blinkyThermoVisible)\n            {\n                $('#blinkyThermo').hide();\n                blinkyThermoVisible = false;\n                $('#blinkyThermoBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyThermo').show();\n                blinkyThermoVisible = true;\n                $('#blinkyThermoBtn').text('Close');\n            }\n        }\n        function blinkyThermoCam()\n        {\n            if (blinkyThermoCamVisible)\n            {\n                $('#blinkyThermoCam').hide();\n                blinkyThermoCamVisible = false;\n                $('#blinkyThermoCamBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyThermoCam').show();\n                blinkyThermoCamVisible = true;\n                $('#blinkyThermoCamBtn').text('Close');\n            }\n        }\n        function blinkySsrBake()\n        {\n            if (blinkySsrBakeVisible)\n            {\n                $('#blinkySsrBake').hide();\n                blinkySsrBakeVisible = false;\n                $('#blinkySsrBakeBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkySsrBake').show();\n                blinkySsrBakeVisible = true;\n                $('#blinkySsrBakeBtn').text('Close');\n            }\n        }\n        function blinkyRelayBake()\n        {\n            if (blinkyRelayBakeVisible)\n            {\n                $('#blinkyRelayBake').hide();\n                blinkyRelayBakeVisible = false;\n                $('#blinkyRelayBakeBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyRelayBake').show();\n                blinkyRelayBakeVisible = true;\n                $('#blinkyRelayBakeBtn').text('Close');\n            }\n        }\n        function blinkyPowerRelay()\n        {\n            if (blinkyPowerRelayVisible)\n            {\n                $('#blinkyPowerRelay').hide();\n                blinkyPowerRelayVisible = false;\n                $('#blinkyPowerRelayBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyPowerRelay').show();\n                blinkyPowerRelayVisible = true;\n                $('#blinkyPowerRelayBtn').text('Close');\n            }\n        }\n        function blinkyStepper()\n        {\n            if (blinkyStepperVisible)\n            {\n                $('#blinkyStepper').hide();\n                blinkyStepperVisible = false;\n                $('#blinkyStepperBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyStepper').show();\n                blinkyStepperVisible = true;\n                $('#blinkyStepperBtn').text('Close');\n            }\n        }\n        function blinkyShiver()\n        {\n            if (blinkyShiverVisible)\n            {\n                $('#blinkyShiver').hide();\n                blinkyShiverVisible = false;\n                $('#blinkyShiverBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyShiver').show();\n                blinkyShiverVisible = true;\n                $('#blinkyShiverBtn').text('Close');\n            }\n        }\n        function blinkyShaker()\n        {\n            if (blinkyShakerVisible)\n            {\n                $('#blinkyShaker').hide();\n                blinkyShakerVisible = false;\n                $('#blinkyShakerBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyShaker').show();\n                blinkyShakerVisible = true;\n                $('#blinkyShakerBtn').text('Close');\n            }\n        }\n        function blinkyFever()\n        {\n            if (blinkyFeverVisible)\n            {\n                $('#blinkyFever').hide();\n                blinkyFeverVisible = false;\n                $('#blinkyFeverBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyFever').show();\n                blinkyFeverVisible = true;\n                $('#blinkyFeverBtn').text('Close');\n            }\n        }\n        function blinkyWind()\n        {\n            if (blinkyWindVisible)\n            {\n                $('#blinkyWind').hide();\n                blinkyWindVisible = false;\n                $('#blinkyWindBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyWind').show();\n                blinkyWindVisible = true;\n                $('#blinkyWindBtn').text('Close');\n            }\n        }\n        function blinkySolarSystem()\n        {\n            if (blinkySolarSystemVisible)\n            {\n                $('#blinkyWind').hide();\n                blinkySolarSystemVisible = false;\n                $('#blinkySolarSystemBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkySolarSystem').show();\n                blinkySolarSystemVisible = true;\n                $('#blinkySolarSystemBtn').text('Close');\n            }\n        }\n        function blinkyBasic()\n        {\n            if (blinkyBasicVisible)\n            {\n                $('#blinkyBasic').hide();\n                blinkyBasicVisible = false;\n                $('#blinkyBasicBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyBasic').show();\n                blinkyBasicVisible = true;\n                $('#blinkyBasicBtn').text('Close');\n            }\n        }\n        function blinkyEnv()\n        {\n            if (blinkyEnvVisible)\n            {\n                $('#blinkyEnv').hide();\n                blinkyEnvVisible = false;\n                $('#blinkyEnvBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyEnv').show();\n                blinkyEnvVisible = true;\n                $('#blinkyEnvBtn').text('Close');\n            }\n        }\n        function blinkyCosmicInterval()\n        {\n            if (blinkyCosmicIntervalVisible)\n            {\n                $('#blinkyCosmicInterval').hide();\n                blinkyCosmicIntervalVisible = false;\n                $('#blinkyCosmicIntervalBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyCosmicInterval').show();\n                blinkyCosmicIntervalVisible = true;\n                $('#blinkyCosmicIntervalBtn').text('Close');\n            }\n        }\n        function nbFreezerMon()\n        {\n            if (nbFreezerMonVisible)\n            {\n                $('#nbFreezerMon').hide();\n                nbFreezerMonVisible = false;\n                $('#nbFreezerMonBtn').text('Open');\n            }\n            else\n            {\n                $('#nbFreezerMon').show();\n                nbFreezerMonVisible = true;\n                $('#nbFreezerMonBtn').text('Close');\n            }\n        }\n\n",
+        "template": "        useWebSockets(false);\n        var exampleTag = '{{{payload.exampleTag}}}';\n\n        var modeZeroVisible = false;\n        var blinkyRelayBakeVisible = false;\n        var blinkyThermoVisible = false;\n        var blinkyThermoCamVisible = false;\n        var blinkySsrBakeVisible = false;\n        var blinkyPowerRelayVisible = false;\n        var blinkyStepperVisible = false;\n        var blinkyShiverVisible = false;\n        var blinkyShakerVisible = false;\n        var blinkyFeverVisible = false;\n        var blinkyWindVisible = false;\n        var blinkySolarSystemVisible = false;\n        var blinkyBasicVisible = false;\n        var blinkyEnvVisible = false;\n        var blinkyCosmicIntervalVisible = false;\n        var nbFreezerMonVisible = false;\n\n        function onDocumentReady()\n        {\n            $('#modeZero').hide();\n            $('#blinkySsrBake').hide();\n            $('#blinkyRelayBake').hide();\n            $('#blinkyThermo').hide();\n            $('#blinkyThermoCam').hide();\n            $('#blinkyPowerRelay').hide();\n            $('#blinkyStepper').hide();\n            $('#blinkyShiver').hide();\n            $('#blinkyShaker').hide();\n            $('#blinkyFever').hide();\n            $('#blinkyWind').hide();\n            $('#blinkySolarSystem').hide();\n            $('#blinkyBasic').hide();\n            $('#blinkyEnv').hide();\n            $('#blinkyCosmicInterval').hide();\n            $('#nbFreezerMon').hide();\n            modeZeroVisible = false;\n            blinkySsrBakeVisible = false;\n            blinkyRelayBakeVisible = false;\n            blinkyThermoVisible = false;\n            blinkyThermoCamVisible = false;\n            blinkyPowerRelayVisible = false;\n            blinkyStepperVisible = false;\n            blinkyShiverVisible = false;\n            blinkyShakerVisible = false;\n            blinkyFeverVisible = false;\n            blinkyWindVisible = false;\n            blinkyBasicVisible = false;\n            blinkySolarSystemVisible = false;\n            blinkyEnvVisible = false;\n            blinkyCosmicIntervalVisible = false;\n            nbFreezerMonVisible = false;\n            \n            console.log($( window ).height());\n            var scrollHeight = $( window ).height() - 250;\n            $(\"#bodyContentId\").css(\"height\", scrollHeight.toString() +'px');\n\n            switch (exampleTag) \n            {\n                case 'modeZero':\n                    $('#modeZero').show();\n                    $('#modeZeroBtn').text('Close');\n                    modeZeroVisible = true;\n                    scrollBlurb('#modeZeroCard');\n                    break;\n                case 'blinkySsrBake':\n                    $('#blinkySsrBake').show();\n                    $('#blinkySsrBakeBtn').text('Close');\n                    blinkySsrBakeVisible = true;\n                    scrollBlurb('#blinkySsrBakeCard');\n                    break;\n                case 'blinkyRelayBake':\n                    $('#blinkyRelayBake').show();\n                    $('#blinkyRelayBakeBtn').text('Close');\n                    blinkyRelayBakeVisible = true;\n                    scrollBlurb('#blinkyRelayBakeCard');\n                    break;\n                 case 'blinkyThermo':\n                    $('#blinkyThermo').show();\n                    $('#blinkyThermoBtn').text('Close');\n                    blinkyThermoVisible = true;\n                    scrollBlurb('#blinkyThermoCard');\n                    break;\n                 case 'blinkyThermoCam':\n                    $('#blinkyThermoCam').show();\n                    $('#blinkyThermoCamBtn').text('Close');\n                    blinkyThermoCamVisible = true;\n                    scrollBlurb('#blinkyThermoCamCard');\n                    break;\n                 case 'blinkyPowerRelay':\n                    $('#blinkyPowerRelay').show();\n                    $('#blinkyPowerRelayBtn').text('Close');\n                    blinkyPowerRelayVisible = true;\n                    scrollBlurb('#blinkyPowerRelayCard');\n                    break;\n                 case 'blinkyStepper':\n                    $('#blinkyStepper').show();\n                    $('#blinkyStepperBtn').text('Close');\n                    blinkyStepperVisible = true;\n                    scrollBlurb('#blinkyStepperCard');\n                    break;\n                 case 'blinkyShiver':\n                    $('#blinkyShiver').show();\n                    $('#blinkyShiverBtn').text('Close');\n                    blinkyShiverVisible = true;\n                    scrollBlurb('#blinkyShiverCard');\n                    break;\n                 case 'blinkyShaker':\n                    $('#blinkyShaker').show();\n                    $('#blinkyShakerBtn').text('Close');\n                    blinkyShakerVisible = true;\n                    scrollBlurb('#blinkyShakerCard');\n                    break;\n                 case 'blinkyFever':\n                    $('#blinkyFever').show();\n                    $('#blinkyFeverBtn').text('Close');\n                    blinkyFeverVisible = true;\n                    scrollBlurb('#blinkyFeverCard');\n                    break;\n                 case 'blinkyWind':\n                    $('#blinkyWind').show();\n                    $('#blinkyWindBtn').text('Close');\n                    blinkyWindVisible = true;\n                    scrollBlurb('#blinkyWindCard');\n                    break;\n                 case 'blinkySolarSystem':\n                    $('#blinkySolarSystem').show();\n                    $('#blinkySolarSystemBtn').text('Close');\n                    blinkySolarSystemVisible = true;\n                    scrollBlurb('#blinkySolarSystemCard');\n                    break;\n                 case 'blinkyBasic':\n                    $('#blinkyBasic').show();\n                    $('#blinkyBasicBtn').text('Close');\n                    blinkyBasicVisible = true;\n                    scrollBlurb('#blinkyBasicCard');\n                    break;\n                 case 'blinkyEnv':\n                    $('#blinkyEnv').show();\n                    $('#blinkyEnvBtn').text('Close');\n                    blinkyEnvVisible = true;\n                    scrollBlurb('#blinkyEnvCard');\n                    break;\n                 case 'blinkyCosmicInterval':\n                    $('#blinkyCosmicInterval').show();\n                    $('#blinkyCosmicIntervalBtn').text('Close');\n                    blinkyCosmicIntervalVisible = true;\n                    scrollBlurb('#blinkyCosmicIntervalCard');\n                    break;\n                 case 'nbFreezerMon':\n                    $('#nbFreezerMon').show();\n                    $('#nbFreezerMonBtn').text('Close');\n                    nbFreezerMonVisible = true;\n                    scrollBlurb('#nbFreezerMonCard');\n                    break;\n                default:\n                    break;\n            }\n            \n        }\n        function scrollBlurb(poundblurbCardId)\n        {\n            setTimeout(function()\n            {\n                var scrollTo = $(poundblurbCardId); \n                var container = $('#bodyContentId'); \n\n                // Calculating new position of scrollbar \n                var position = scrollTo.offset().top  \n                        - container.offset().top  \n                        + container.scrollTop(); \n          \n                container.scrollTop(position); \n            }, 100);\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n        function modeZero()\n        {\n            if (modeZeroVisible)\n            {\n                $('#modeZero').hide();\n                modeZeroVisible = false;\n                $('#modeZeroBtn').text('Open');\n            }\n            else\n            {\n                $('#modeZero').show();\n                modeZeroVisible = true;\n                $('#modeZeroBtn').text('Close');\n            }\n        }\n        function blinkyThermo()\n        {\n            if (blinkyThermoVisible)\n            {\n                $('#blinkyThermo').hide();\n                blinkyThermoVisible = false;\n                $('#blinkyThermoBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyThermo').show();\n                blinkyThermoVisible = true;\n                $('#blinkyThermoBtn').text('Close');\n            }\n        }\n        function blinkyThermoCam()\n        {\n            if (blinkyThermoCamVisible)\n            {\n                $('#blinkyThermoCam').hide();\n                blinkyThermoCamVisible = false;\n                $('#blinkyThermoCamBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyThermoCam').show();\n                blinkyThermoCamVisible = true;\n                $('#blinkyThermoCamBtn').text('Close');\n            }\n        }\n        function blinkySsrBake()\n        {\n            if (blinkySsrBakeVisible)\n            {\n                $('#blinkySsrBake').hide();\n                blinkySsrBakeVisible = false;\n                $('#blinkySsrBakeBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkySsrBake').show();\n                blinkySsrBakeVisible = true;\n                $('#blinkySsrBakeBtn').text('Close');\n            }\n        }\n        function blinkyRelayBake()\n        {\n            if (blinkyRelayBakeVisible)\n            {\n                $('#blinkyRelayBake').hide();\n                blinkyRelayBakeVisible = false;\n                $('#blinkyRelayBakeBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyRelayBake').show();\n                blinkyRelayBakeVisible = true;\n                $('#blinkyRelayBakeBtn').text('Close');\n            }\n        }\n        function blinkyPowerRelay()\n        {\n            if (blinkyPowerRelayVisible)\n            {\n                $('#blinkyPowerRelay').hide();\n                blinkyPowerRelayVisible = false;\n                $('#blinkyPowerRelayBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyPowerRelay').show();\n                blinkyPowerRelayVisible = true;\n                $('#blinkyPowerRelayBtn').text('Close');\n            }\n        }\n        function blinkyStepper()\n        {\n            if (blinkyStepperVisible)\n            {\n                $('#blinkyStepper').hide();\n                blinkyStepperVisible = false;\n                $('#blinkyStepperBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyStepper').show();\n                blinkyStepperVisible = true;\n                $('#blinkyStepperBtn').text('Close');\n            }\n        }\n        function blinkyShiver()\n        {\n            if (blinkyShiverVisible)\n            {\n                $('#blinkyShiver').hide();\n                blinkyShiverVisible = false;\n                $('#blinkyShiverBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyShiver').show();\n                blinkyShiverVisible = true;\n                $('#blinkyShiverBtn').text('Close');\n            }\n        }\n        function blinkyShaker()\n        {\n            if (blinkyShakerVisible)\n            {\n                $('#blinkyShaker').hide();\n                blinkyShakerVisible = false;\n                $('#blinkyShakerBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyShaker').show();\n                blinkyShakerVisible = true;\n                $('#blinkyShakerBtn').text('Close');\n            }\n        }\n        function blinkyFever()\n        {\n            if (blinkyFeverVisible)\n            {\n                $('#blinkyFever').hide();\n                blinkyFeverVisible = false;\n                $('#blinkyFeverBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyFever').show();\n                blinkyFeverVisible = true;\n                $('#blinkyFeverBtn').text('Close');\n            }\n        }\n        function blinkyWind()\n        {\n            if (blinkyWindVisible)\n            {\n                $('#blinkyWind').hide();\n                blinkyWindVisible = false;\n                $('#blinkyWindBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyWind').show();\n                blinkyWindVisible = true;\n                $('#blinkyWindBtn').text('Close');\n            }\n        }\n        function blinkySolarSystem()\n        {\n            if (blinkySolarSystemVisible)\n            {\n                $('#blinkySolarSystem').hide();\n                blinkySolarSystemVisible = false;\n                $('#blinkySolarSystemBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkySolarSystem').show();\n                blinkySolarSystemVisible = true;\n                $('#blinkySolarSystemBtn').text('Close');\n            }\n        }\n        function blinkyBasic()\n        {\n            if (blinkyBasicVisible)\n            {\n                $('#blinkyBasic').hide();\n                blinkyBasicVisible = false;\n                $('#blinkyBasicBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyBasic').show();\n                blinkyBasicVisible = true;\n                $('#blinkyBasicBtn').text('Close');\n            }\n        }\n        function blinkyEnv()\n        {\n            if (blinkyEnvVisible)\n            {\n                $('#blinkyEnv').hide();\n                blinkyEnvVisible = false;\n                $('#blinkyEnvBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyEnv').show();\n                blinkyEnvVisible = true;\n                $('#blinkyEnvBtn').text('Close');\n            }\n        }\n        function blinkyCosmicInterval()\n        {\n            if (blinkyCosmicIntervalVisible)\n            {\n                $('#blinkyCosmicInterval').hide();\n                blinkyCosmicIntervalVisible = false;\n                $('#blinkyCosmicIntervalBtn').text('Open');\n            }\n            else\n            {\n                $('#blinkyCosmicInterval').show();\n                blinkyCosmicIntervalVisible = true;\n                $('#blinkyCosmicIntervalBtn').text('Close');\n            }\n        }\n        function nbFreezerMon()\n        {\n            if (nbFreezerMonVisible)\n            {\n                $('#nbFreezerMon').hide();\n                nbFreezerMonVisible = false;\n                $('#nbFreezerMonBtn').text('Open');\n            }\n            else\n            {\n                $('#nbFreezerMon').show();\n                nbFreezerMonVisible = true;\n                $('#nbFreezerMonBtn').text('Close');\n            }\n        }\n\n",
         "output": "str",
         "x": 980,
         "y": 1100,
@@ -10555,7 +10579,7 @@
         "server": "ffc8491b.7eba18",
         "client": "",
         "x": 170,
-        "y": 1400,
+        "y": 1620,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -10571,7 +10595,7 @@
             "ebb358f3.95c638"
         ],
         "x": 1295,
-        "y": 1980,
+        "y": 2400,
         "wires": []
     },
     {
@@ -11022,7 +11046,7 @@
             "bf657e74.6ac66"
         ],
         "x": 1295,
-        "y": 2020,
+        "y": 2440,
         "wires": []
     },
     {
@@ -11033,7 +11057,7 @@
         "server": "41e2977d.e61d58",
         "client": "",
         "x": 160,
-        "y": 1460,
+        "y": 1680,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -11832,7 +11856,7 @@
             "ffb80136.883f8"
         ],
         "x": 1295,
-        "y": 2060,
+        "y": 2480,
         "wires": []
     },
     {
@@ -11843,7 +11867,7 @@
         "server": "e1d2437b.14b8a",
         "client": "",
         "x": 140,
-        "y": 1520,
+        "y": 1740,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -12403,7 +12427,7 @@
             "80c07ebe.4f177"
         ],
         "x": 1295,
-        "y": 2100,
+        "y": 2520,
         "wires": []
     },
     {
@@ -12414,7 +12438,7 @@
         "server": "78f65260.780d3c",
         "client": "",
         "x": 150,
-        "y": 1580,
+        "y": 1800,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -13822,16 +13846,24 @@
             },
             {
                 "t": "eq",
+                "v": "blinky-DS18B20",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
                 "v": "nb-freezer-mon",
                 "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 13,
+        "outputs": 14,
         "x": 870,
         "y": 100,
         "wires": [
+            [
+                "ee4c177c.2435b8"
+            ],
             [
                 "ee4c177c.2435b8"
             ],
@@ -14075,7 +14107,7 @@
         "server": "2b81e965.1ccd36",
         "client": "",
         "x": 180,
-        "y": 1640,
+        "y": 1860,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -14990,7 +15022,7 @@
             "8c18e9cd.f40f08"
         ],
         "x": 1295,
-        "y": 2140,
+        "y": 2560,
         "wires": []
     },
     {
@@ -15001,7 +15033,7 @@
         "server": "d61dce7c.c084a",
         "client": "",
         "x": 150,
-        "y": 1700,
+        "y": 1920,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -15614,7 +15646,7 @@
             "435b9182.cc3ac"
         ],
         "x": 1295,
-        "y": 2180,
+        "y": 2600,
         "wires": []
     },
     {
@@ -15625,7 +15657,7 @@
         "server": "c1211ec2.5887d",
         "client": "",
         "x": 140,
-        "y": 1760,
+        "y": 1980,
         "wires": [
             [
                 "e6d1a4ad.2186e8"
@@ -16083,6 +16115,453 @@
         "wires": [
             [
                 "f3a188d1.6d9cd8"
+            ]
+        ]
+    },
+    {
+        "id": "a3294720.d3e8c8",
+        "type": "websocket out",
+        "z": "8475ab9.3d26058",
+        "name": "/blinky-DS18B20/websocket",
+        "server": "fc576385.12f95",
+        "client": "",
+        "x": 1060,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "8d0f331.1da14d",
+        "type": "link in",
+        "z": "8475ab9.3d26058",
+        "name": "blinky DS18B20 input socket",
+        "links": [
+            "1e710224.de723e",
+            "224d9b05.f92104",
+            "a988b405.392318",
+            "62fb9e33.02bff"
+        ],
+        "x": 895,
+        "y": 940,
+        "wires": [
+            [
+                "a3294720.d3e8c8"
+            ]
+        ]
+    },
+    {
+        "id": "a988b405.392318",
+        "type": "link out",
+        "z": "8475ab9.3d26058",
+        "name": "blinky-DS18B20 mqtt",
+        "links": [
+            "8d0f331.1da14d"
+        ],
+        "x": 775,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "2569df2b.b3dbf",
+        "type": "websocket in",
+        "z": "8475ab9.3d26058",
+        "name": "/blinky-DS18B20/websocket",
+        "server": "fc576385.12f95",
+        "client": "",
+        "x": 160,
+        "y": 2040,
+        "wires": [
+            [
+                "e6d1a4ad.2186e8"
+            ]
+        ]
+    },
+    {
+        "id": "62fb9e33.02bff",
+        "type": "link out",
+        "z": "8475ab9.3d26058",
+        "name": "blinky-DS18B20-archive",
+        "links": [
+            "8d0f331.1da14d"
+        ],
+        "x": 1295,
+        "y": 2640,
+        "wires": []
+    },
+    {
+        "id": "a5d816c3.2759d8",
+        "type": "function",
+        "z": "ffe6c625.6b4a58",
+        "name": "Set Name And Device Type",
+        "func": "msg.payload['script'] = {};\nmsg.payload['script']['name'] = msg.payload.name\nmsg.payload['script']['deviceType'] = 'blinky-DS18B20';\nmsg.payload['script']['project'] = global.get('project');\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 440,
+        "y": 1800,
+        "wires": [
+            [
+                "e98ad3e0.249df"
+            ]
+        ]
+    },
+    {
+        "id": "48d303b6.d8084c",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Blinky DS18B20 {{{payload.script.name}}}",
+        "output": "str",
+        "x": 380,
+        "y": 1880,
+        "wires": [
+            [
+                "f54f14f.dc7c9e8"
+            ]
+        ]
+    },
+    {
+        "id": "e0f24e1c.1169a",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "script.stripChartWidget",
+        "field": "payload.script.stripChartWidget",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// StripChart Widget\n        class StripChart\n        {\n           constructor(plotConfig) \n            {\n                this.plotConfig = plotConfig;\n                this.plotStartTime = new Date().getTime();\n                this.layout =\n                {\n                    showlegend  : true,\n                    legend      : { x: 0, y: 1.15},\n                    height      : plotConfig.height,\n                    width       : plotConfig.width,\n                    xaxis       :\n                    {\n//                        title: 'Seconds since ' + new Date(this.plotStartTime).toLocaleString(),\n                        type: 'date'\n                    },\n                    yaxis:\n                    {\n                        title           : plotConfig.trace1Title,\n                        titlefont       : {color: plotConfig.trace1Color},\n                        tickfont        : {color:plotConfig.trace1Color},\n                        gridcolor       : plotConfig.trace1GridColor,\n                        zerolinecolor   : plotConfig.trace1GridColor,\n                        linecolor       : plotConfig.trace1GridColor,\n//                        range: [0, 2]\n        \n                    },\n                    yaxis2:\n                    {\n                        title           : plotConfig.trace2Title,\n                        titlefont       : {color: plotConfig.trace2Color},\n                        tickfont        : {color:plotConfig.trace2Color},\n                        gridcolor       : plotConfig.trace2GridColor,\n                        zerolinecolor   : plotConfig.trace2GridColor,\n                        linecolor       : plotConfig.trace2GridColor,\n                        overlaying: 'y',\n                        side: 'right',\n//                        range: [0, 2]\n                    },\n                    margin: \n                        {\n                            t: 30, //top margin\n        //                    l: 0, //left margin\n        //                    r: 0, //right margin\n        //                    b: 20 //bottom margin\n                        },\n                };\n                this.trace1 = \n                {\n                    x: [],\n                    y: [],\n                    name: plotConfig.trace1Title,\n                    yaxis: 'y1',\n                    type: 'scatter',\n                    mode: 'lines',\n\n                };\n                this.trace2 = \n                {\n                    x: [],\n                    y: [],\n                    name: plotConfig.trace2Title,\n                    yaxis: 'y1',\n                    type: 'scatter',\n                    mode: 'lines',\n            \n                };\n            }\n            addTracePoints(trace1Pt, trace2Pt)\n            {\n//                var now = (new Date().getTime() - this.plotStartTime) / 1000;\n                var now = new Date().getTime();\n                var plotBeginning = now - this.plotConfig.plotLength;\n                var removeDone = false;\n                while(!removeDone)\n                {\n                    if (this.trace1.x[0] < plotBeginning)\n                    {\n                        this.trace1.x.shift();\n                        this.trace1.y.shift();\n                        this.trace2.x.shift();\n                        this.trace2.y.shift();\n                    }\n                    else\n                    {\n                        removeDone = true;\n                    }\n                }\n        \n                this.trace1.x.push(now);\n                this.trace1.y.push(trace1Pt);\n                this.trace2.x.push(now);\n                this.trace2.y.push(trace2Pt);\n                Plotly.newPlot(this.plotConfig.htmlId, [this.trace1, this.trace2], this.layout);\n            }\n        }\n",
+        "output": "str",
+        "x": 740,
+        "y": 1840,
+        "wires": [
+            [
+                "e5bdc4d6.98da58"
+            ]
+        ]
+    },
+    {
+        "id": "f54f14f.dc7c9e8",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var mqttDevice = null;\n        var device = null;\n        var archiveRequestList = [];\n        var archiveList = [];\n        var pingInterval = 5000;\n        var lastPing = 0;\n\n        var restfulDevice = \n        {\n            deviceType  : '{{{payload.script.deviceType}}}',\n            name        : '{{{payload.script.name}}}',\n            project     : '{{{payload.script.project}}}'\n        };\n\n        var plotConfig = \n        {\n            trace1Title : 'Temp-A (C)',\n            trace1Color : '#557a95',\n            trace1GridColor : '#beceda',\n            trace2Title : 'Temp-B (C)',\n            trace2Color : '#f2a31f',\n            plotLength  : 600000,\n            width   : '',\n            height  :   '500',\n            htmlId  :   'temperatureStripChart'\n        };\n        let temperatureStripChart = new StripChart(plotConfig);\n\n        function onDocumentReady()\n        {\n            setRemoteApp(true);\n            if (remoteApp)\n            {\n                getCreds();\n                setInterval(function(){getCreds();}, 1000);\n            }\n            else\n            {\n                $('#userCardId').hide();\n            }\n            $('#archiveCardId').hide();\n            setInterval(function()\n            {\n                var now = new Date().getTime();\n                if ((now - lastPing) > pingInterval)\n                {\n                    lastPing = now;\n                    var actionMsg = \n                        {\n                            topic   : restfulDevice.project + '/' +  restfulDevice.deviceType + '/' +  restfulDevice.name + '/ping',\n                            payload : true\n                        };\n                    sendActionMsg('ping', 'ping', actionMsg);\n               }\n            }, 1000);\n        }\n        function onWebSocketOpen()\n        {\n            if (remoteApp) getArchive(24);\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    if ((msg.mqttDevice.name == restfulDevice.name) && (msg.mqttDevice.deviceType == restfulDevice.deviceType)  && (msg.mqttDevice.project == restfulDevice.project) )\n                    {\n                        lastPing = new Date().getTime();\n                        heartbeat();\n                        device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                        mqttDevice = msg.mqttDevice;\n                        updateDmaReadings();\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        if ((msg.payload.device.deviceType == restfulDevice.deviceType) && (msg.payload.device.name == restfulDevice.name) )\n                            putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'renew':\n                    if (msg.userID == userID)\n                    {\n                        updateCookie(msg);\n                    }\n                    break;\n                case 'permissionError':\n                    if (msg.userID == userID)\n                    {\n                        acknowledgeDialog('Permission', 'Error', msg.payload);\n                    }\n                    break;\n                case 'loginExpired':\n                    if (msg.userID == userID)\n                    {\n                       location.reload();\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function sendSetting()\n        {\n            var actionMsg = \n                {\n                    topic   : mqttDevice.project + '/' +  mqttDevice.deviceType + '/' +  mqttDevice.name + '/setting',\n                    payload : pako.deflate(JSON.stringify(device))\n                };\n            sendActionMsg('setting','setting',actionMsg);\n       }\n        function setScalarValue(settingValue, attrName)\n        {\n            var settingAttr = device[attrName];\n            if ( (settingAttr.alarm.limits.lolo <= settingValue) && (settingValue <= settingAttr.alarm.limits.hihi) )\n            {\n                settingAttr.value = settingValue;\n                sendSetting();\n            } \n            else\n            {\n                acknowledgeDialog('Acknowledge', 'Error', 'Entry outside range! (' + settingAttr.alarm.limits.lolo.toString() + '-' + settingAttr.alarm.limits.hihi.toString() + ' ' + settingAttr.unit);\n            }\n        }\n        function reset(actionFlag)\n        {\n            var headerText = 'Warning';\n            var title = 'Resetting Tray';\n            var text = 'I hope you know what you are doing.';\n            var buttonTexts = ['Reset', 'Cancel'];\n            var buttonFunctions = \n            [\n                function()\n                {\n                    $( this ).dialog( \"close\" );\n                    setScalarValue(actionFlag, 'reset');\n                 }, \n                function()\n                {\n                    $( this ).dialog( \"close\" );\n                }\n            ];\n            if (actionFlag == 2)\n            {\n                title = 'Rebooting Tray';\n                buttonTexts[0] = 'Reboot';\n            }\n            optionDialog(headerText, title, text, buttonTexts, buttonFunctions);\n        }\n",
+        "output": "str",
+        "x": 710,
+        "y": 1800,
+        "wires": [
+            [
+                "e0f24e1c.1169a"
+            ]
+        ]
+    },
+    {
+        "id": "950b72f5.c6697",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "script.editDevice",
+        "field": "payload.script.editDevice",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Edit Temp JavaScript\n       $( function() \n        {\n            $( \"#editDeviceDialog\" ).dialog(\n                {\n//                    closeOnEscape: false,\n//                    open: function(event, ui) {$(\".ui-dialog-titlebar-close\", ui.dialog | ui).hide();},\n                    width:    640,\n                    autoOpen: false,\n                    buttons:\n                    [\n                        {\n                            text: \"Set\",\n                            click: function() {setDevice(); $( this ).dialog( \"close\" );},\n                            showText: false\n                        },\n                        {\n                            text: \"Cancel\",\n                            click: function() \n                            {\n                                $( this ).dialog( \"close\" ); \n                            },\n                            showText: false\n                        }\n                    ]\n                });\n        } );\n        function editDevice(attrName)\n        {\n            $( \"#editDeviceDialog\" ).dialog( \"option\", \"title\", \"Edit\"); \n            editedAttribute = attrName;\n            $( \"#editDeviceDialogAttribute\").html(attrName);\n\n            var attr = device[attrName];\n            $( \"#loloAlarm\").val(attr.alarm.limits.lolo);\n            $( \"#lowAlarm\").val(attr.alarm.limits.low);\n            $( \"#highAlarm\").val(attr.alarm.limits.high);\n            $( \"#hihiAlarm\").val(attr.alarm.limits.hihi);\n            $( \"#notifyName\").val(attr.alarm.notify.name);\n            $( \"#notifyNumber\").val(attr.alarm.notify.number);\n\n            $( \"#editDeviceDialog\" ).dialog( \"open\" );\n        }\n        function setDevice()\n        {\n            var attr = device[editedAttribute];\n            if (isNaN($('#loloAlarm').val()) \n                || isNaN($('#lowAlarm').val()) \n                || isNaN($('#highAlarm').val()) \n                || isNaN($('#hihiAlarm').val()))\n            {\n                acknowledgeDialog('Error', 'Entry not a number!', editedAttribute);\n                editedAttribute = '';\n                return;\n            }\n            editedAttribute = '';\n\n            attr.alarm.limits.lolo = Number($( \"#loloAlarm\").val());\n            attr.alarm.limits.low = Number($( \"#lowAlarm\").val());\n            attr.alarm.limits.high = Number($( \"#highAlarm\").val());\n            attr.alarm.limits.hihi = Number($( \"#hihiAlarm\").val());\n            attr.alarm.notify.number =  $( \"#notifyNumber\").val();\n            attr.alarm.notify.name = $( \"#notifyName\").val();\n            sendSetting();\n        }\n",
+        "output": "str",
+        "x": 720,
+        "y": 1960,
+        "wires": [
+            [
+                "2de9d253.06695e"
+            ]
+        ]
+    },
+    {
+        "id": "92999e11.fa07a",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.stripChartWidget}}}\n{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.archive}}}\n{{{payload.script.editDevice}}}\n{{{payload.script.user}}}\n",
+        "output": "str",
+        "x": 700,
+        "y": 2040,
+        "wires": [
+            [
+                "a48451a8.d4bb6"
+            ]
+        ]
+    },
+    {
+        "id": "2afaf45b.a53bac",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <div width=\"100%\">\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.dashboard}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.history}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.archive}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12'>\n{{{payload.html.user}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12'>\n{{{payload.html.wifimon}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12'>\n{{{payload.html.reset}}}\n            </div>\n        </div>\n    </div>",
+        "output": "str",
+        "x": 1010,
+        "y": 2040,
+        "wires": [
+            [
+                "7046d901.e55a88"
+            ]
+        ]
+    },
+    {
+        "id": "33773f16.f49b8",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "html.wifimon",
+        "field": "payload.html.wifimon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Dashboard HTML -->\n                <div class='card'>\n                    <p class='card-title'>WiFi Connection</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'  style='padding-top: 0px;'>\n                            <table width='100%'>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Device Update</span>\n                                    </td>\n                                    <td width='20%' align='center'></td>\n                                    <td width='20%' align='center'>\n                                        <img src='/img/heartRed.png' id='heartBeatID' width='100px' height='100px'/>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Signal Level (dBm)</span>\n                                    </td>\n                                    <td width='20%' align='center'></td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text' id='signalLevelId' >-100</span>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Link Quality (/70)</span>\n                                    </td>\n                                    <td width='20%' align='center'></td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text' id='linkQualityId' >-1</span>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1030,
+        "y": 1960,
+        "wires": [
+            [
+                "3ad17ff5.48fd9"
+            ]
+        ]
+    },
+    {
+        "id": "e98ad3e0.249df",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "thermoYellow.png",
+        "output": "str",
+        "x": 390,
+        "y": 1840,
+        "wires": [
+            [
+                "48d303b6.d8084c"
+            ]
+        ]
+    },
+    {
+        "id": "ed792a6f.1bde88",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "html.user",
+        "field": "payload.html.user",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                <div class='card' id='userCardId'>\n                    <div class='card-body' align=\"center\">\n                        <table width=\"100%\">\n                            <tr>\n                                <td  align=\"left\">\n                                     <span class='card-text' style='color:black;'>User:</span>\n                                </td>\n                                <td  align=\"right\">\n                                     <span class='card-text' id='usernameId'></span>\n                                </td>\n                            </tr>\n                            <tr>\n                                <td  align=\"left\">\n                                    <span class='card-text' style='color:black;'>Time left:</span>\n                                </td>\n                                <td  align=\"right\">\n                                     <span class='card-text' id='expTimeId'></span>\n                                </td>\n                            </tr>\n                        </table>\n                        <table width=\"100%\">\n                            <tr>\n                                <td width=\"40%\">\n                                    <button class='btn btn-block card-button big-text' id='logoutButton' onclick=\"renew()\" >Renew</button>\n                                </td>\n                                <td width=\"10%\"></td>\n                                <td width=\"40%\">\n                                    <button class='btn btn-block card-button big-text' id='logoutButton' onclick=\"logout()\" >Logout</button>\n                                </td>\n                            </tr>\n                        </table>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1020,
+        "y": 1920,
+        "wires": [
+            [
+                "33773f16.f49b8"
+            ]
+        ]
+    },
+    {
+        "id": "2de9d253.06695e",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "script.user",
+        "field": "payload.script.user",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        function getCreds()\n        {\n            var now = new Date().getTime();\n            var expDate = Number(getCookie('ExpDate'));\n            if (expDate > 0)\n            {\n                expDate = expDate - now;\n                if(expDate < 0)\n                {\n                    logout();\n                }\n                else\n                {\n                    var hours = Math.floor(expDate / 3600000);\n                    var minutes = expDate - hours * 3600000;\n                    minutes = Math.floor(minutes / 60000);\n                    var seconds = expDate - (hours * 3600000) - (minutes * 60000);\n                    seconds = Math.floor(seconds / 1000);\n                    hours = hours.toString();\n                    if (hours.length == 1) hours = '0' + hours; \n                    minutes = minutes.toString();\n                    if (minutes.length == 1) minutes = '0' + minutes; \n                    seconds = seconds.toString();\n                    if (seconds.length == 1) seconds = '0' + seconds; \n                    var timeString = hours + ':' + minutes + ':' + seconds;\n                    $('#usernameId').text(getCookie('Username'));\n                    $('#expTimeId').text(timeString);\n                }\n            }\n            else\n            {\n                $('#usernameId').text(getCookie('Username'));\n                $('#expTimeId').text('Forever');\n            }\n        }\n        function logout()\n        {\n            document.cookie = project + \"Role= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            document.cookie = project + \"ExpDate= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            document.cookie = project + \"Username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            window.location.href = \"/\";\n        }\n        function renew()\n        {\n            var actionMsg = {};\n            sendActionMsg('renew', 'renew', actionMsg);\n        }\n        function updateCookie(msg)\n        {\n            document.cookie = project + \"Role=\" + msg.role;\n            document.cookie = project + \"ExpDate=\" + msg.expDate;\n            document.cookie = project + \"Username=\" + msg.username;\n        }\n        function downloadToken()\n        {\n            downloadString(getCookie(\"Role\"), \"text/plain\", project + \"-token.txt\");\n        }\n// from https://gist.github.com/danallison/3ec9d5314788b337b682\n        function downloadString(text, fileType, fileName) \n        {\n            var blob = new Blob([text], { type: fileType });\n            \n            var a = document.createElement('a');\n            a.download = fileName;\n            a.href = URL.createObjectURL(blob);\n            a.dataset.downloadurl = [fileType, a.download, a.href].join(':');\n            a.style.display = \"none\";\n            document.body.appendChild(a);\n            a.click();\n            document.body.removeChild(a);\n            setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);\n        }",
+        "output": "str",
+        "x": 710,
+        "y": 2000,
+        "wires": [
+            [
+                "92999e11.fa07a"
+            ]
+        ]
+    },
+    {
+        "id": "3ad17ff5.48fd9",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "html.reset",
+        "field": "payload.html.reset",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                <div class='card' id='reset'>\n                    <div class='card-body' align=\"center\">\n                         <table width=\"100%\">\n                            <tr>\n                                <td width=\"40%\">\n                                    <button class='btn btn-block card-button big-text' onclick=\"reset(1)\" >Reset</button>\n                                </td>\n                                <td width=\"10%\"></td>\n                                <td width=\"40%\">\n                                    <button class='btn btn-block card-button big-text' onclick=\"reset(2)\" >Reboot</button>\n                                </td>\n                            </tr>\n                        </table>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1020,
+        "y": 2000,
+        "wires": [
+            [
+                "2afaf45b.a53bac"
+            ]
+        ]
+    },
+    {
+        "id": "2a069e05.c44ae2",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "html.history",
+        "field": "payload.html.history",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- History HTML -->\n                <div class='card'>\n                    <p class='card-title'>History</p>\n                    <div class='card-body' align=\"center\">\n                        <div id=\"temperatureStripChart\" width=\"100%\" ></div>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1030,
+        "y": 1840,
+        "wires": [
+            [
+                "69bd314a.0d7d6"
+            ]
+        ]
+    },
+    {
+        "id": "a48451a8.d4bb6",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "html.dashboard",
+        "field": "payload.html.dashboard",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Dashboard HTML -->\n                <div class='card'>\n                    <p class='card-title'>Dashboard</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <table width='100%'>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Temperature A</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text' id='tempAId' >-100</span>\n                                    </td>\n                                    <td width='20%'>\n                                        <button class='btn btn-block card-button big-text' onclick=\"editDevice('tempA')\" >Edit</button>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='60%' >\n                                        <span class='card-text' >Temperature B</span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='card-text' id='tempBId' >-100</span>\n                                    </td>\n                                    <td width='20%'>\n                                        <button class='btn btn-block card-button big-text' onclick=\"editDevice('tempB')\" >Edit</button>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                   </div>\n                </div>\n                <div id=\"editDeviceDialog\" title=\"Edit Device\" class='card'>\n                    <p class='card-title' id='editDeviceDialogAttribute'>Attribute</p>\n                    <div class='card-body'>\n                        <table>\n                            <tr>\n                                <td width=\"70%\" align=\"left\">  <span class=\"tableHeading tableText\">LoLo</span></td>\n                                <td width=\"30%\" align=\"right\"><input class=\"form-control tableText\" id=\"loloAlarm\" type=\"text\" value=\"0\" /></td>\n                            </tr>\n                            <tr>\n                                <td width=\"70%\" align=\"left\">  <span class=\"tableHeading tableText\">LOW</span></td>\n                                <td width=\"30%\" align=\"right\"><input class=\"form-control tableText\" id=\"lowAlarm\" type=\"text\" value=\"0\" /></td>\n                            </tr>\n                            <tr>\n                                <td width=\"70%\" align=\"left\">  <span class=\"tableHeading tableText\">HIGH</span></td>\n                                <td width=\"30%\" align=\"right\"><input class=\"form-control tableText\" id=\"highAlarm\" type=\"text\" value=\"0\" /></td>\n                            </tr>\n                            <tr>\n                                <td width=\"70%\" align=\"left\">  <span class=\"tableHeading tableText\">HiHi</span></td>\n                                <td width=\"30%\" align=\"right\"><input class=\"form-control tableText\" id=\"hihiAlarm\" type=\"text\" value=\"0\" /></td>\n                            </tr>\n                            <tr>\n                                <td width=\"70%\" align=\"left\">  <span class=\"tableHeading tableText\">Notify Name</span></td>\n                                <td width=\"30%\" align=\"right\"><input class=\"form-control tableText\" id=\"notifyName\" type=\"text\" value=\"\" /></td>\n                            </tr>\n                            <tr>\n                                <td width=\"70%\" align=\"left\">  <span class=\"tableHeading tableText\">Notify Number</span></td>\n                                <td width=\"30%\" align=\"right\"><input class=\"form-control tableText\" id=\"notifyNumber\" type=\"text\" value=\"\" /></td>\n                            </tr>\n                        </table>\n                    </div>\n                </div>",
+        "output": "str",
+        "x": 1040,
+        "y": 1800,
+        "wires": [
+            [
+                "2a069e05.c44ae2"
+            ]
+        ]
+    },
+    {
+        "id": "e5bdc4d6.98da58",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "script.updateReadings",
+        "field": "payload.script.updateReadings",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Update Readings Javascript\n        function updateDmaReadings()\n        {\n            $('#linkQualityId').text(device.linkQuality.value);\n            $('#signalLevelId').text(device.signalLevel.value);\n            var tempA = device.tempA.value;\n            var tempB = device.tempB.value;\n            temperatureStripChart.addTracePoints(tempA, tempB);\n            $('#tempAId').text(tempA);\n            $('#tempBId').text(tempB);\n        }\n",
+        "output": "str",
+        "x": 740,
+        "y": 1880,
+        "wires": [
+            [
+                "4e088d42.5d8f44"
+            ]
+        ]
+    },
+    {
+        "id": "4e088d42.5d8f44",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "script.archive",
+        "field": "payload.script.archive",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive2hrButton').attr(\"disabled\", true); \n            $('#archive4hrButton').attr(\"disabled\", true); \n            $('#archive8hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive72hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive2hrButton').css('color', 'var(--color5)'); \n            $('#archive2hrButton').css('background-color', 'var(--color1)'); \n            $('#archive4hrButton').css('color', 'var(--color5)'); \n            $('#archive4hrButton').css('background-color', 'var(--color1)'); \n            $('#archive8hrButton').css('color', 'var(--color5)'); \n            $('#archive8hrButton').css('background-color', 'var(--color1)'); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive72hrButton').css('color', 'var(--color5)'); \n            $('#archive72hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 2:\n                    $('#archive2hrButton').css('color', 'var(--color1)'); \n                    $('#archive2hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 4:\n                    $('#archive4hrButton').css('color', 'var(--color1)'); \n                    $('#archive4hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 8:\n                    $('#archive8hrButton').css('color', 'var(--color1)'); \n                    $('#archive8hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 72:\n                    $('#archive72hrButton').css('color', 'var(--color1)'); \n                    $('#archive72hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : restfulDevice.deviceType,\n                name : restfulDevice.name, \n                attr : ['tempA','tempB'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n//            $( \"#messageDialog\" ).dialog( \"close\" );\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '500',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : plotConfig.trace1Title,\n                    titlefont       : {color: plotConfig.trace1Color},\n                    tickfont        : {color:plotConfig.trace1Color},\n                    gridcolor       : plotConfig.trace1GridColor,\n                    zerolinecolor   : plotConfig.trace1GridColor,\n                    linecolor       : plotConfig.trace1GridColor\n\n                },\n                yaxis2:\n                {\n                    title           : plotConfig.trace2Title,\n                    titlefont       : {color: plotConfig.trace2Color},\n                    tickfont        : {color:plotConfig.trace2Color},\n                    gridcolor       : plotConfig.trace2GridColor,\n                    zerolinecolor   : plotConfig.trace2GridColor,\n                    linecolor       : plotConfig.trace2GridColor,\n                    overlaying: 'y',\n                    side: 'right'\n                },\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            this.trace1 = \n            {\n                x: [],\n                y: [],\n                name: plotConfig.trace1Title,\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines'\n\n            };\n            this.trace2 = \n            {\n                x: [],\n                y: [],\n                name: plotConfig.trace2Title,\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines'\n\n            };\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n//                var x = (archiveList[0].trace[ii].timeStamp - archiveList[0].device.stopDate) / 3600000.0;\n                var x = archiveList[0].trace[ii].timeStamp;\n                trace1.x[ii] = x;\n                trace1.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[0]] ;\n                trace2.x[ii] = x;\n                trace2.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[1]];\n            }\n\n\n            Plotly.newPlot('archiveChart', [trace1,trace2], layout);\n            $('#archive2hrButton').attr(\"disabled\", false); \n            $('#archive4hrButton').attr(\"disabled\", false); \n            $('#archive8hrButton').attr(\"disabled\", false); \n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive72hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n        }\n",
+        "output": "str",
+        "x": 710,
+        "y": 1920,
+        "wires": [
+            [
+                "950b72f5.c6697"
+            ]
+        ]
+    },
+    {
+        "id": "69bd314a.0d7d6",
+        "type": "template",
+        "z": "ffe6c625.6b4a58",
+        "name": "html.archive",
+        "field": "payload.html.archive",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Archive HTML -->\n                <div class='card' id=archiveCardId>\n                    <p class='card-title'>Archive</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' >\n                            <table width='100%'>\n                                <tr>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive2hrButton\" onclick=\"getArchive(2)\" >2</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive4hrButton\" onclick=\"getArchive(4)\" >4</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive8hrButton\" onclick=\"getArchive(8)\" >8</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive24hrButton\" onclick=\"getArchive(24)\" >24</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive72hrButton\" onclick=\"getArchive(72)\" >72</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive168hrButton\" onclick=\"getArchive(168)\" >168</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <span class='big-text' >Hours</span>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                        <div class='row vert-pad'>\n                            <div class='col-md-12'>\n                                <div id=\"archiveChart\" width=\"100%\" ></div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1030,
+        "y": 1880,
+        "wires": [
+            [
+                "ed792a6f.1bde88"
+            ]
+        ]
+    },
+    {
+        "id": "7046d901.e55a88",
+        "type": "subflow:8341090a.df9758",
+        "z": "ffe6c625.6b4a58",
+        "name": "",
+        "x": 1290,
+        "y": 2040,
+        "wires": []
+    },
+    {
+        "id": "db9d883c.ac8388",
+        "type": "http in",
+        "z": "ffe6c625.6b4a58",
+        "name": "/blinky-DS18B20",
+        "url": "/blinky-DS18B20",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 1800,
+        "wires": [
+            [
+                "c60ceb50.56e168"
+            ]
+        ]
+    },
+    {
+        "id": "c60ceb50.56e168",
+        "type": "function",
+        "z": "ffe6c625.6b4a58",
+        "name": "Allowed Roles",
+        "func": "msg.payload.allowedRoles = ['appView'];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 140,
+        "y": 1840,
+        "wires": [
+            [
+                "5c23231.a0fd0dc"
+            ]
+        ]
+    },
+    {
+        "id": "5c23231.a0fd0dc",
+        "type": "subflow:2d027d69.1fdeb2",
+        "z": "ffe6c625.6b4a58",
+        "x": 140,
+        "y": 1880,
+        "wires": [
+            [
+                "a5d816c3.2759d8"
             ]
         ]
     }
