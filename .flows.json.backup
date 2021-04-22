@@ -10276,7 +10276,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "Blinky-Lite",
+        "template": "BL-MC",
         "output": "str",
         "x": 230,
         "y": 440,
@@ -10314,7 +10314,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Body HTML -->\n    <div width=\"100%\" >\n        <div class='row no-gutters' >\n            <div class='col-12' align='center'>\n                <img src=\"/img/BlinkySplashScreen.png\" width=\"900px\" style=\"padding-bottom:20px;\"/>\n            </div>\n        </div>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\">\n                    <tr>\n                        <td width=\"33%\"><a class=\"btn btn-primary btn-lg btn-block\" href='/overview'>Overview</a></td>\n                        <td width=\"33%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/features'>Features</a></td>\n                        <td width=\"33%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/apps'>Apps</a></td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n<!-- \n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\">\n                    <tr>\n                        <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/examples'>Examples</a></td>\n                        <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/blinky-thermal-suite'>Blinky Thermal Suite</a></td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n -->\n        <hr>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <span class=\"card-text\">Contact: blinky-lite@blinky-lite.io</span>\n            </div>\n        </div>\n    </div>\n",
+        "template": "<!-- Body HTML -->\n    <div width=\"100%\" >\n        <div class='row no-gutters' >\n            <div class='col-12' align='center'>\n                <img src=\"/img/bl-mcSplashScreen.png\" width=\"900px\" style=\"padding-bottom:20px;\"/>\n            </div>\n        </div>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\">\n                    <tr>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\" href='/overview'>Overview</a></td>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/aboutUs'>About Us</a></td>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/examples'>Examples</a></td>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/apps'>Apps</a></td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n<!-- \n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\">\n                    <tr>\n                        <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/examples'>Examples</a></td>\n                        <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/blinky-thermal-suite'>Blinky Thermal Suite</a></td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n -->\n        <hr>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <span class=\"card-text\">Contact: blinky-lite@blinky-lite.io</span>\n            </div>\n        </div>\n    </div>\n",
         "output": "str",
         "x": 350,
         "y": 440,
@@ -10359,7 +10359,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "Blinky-Lite Examples",
+        "template": "BL-MC Examples",
         "output": "str",
         "x": 450,
         "y": 500,
@@ -15013,8 +15013,7 @@
         "y": 240,
         "wires": [
             [
-                "ee4c177c.2435b8",
-                "168be7f4.f4fb78"
+                "ee4c177c.2435b8"
             ]
         ]
     },
@@ -17473,21 +17472,5 @@
                 "43f8cd9a.28a164"
             ]
         ]
-    },
-    {
-        "id": "168be7f4.f4fb78",
-        "type": "debug",
-        "z": "e17f7487.2a78e8",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1180,
-        "y": 260,
-        "wires": []
     }
 ]
