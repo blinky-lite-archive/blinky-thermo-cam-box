@@ -1,4 +1,4 @@
-# blinky-basic box
+# bl-mc box
 ## need to add .env file with the following
 PROJECT=blinky-lite-v2  
 ARCHIVETOPIC=blinky-lite-v2/+/+/reading  
