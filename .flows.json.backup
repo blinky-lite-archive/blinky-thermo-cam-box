@@ -2548,7 +2548,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "Blinky-Lite Core",
+        "template": "Core Applications",
         "output": "str",
         "x": 1150,
         "y": 60,
@@ -3836,7 +3836,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "Blinky-Lite",
+        "template": "Log-in",
         "output": "str",
         "x": 350,
         "y": 1540,
@@ -4512,7 +4512,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "Blinky-Lite Apps",
+        "template": "Applications",
         "output": "str",
         "x": 320,
         "y": 100,
@@ -5924,7 +5924,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "Blinky-Lite",
+        "template": "Log-in",
         "output": "str",
         "x": 750,
         "y": 120,
@@ -10314,7 +10314,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Body HTML -->\n    <div width=\"100%\" >\n        <div class='row no-gutters' >\n            <div class='col-12' align='center'>\n                <img src=\"/img/bl-mcSplashScreen.png\" width=\"900px\" style=\"padding-bottom:20px;\"/>\n            </div>\n        </div>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\">\n                    <tr>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\" href='/overview'>Overview</a></td>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/aboutUs'>About Us</a></td>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/examples'>Examples</a></td>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/apps'>Apps</a></td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n<!-- \n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\">\n                    <tr>\n                        <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/examples'>Examples</a></td>\n                        <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/blinky-thermal-suite'>Blinky Thermal Suite</a></td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n -->\n        <hr>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <span class=\"card-text\">Contact: blinky-lite@blinky-lite.io</span>\n            </div>\n        </div>\n    </div>\n",
+        "template": "<!-- Body HTML -->\n    <div width=\"100%\" >\n        <div class='row no-gutters' >\n            <div class='col-12' align='center'>\n                <img src=\"/img/bl-mcSplashScreen.png\" width=\"900px\" style=\"padding-bottom:20px;\"/>\n            </div>\n        </div>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\">\n                    <tr>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\" href='/overview'>Overview</a></td>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/aboutUs'>People</a></td>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/examples'>Products</a></td>\n                        <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/apps'>Apps</a></td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n<!-- \n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\">\n                    <tr>\n                        <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/examples'>Examples</a></td>\n                        <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/blinky-thermal-suite'>Blinky Thermal Suite</a></td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n -->\n        <hr>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <span class=\"card-text\">Contact: info@bl-mc.se</span>\n            </div>\n        </div>\n    </div>\n",
         "output": "str",
         "x": 350,
         "y": 440,
@@ -10359,7 +10359,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "BL-MC Examples",
+        "template": "Products",
         "output": "str",
         "x": 450,
         "y": 500,
@@ -10378,7 +10378,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- navBar -->\n    <div class=\"jumbotron navbar-fixed-top\" style=\"background-color:white;color: #547792;padding-top:10px; padding-bottom:10px;\" width=\"100%\" >\n        <div class='row'>\n            <div class='col-md-2' align='left'>\n                <a href='/'>\n                    <img src=\"/img/BlinkyLogo.gif\" height=\"75px\"/>\n                </a>                \n            </div>\n            <div class='col-md-8' align='center'>\n                <h1 class=\"jumbotron-title big-text bold-text\">\n                    <span>{{{payload.title}}}</span>\n                </h1>\n            </div>\n            <div class='col-md-2' align='right'>\n                <a href='/'>\n                    <img src=\"/img/homeBlue.png\" height=\"75px\"/>\n                </a>                \n            </div>\n        </div>\n    </div>\n",
+        "template": "<!-- navBar -->\n    <div class=\"jumbotron navbar-fixed-top\" style=\"background-color:white;color: #547792;padding-top:10px; padding-bottom:10px;\" width=\"100%\" >\n        <div class='row'>\n            <div class='col-md-2' align='left'>\n                <a href='/'>\n                    <img src=\"/img/bl-mc-icon.png\" height=\"75px\"/>\n                </a>                \n            </div>\n            <div class='col-md-8' align='center'>\n                <h1 class=\"jumbotron-title big-text bold-text\">\n                    <span>{{{payload.title}}}</span>\n                </h1>\n            </div>\n            <div class='col-md-2' align='right'>\n                <a href='/'>\n                    <img src=\"/img/homeBlue.png\" height=\"75px\"/>\n                </a>                \n            </div>\n        </div>\n    </div>\n",
         "output": "str",
         "x": 320,
         "y": 80,
@@ -10416,7 +10416,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Body HTML -->\n    <div width=\"100%\" id=\"bodyContentId\" align=\"center\" style = \"overflow-y: scroll; height:1000px; overflow-x: hidden;\">\n        <table width=\"100px\">\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.modeZero}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyThermo}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyThermoCam}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkySsrBake}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyRelayBake}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyPowerRelay}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyStepper}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyEnv}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyCosmicInterval}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyShiver}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyShaker}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyFever}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyWind}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkySolarSystem}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyBasic}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.nbFreezerMon}}}\n                </td>\n            </tr>\n        </table>\n    </div>\n    <div width=\"100%\" align=\"center\">\n        <hr>\n        <div class='row'>\n            <div class='col-md-12' align='center'>\n                <span class=\"card-text\">Contact: blinky-lite@blinky-lite.io</span>\n            </div>\n        </div>\n    </div>\n",
+        "template": "<!-- Body HTML -->\n    <div width=\"100%\" id=\"bodyContentId\" align=\"center\" style = \"overflow-y: scroll; height:1000px; overflow-x: hidden;\">\n        <table width=\"100px\">\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.modeZero}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyThermo}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyThermoCam}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkySsrBake}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyRelayBake}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyPowerRelay}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyStepper}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyEnv}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyCosmicInterval}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyShiver}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyShaker}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyFever}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyWind}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkySolarSystem}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.blinkyBasic}}}\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n{{{payload.html.nbFreezerMon}}}\n                </td>\n            </tr>\n        </table>\n    </div>\n    <div width=\"100%\" align=\"center\">\n        <hr>\n        <div class='row'>\n            <div class='col-md-12' align='center'>\n                <span class=\"card-text\">Contact: info@bl-mc.se</span>\n            </div>\n        </div>\n    </div>\n",
         "output": "str",
         "x": 850,
         "y": 1100,
@@ -11575,7 +11575,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 100,
-        "y": 1240,
+        "y": 1160,
         "wires": [
             [
                 "bba39af5.b80438"
@@ -11591,10 +11591,10 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "Blinky-Lite Overview",
+        "template": "Overview",
         "output": "str",
         "x": 230,
-        "y": 1240,
+        "y": 1160,
         "wires": [
             [
                 "314dbc36.31da74"
@@ -11613,7 +11613,7 @@
         "template": "        useWebSockets(false);\n        function onDocumentReady()\n        {\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n\n",
         "output": "str",
         "x": 480,
-        "y": 1240,
+        "y": 1160,
         "wires": [
             [
                 "d368bce5.2285e"
@@ -11629,10 +11629,10 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Body HTML -->\n    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr style='padding-bottom: 10px;'>\n                <td align=\"center\">\n                    <img src=\"/img/infoPics/ControlBox.png\" width=\"800px\" style=\"padding-bottom:1px;\"/>\n                    <hr>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n                    <ul class=\"card-text\" style=\"font-size: 190%;\">\n                        <li><b>Blinky-Lite</b>\n                            <ul>\n                                <li>is a full-stack Internet of Things (IoT) control platform</li> \n                                <li>designed to be easy-to-use for engineers</li>\n                            </ul>\n                        </li>\n                        <li><b>Blinky Lite</b> has been used to control\n                            <ul>\n                                <li>simple medical diagnostics</li>\n                                <li>to complicated particle accelerator systems</li>\n                            </ul>\n                        </li>\n                        <li><b>Blinky Lite IoT technology</b> offers \n                            <ul>\n                                <li>a large array of versatile, inexpensive, and easy-to-use sensors</li>\n                                <li>powerful low cost computing that can placed close to the devices you want to control resulting in high reliablity</li>\n                                <li>cloud services for low maintenance, high reliablity, and rapid deployment</li>\n                            </ul>\n                        </li>\n                    </ul>                    \n                </td>\n            </tr>\n        </table>\n        <hr>\n        <div class='row'>\n            <div class='col-md-12' align='center'>\n                <span class=\"card-text\">Contact: blinky-lite@blinky-lite.io</span>\n            </div>\n        </div>\n    </div>\n",
+        "template": "<!-- Body HTML -->\n    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr style='padding-bottom: 10px;'>\n                <td>\n                    <span class=\"card-text\">Under Construction</span>\n                </td>\n            </tr>\n        </table>\n        <hr>\n        <div class='row'>\n            <div class='col-md-12' align='center'>\n                <span class=\"card-text\">Contact: blinky-lite@blinky-lite.io</span>\n            </div>\n        </div>\n    </div>\n",
         "output": "str",
         "x": 350,
-        "y": 1240,
+        "y": 1160,
         "wires": [
             [
                 "905fa702.e610f8"
@@ -11644,7 +11644,7 @@
         "type": "subflow:d7162906.0afcd8",
         "z": "a858ad3a.95706",
         "x": 650,
-        "y": 1240,
+        "y": 1160,
         "wires": []
     },
     {
@@ -11673,7 +11673,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "Blinky-Lite Features",
+        "template": "Features",
         "output": "str",
         "x": 230,
         "y": 1300,
@@ -11795,7 +11795,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/BlinkyLogo.gif\" height=\"75px\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title big-text bold-text\">{{{payload.title}}}</h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                    <a href='/core'><img src=\"/img/coreYellow.png\" height=\"75px\"/></a>\n                </td>\n            </tr>\n        </table>\n    </div>\n    \n",
+        "template": "    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/bl-mc-icon-inverse.png\" height=\"75px\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title big-text bold-text\">{{{payload.title}}}</h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                    <a href='/core'><img src=\"/img/coreYellow.png\" height=\"75px\"/></a>\n                </td>\n            </tr>\n        </table>\n    </div>\n    \n",
         "output": "str",
         "x": 280,
         "y": 80,
@@ -11833,7 +11833,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- navBar -->\n    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/BlinkyLogo.gif\" height=\"75px\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title big-text bold-text\">\n                        <img src=\"/img/{{{payload.navBarIcon}}}\" height=\"75px\" style=\"padding-right:20px;\"/><span>{{{payload.title}}}</span>\n                    </h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                    <a href='/apps'><img src=\"/img/appsYellow.png\" height=\"75px\"/></a>\n                </td>\n            </tr>\n        </table>\n    </div>",
+        "template": "<!-- navBar -->\n    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/bl-mc-icon-inverse.png\" height=\"75px\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title big-text bold-text\">\n                        <img src=\"/img/{{{payload.navBarIcon}}}\" height=\"75px\" style=\"padding-right:20px;\"/><span>{{{payload.title}}}</span>\n                    </h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                    <a href='/apps'><img src=\"/img/appsYellow.png\" height=\"75px\"/></a>\n                </td>\n            </tr>\n        </table>\n    </div>",
         "output": "str",
         "x": 280,
         "y": 80,
@@ -16872,7 +16872,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- navBar -->\n    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/BlinkyLogo.gif\" height=\"75px\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title big-text bold-text\">\n                        <img src=\"/img/{{{payload.navBarIcon}}}\" height=\"75px\" style=\"padding-right:20px;\"/><span>{{{payload.title}}}</span>\n                    </h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                </td>\n            </tr>\n        </table>\n    </div>",
+        "template": "<!-- navBar -->\n    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/bl-mc-icon-inverse.png\" height=\"75px\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title big-text bold-text\">\n                        <img src=\"/img/{{{payload.navBarIcon}}}\" height=\"75px\" style=\"padding-right:20px;\"/><span>{{{payload.title}}}</span>\n                    </h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                </td>\n            </tr>\n        </table>\n    </div>",
         "output": "str",
         "x": 1180,
         "y": 380,
@@ -17472,5 +17472,87 @@
                 "43f8cd9a.28a164"
             ]
         ]
+    },
+    {
+        "id": "8f7b8592.335628",
+        "type": "http in",
+        "z": "a858ad3a.95706",
+        "name": "/people",
+        "url": "/people",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 90,
+        "y": 1220,
+        "wires": [
+            [
+                "cbcc05f5.6652d8"
+            ]
+        ]
+    },
+    {
+        "id": "cbcc05f5.6652d8",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "People",
+        "output": "str",
+        "x": 230,
+        "y": 1220,
+        "wires": [
+            [
+                "5067c5d2.7acc5c"
+            ]
+        ]
+    },
+    {
+        "id": "734e0670.7ffab8",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        useWebSockets(false);\n        var hullaVisible = false;\n        var mcginnisVisible = false;\n\n        function onDocumentReady()\n        {\n            $('#hullaCardBody').hide();\n            $('#mcginnisCardBody').hide();\n            hullaVisible = false;\n            mcginnisVisible = false;\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n        function hulla()\n        {\n            if (hullaVisible)\n            {\n                $('#hullaCardBody').hide();\n                hullaVisible = false;\n                $('#hullaBtn').text('More...');\n            }\n            else\n            {\n                $('#hullaCardBody').show();\n                hullaVisible = true;\n                $('#hullaBtn').text('Close');\n            }\n        }\n        function mcginnis()\n        {\n            if (mcginnisVisible)\n            {\n                $('#mcginnisCardBody').hide();\n                mcginnisVisible = false;\n                $('#mcginnisBtn').text('More...');\n            }\n            else\n            {\n                $('#mcginnisCardBody').show();\n                mcginnisVisible = true;\n                $('#mcginnisBtn').text('Close');\n            }\n        }\n\n",
+        "output": "str",
+        "x": 480,
+        "y": 1220,
+        "wires": [
+            [
+                "82289b42.806a58"
+            ]
+        ]
+    },
+    {
+        "id": "5067c5d2.7acc5c",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Body HTML -->\n    <div width=\"100%\" align=\"center\">\n        <table width=\"100px\">\n            <tr style='padding-bottom: 10px;'>\n                <td>\n                    <div class='card' >\n                        <table width='900px'>\n                            <tr>\n                                <td  width='800px' align='left'><span class='card-title'>Blinky-Lite Monitoring and Controls</span></td>\n                                <td  width='100px'></td>\n                            </tr>\n                        </table>\n                        <div class='card-body'>\n                            <div class='row'>\n                                <div class=\"col-12 justify\">\n                                    <p class=\"card-text\" >We are spin-off from MaxIV and the European Spallation Source accelerator laboratories in Lund, Sweden.</p>\n                                    <ul class=\"card-text\">\n                                        <li>We have over forty years of combined experience working at big science facilities.</li>\n                                        <li>Our expertise covers a wide spectrum of fields from electronics design, RF engineering, renewable energy, ultra-high vacuum technology to software programming, cloud computing, machine learning, and web application design.</li>\n                                    </ul>                    \n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                    <hr>\n                </td>\n            </tr>\n            <tr>\n                <td>\n                    <div class='card' id=\"hullaCard\">\n                        <table width='900px'>\n                            <tr>\n                                <td  width='400px' align='left'><span class='card-title'>Georg Hulla Ph.D</span></td>\n                                <td  width='400px' align='left'><span class='card-text' style=\"color:white\">georg.hulla@bl-mc.se</span></td>\n                                <td  width='100px'><button class=\"btn btn-block card-text\" style=\"background-color:var(--color1);color:white\" type=\"button\" id=\"hullaBtn\" onclick=\"hulla()\">More...</button></td>\n                            </tr>\n                        </table>\n                        <div class='card-body' id=\"hullaCardBody\">\n                            <div class='row'>\n                                <div class=\"col-12 justify\">\n                                <table width='850px'>\n                                    <tr>\n                                        <td  width='250px'><img src=\"/img/founders/hulla.jpg\" width=\"250px\"/></td>\n                                        <td  width='600px' align='left' style='padding-left: 20px;'>\n                                            <span class=\"card-text\">Georg Hulla is one of the Co-founders of BL Monitor & Control AB and currently works at ESS in Lund.</span>\n                                        </td>\n                                    </tr>\n                                </table>\n                                </div>\n                            </div>\n                            <div class='row'>\n                                <div class=\"col-12 justify\">\n                                    <ul class=\"card-text\" >\n                                        <li>He has obtained his PhD in applied physics from the Vienna University of Technology for work related to dynamic vacuum effects in the LHC (CERN) in 2008.</li>\n                                        <li>Between 2009-2013 he was responsible for the design, procurement, installation and testing of the vacuum system of MedAustron, a hadron therapy center built in Austria in collaboration with CERN.</li>\n                                        <li>In 2013 he started at ESS as vacuum systems engineer and was later responsible for in-kind coordination of NCL systems from Italy, France and Spain.</li>\n                                        <li>Between 2017-2019 he did an executive Master in Business Administration at the EFL Business School in Lund/Sweden.</li>\n                                    </ul>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                    <hr>\n                </td>\n            </tr>\n            <tr>\n                <td>\n                    <div class='card' id=\"mcginnisCard\">\n                        <table width='900px'>\n                            <tr>\n                                <td  width='400px' align='left'><span class='card-title'>David McGinnis Ph.D</span></td>\n                                <td  width='400px' align='left'><span class='card-text' style=\"color:white\">david.mcginnis@bl-mc.se</span></td>\n                                <td  width='100px'><button class=\"btn btn-block card-text\" style=\"background-color:var(--color1);color:white\" type=\"button\" id=\"mcginnisBtn\" onclick=\"mcginnis()\">More...</button></td>\n                            </tr>\n                        </table>\n                        <div class='card-body' id=\"mcginnisCardBody\">\n                            <div class='row'>\n                                <div class=\"col-12 justify\">\n                                <table width='850px'>\n                                    <tr>\n                                        <td  width='250px'><img src=\"/img/founders/mcginnis.jpg\" width=\"250px\"/></td>\n                                        <td  width='600px' align='left' style='padding-left: 20px;'>\n                                            <span class=\"card-text\" >David McGinnis is one of the Co-founders of BL Monitor & Control AB and currently works at MaxIV in Lund.</span>\n                                        </td>\n                                    </tr>\n                                </table>\n                                </div>\n                            </div>\n                            <div class='row'>\n                                <div class=\"col-12 justify\">\n                                    <ul class=\"card-text\" >\n                                        <li>He has obtained his PhD in electrical engineering from the University of Wisconsin-Madison for work in superconducting millimeter-wave devices.</li>\n                                        <li>Between 1988-2011 he worked at Fermi National Laboratory specializing in the stochastic cooling of anti-protons. He was made a fellow in the American Physical Society for his contributions to the field of particle accelerators</li>\n                                        <li>From 2011-2018 he worked at ESS as the RF group leader and chief engineer for the ESS Linac.</li>\n                                        <li>In 2018 he started work at Max IV laboratory as the RF group leader. He developed the Mode-0 beam stabilization system based on the Blinky-Lite control platform which led to the doubling of the MaxIV beam intensity.</li>\n                                    </ul>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                    <hr>\n                </td>\n            </tr>\n        </table>\n    </div>\n    <div class='row'>\n        <div class='col-md-12' align='center'>\n            <span class=\"card-text\">Contact: blinky-lite@blinky-lite.io</span>\n        </div>\n    </div>\n",
+        "output": "str",
+        "x": 350,
+        "y": 1220,
+        "wires": [
+            [
+                "734e0670.7ffab8"
+            ]
+        ]
+    },
+    {
+        "id": "82289b42.806a58",
+        "type": "subflow:d7162906.0afcd8",
+        "z": "a858ad3a.95706",
+        "x": 650,
+        "y": 1220,
+        "wires": []
     }
 ]
