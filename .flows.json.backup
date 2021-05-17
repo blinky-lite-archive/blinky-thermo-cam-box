@@ -673,7 +673,7 @@
     {
         "id": "de23cc99.e470e",
         "type": "websocket-listener",
-        "path": "/blinky-brantevik/websocket",
+        "path": "/brantevik/websocket",
         "wholemsg": "false"
     },
     {
@@ -17903,7 +17903,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "Brantevik Temperatur",
+        "template": "Brantevik",
         "output": "str",
         "x": 460,
         "y": 700,
@@ -17922,7 +17922,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "thermoYellow.png",
+        "template": "BrantevikLogo.png",
         "output": "str",
         "x": 470,
         "y": 660,
@@ -17947,7 +17947,7 @@
         "y": 660,
         "wires": [
             [
-                "3156028a.3d4f7e"
+                "2a5101d0.d7fdbe"
             ]
         ]
     },
@@ -17960,13 +17960,13 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.archive}}}\n",
+        "template": "{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.archive}}}\n{{{payload.script.horzbarWidget}}}\n",
         "output": "str",
         "x": 740,
-        "y": 780,
+        "y": 820,
         "wires": [
             [
-                "ef3a904c.592f2"
+                "750b8de.cf3da74"
             ]
         ]
     },
@@ -17979,7 +17979,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "    <div width=\"100%\">\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.dashboard}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.archive}}}\n            </div>\n        </div>\n    </div>",
+        "template": "    <div width=\"100%\">\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.temperatureBar}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.archive}}}\n            </div>\n        </div>\n    </div>",
         "output": "str",
         "x": 1050,
         "y": 740,
@@ -17998,10 +17998,10 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Update Readings Javascript\n        function updateSolarRegulator(device)\n        {\n            var outsideT = Math.round(100 * device.outsideT.value) / 100;\n\n            $('#outsideTemperature').text(outsideT.toString() + ' C');\n\n        }\n",
+        "template": "// Update Readings Javascript\n        function updateSolarRegulator(device)\n        {\n            var outsideT = Math.round(device.outsideT.value * 10) / 10;\n            var temperatureBarConfig = \n                {\n                    lolo            : device.outsideT.alarm.limits.lolo, \n                    low             : device.outsideT.alarm.limits.low, \n                    high            : device.outsideT.alarm.limits.high, \n                    hihi            : device.outsideT.alarm.limits.hihi, \n                    value           : outsideT, \n                    unit            : device.outsideT.unit, \n                    textsize        : 38,\n                    label           : 'ultraAmp', \n                    lowColor        : '#0000ff', \n                    mediumColor     : '#00ff00',\n                    highColor       : 'ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    gridColor       : '#ffffff',\n                    height          : 300, \n                    htmlId          : 'temperatureBarPlot'\n                };\n            setHorzBarWidget(temperatureBarConfig);\n\n        }\n",
         "output": "str",
         "x": 780,
-        "y": 700,
+        "y": 740,
         "wires": [
             [
                 "f23e0a81.c83ac8"
@@ -18020,7 +18020,7 @@
         "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive720hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            $('#archive720hrButton').css('color', 'var(--color5)'); \n            $('#archive720hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 720:\n                    $('#archive720hrButton').css('color', 'var(--color1)'); \n                    $('#archive720hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : 'solar-regulator',\n                name : '01', \n                attr : ['outsideT'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n            var plotConfig = \n            {\n                trace1Title : 'Temp. (C)',\n                trace1Color : '#557a95',\n                trace1GridColor : '#beceda',\n                trace2Title : 'Temp. (C)',\n                trace2Color : '#f2a31f',\n                trace2GridColor : '#f2a31f',\n                plotLength  : 600000,\n                width   : '',\n                height  :   '500',\n                htmlId  :   'historyStripChart'\n            };\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '500',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : 'Temperatur (C)',\n                    titlefont       : {color: 'black'},\n                    tickfont        : {color: 'black'},\n                    gridcolor       : 'grey',\n                    zerolinecolor   : 'grey',\n                    linecolor       : 'grey'\n//                    range           : [0,30],\n//                    dtick           :  5\n\n                },\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'Lufttemperatur',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  plotConfig.trace1Color,width:2},\n                visible: true\n\n            };\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                var x = archiveList[0].trace[ii].timeStamp;\n                trace1.x[ii] = x;\n                trace1.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[0]] ;\n            }\n            Plotly.newPlot('archiveChart', [trace1], layout);\n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n            $('#archive720hrButton').attr(\"disabled\", false); \n        }\n",
         "output": "str",
         "x": 750,
-        "y": 740,
+        "y": 780,
         "wires": [
             [
                 "f6540785.0c9fb8"
@@ -18050,35 +18050,16 @@
         "id": "3b30a677.06649a",
         "type": "http in",
         "z": "d6667d7b.35cd6",
-        "name": "/blinky-brantevik",
-        "url": "/blinky-brantevik",
+        "name": "/brantevik",
+        "url": "/brantevik",
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 140,
+        "x": 120,
         "y": 660,
         "wires": [
             [
                 "cd779c9d.60d98"
-            ]
-        ]
-    },
-    {
-        "id": "ef3a904c.592f2",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "html.dashboard",
-        "field": "payload.html.dashboard",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "<!-- Dashboard HTML -->\n                <div class='card'>\n                    <p class='card-title'>Instrumentbräda</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'  style='padding-top: 0px;'>\n                            <table width='100%'>\n                                <tr>\n                                    <td width='50%' >\n                                        <span class='card-text' style='color:var(--color1);' >Lufttemperatur</span>\n                                    </td>\n                                    <td width='35%' align='right'>\n                                        <span class='card-text' id='outsideTemperature' ></span>\n                                    </td>\n                                    <td width='15%' align='center'>\n                                        <span class='card-text' ></span>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n",
-        "output": "str",
-        "x": 1080,
-        "y": 660,
-        "wires": [
-            [
-                "f22e6662.99f158"
             ]
         ]
     },
@@ -18119,7 +18100,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- navBar -->\n    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/bl-mc-icon-inverse.png\" height=\"75px\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title big-text bold-text\">\n                        <img src=\"/img/{{{payload.navBarIcon}}}\" height=\"75px\" style=\"padding-right:20px;\"/><span>{{{payload.title}}}</span>\n                    </h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                    <a href='http://beta.brantevik.se/' >\n                        <img src=\"/img/BrantevikLogo.png\" height=\"75px\"/>\n                    </a>                \n                </td>\n            </tr>\n        </table>\n    </div>\n",
+        "template": "<!-- navBar -->\n    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/bl-mc-icon-inverse.png\" height=\"75px\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title big-text bold-text\">\n                        <img src=\"/img/{{{payload.navBarIcon}}}\" height=\"75px\" style=\"padding-right:20px;\"/><span>{{{payload.title}}}</span>\n                    </h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                </td>\n            </tr>\n        </table>\n    </div>\n",
         "output": "str",
         "x": 1320,
         "y": 740,
@@ -18133,11 +18114,11 @@
         "id": "5485eaa2.de5e84",
         "type": "websocket out",
         "z": "d6667d7b.35cd6",
-        "name": "/blinky-brantevik/websocket",
+        "name": "/brantevik/websocket",
         "server": "de23cc99.e470e",
         "client": "",
-        "x": 1280,
-        "y": 880,
+        "x": 1260,
+        "y": 900,
         "wires": []
     },
     {
@@ -18150,7 +18131,7 @@
             "5d622fc9.ab529"
         ],
         "x": 1125,
-        "y": 880,
+        "y": 900,
         "wires": [
             [
                 "5485eaa2.de5e84"
@@ -18166,7 +18147,7 @@
         "action": "obj",
         "pretty": false,
         "x": 390,
-        "y": 880,
+        "y": 900,
         "wires": [
             [
                 "845e16a7.884d78"
@@ -18184,7 +18165,7 @@
         "initialize": "",
         "finalize": "",
         "x": 520,
-        "y": 880,
+        "y": 900,
         "wires": [
             [
                 "a66aeb44.77e748"
@@ -18195,11 +18176,11 @@
         "id": "803bd6ea.2ae658",
         "type": "websocket in",
         "z": "d6667d7b.35cd6",
-        "name": "/blinky-brantevik/websocket",
+        "name": "/brantevik/websocket",
         "server": "de23cc99.e470e",
         "client": "",
-        "x": 200,
-        "y": 880,
+        "x": 180,
+        "y": 900,
         "wires": [
             [
                 "70b02b07.4ac794"
@@ -18215,7 +18196,45 @@
             "c4595efc.a717b"
         ],
         "x": 635,
-        "y": 880,
+        "y": 900,
         "wires": []
+    },
+    {
+        "id": "2a5101d0.d7fdbe",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "script.horzbarWidget",
+        "field": "payload.script.horzbarWidget",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Horz Bar Widget\n        function setHorzBarWidget(barConfig)\n        {\n            var lowValue = 0;\n            var mediumValue = 0;\n            var highValue = 0;\n        \n            var lowColor = barConfig.backgroundColor;\n            var mediumColor = barConfig.backgroundColor;\n            var highColor = barConfig.backgroundColor;\n            var valueColor = barConfig.backgroundColor; \n            \n            if ( barConfig.value <= barConfig.lolo)\n            {\n                lowValue = barConfig.lolo;\n                lowColor = barConfig.lowColor;\n                valueColor = lowColor;\n            }\n            if ( (barConfig.lolo <= barConfig.value) && (barConfig.value < barConfig.low) )\n            {\n                lowValue = barConfig.value;\n                lowColor = barConfig.lowColor;\n                valueColor = lowColor;\n            }\n            if ( (barConfig.low  <= barConfig.value) && (barConfig.value < barConfig.high) )\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.value - barConfig.low; \n                lowColor = barConfig.mediumColor;\n                mediumColor = barConfig.mediumColor;\n                valueColor = mediumColor;\n        \n            }\n            if ( (barConfig.high <= barConfig.value) && (barConfig.value < barConfig.hihi) )\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.high - barConfig.low;\n                highValue = barConfig.value - barConfig.high;\n                lowColor = barConfig.highColor;\n                mediumColor = barConfig.highColor;\n                highColor = barConfig.highColor;\n                valueColor = highColor;\n            }\n            if ( barConfig.hihi <= barConfig.value)\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.high - barConfig.low; \n                highValue = barConfig.hihi - barConfig.high; \n                lowColor = barConfig.highColor;\n                mediumColor = barConfig.highColor;\n                highColor = barConfig.highColor;\n                valueColor = highColor;\n            }\n            valueColor = 'black';\n            \n            var lowBar = \n            {\n                y: ['', '-'],\n                x: [ barConfig.low, lowValue],\n                type: 'bar',\n                orientation: 'h',\n                showlegend: false,\n                marker:{color: [barConfig.lowColor, lowColor]},\n              width: [0.1, 1.0],\n            };\n            var mediumBar = \n            {\n                y: ['', '-'],\n                x: [barConfig.high - barConfig.low, mediumValue],\n                type: 'bar',\n                orientation: 'h',\n                showlegend: false,\n                marker:{color: [barConfig.mediumColor, mediumColor]},\n              width: [0.1, 1.0],\n            };\n            var highBar = \n            {\n                y: ['', '-'],\n                x: [barConfig.hihi - barConfig.high, highValue],\n                orientation: 'h',\n                type: 'bar',\n                showlegend: false,\n                marker:{color: [barConfig.highColor, highColor]},\n              width: [0.1, 1.0],\n            };\n            var layout = \n                {\n                    barmode: 'stack',\n                    plot_bgcolor:barConfig.backgroundColor,\n                    paper_bgcolor:barConfig.backgroundColor,\n                    margin: \n                        {\n                            t: 110, //top margin\n                            l: 20, //left margin\n                            r: 20, //right margin\n                            b: 70 //bottom margin\n                        },\n \n                    height: barConfig.height,\n                    title: \n                        {\n                            text: barConfig.value.toString() + ' ' + barConfig.unit,\n                            font: {color: valueColor, size: 2 * barConfig.textsize},\n                        },\n                    yaxis: \n                        {\n                            tickfont: {color:valueColor, size:barConfig.textsize}\n                        },\n                    xaxis: \n                        {\n                            range: [barConfig.lolo, barConfig.hihi],\n                            tickfont: {color:barConfig.labelColor, size:barConfig.textsize},\n                            gridcolor       : barConfig.gridColor\n\n                        },\n                };\n           Plotly.newPlot(barConfig.htmlId, [lowBar, mediumBar, highBar], layout, {'displayModeBar': false});\n        }\n        \n        \n        \n        \n        \n    \n",
+        "output": "str",
+        "x": 780,
+        "y": 700,
+        "wires": [
+            [
+                "3156028a.3d4f7e"
+            ]
+        ]
+    },
+    {
+        "id": "750b8de.cf3da74",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "html.temperatureBar",
+        "field": "payload.html.temperatureBar",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Lufttemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"temperatureBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1100,
+        "y": 660,
+        "wires": [
+            [
+                "f22e6662.99f158"
+            ]
+        ]
     }
 ]
