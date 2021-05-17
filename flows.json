@@ -677,6 +677,12 @@
         "wholemsg": "false"
     },
     {
+        "id": "c026b071.1e826",
+        "type": "websocket-listener",
+        "path": "/blinky-wind-demo/websocket",
+        "wholemsg": "false"
+    },
+    {
         "id": "d8aea031.7f89d",
         "type": "http in",
         "z": "dc20c6e0.0feb98",
@@ -5654,7 +5660,8 @@
         "links": [
             "cc1f29ab.67bb78",
             "8257a0f.6bb886",
-            "a66aeb44.77e748"
+            "a66aeb44.77e748",
+            "e826b9af.41ca18"
         ],
         "x": 295,
         "y": 2400,
@@ -15606,7 +15613,8 @@
         "name": "blinky-wind mqtt",
         "links": [
             "435b9182.cc3ac",
-            "4c1a483.bd61eb8"
+            "4c1a483.bd61eb8",
+            "1a07dfbc.75c78"
         ],
         "x": 775,
         "y": 880,
@@ -15619,7 +15627,8 @@
         "name": "blinky-wind-archive",
         "links": [
             "435b9182.cc3ac",
-            "4c1a483.bd61eb8"
+            "4c1a483.bd61eb8",
+            "1a07dfbc.75c78"
         ],
         "x": 1295,
         "y": 2600,
@@ -18236,5 +18245,405 @@
                 "f22e6662.99f158"
             ]
         ]
+    },
+    {
+        "id": "b581b116.5678c",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Blinky Wind {{{payload.script.name}}}",
+        "output": "str",
+        "x": 400,
+        "y": 1140,
+        "wires": [
+            [
+                "618ff602.745408"
+            ]
+        ]
+    },
+    {
+        "id": "d4e48597.6557c8",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "windYellow.png",
+        "output": "str",
+        "x": 410,
+        "y": 1100,
+        "wires": [
+            [
+                "b581b116.5678c"
+            ]
+        ]
+    },
+    {
+        "id": "618ff602.745408",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var device = null;\n        var archiveRequestList = [];\n        var archiveList = [];\n        var programStarted = false;\n\n        var restfulDevice = \n        {\n            deviceType  : 'blinky-wind',\n            name        : '01',\n            project     : 'blinky-lite-v2'\n        };\n\n        var plotConfig = \n        {\n            trace1Title : 'Speed (m/S)',\n            trace1Color : '#557a95',\n            trace1GridColor : '#beceda',\n            trace2Title : 'Temp. (C)',\n            trace2Color : '#f2a31f',\n            trace2GridColor : '#f2a31f',\n            plotLength  : 600000,\n            width   : '',\n            height  :   '500',\n            htmlId  :   'historyStripChart'\n        };\n\n        function onDocumentReady()\n        {\n            $('#archiveCardId').hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                getArchive(24);\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    if ((msg.mqttDevice.name == restfulDevice.name) && (msg.mqttDevice.deviceType == restfulDevice.deviceType)  && (msg.mqttDevice.project == restfulDevice.project) )\n                    {\n                        heartbeat();\n                        device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                        mqttDevice = msg.mqttDevice;\n                        updateDmaReadings();\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
+        "output": "str",
+        "x": 730,
+        "y": 1100,
+        "wires": [
+            [
+                "3a69dfa0.63299"
+            ]
+        ]
+    },
+    {
+        "id": "93f47b9e.e13948",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.horzbarWidget}}}\n{{{payload.script.gaugeWidget}}}\n{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.archive}}}\n",
+        "output": "str",
+        "x": 720,
+        "y": 1300,
+        "wires": [
+            [
+                "48ac4898.7b2a68"
+            ]
+        ]
+    },
+    {
+        "id": "832b205b.b9483",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <div width=\"100%\">\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.temperatureBar}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.windSpeedGauge}}}\n            </div>\n        </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.dashboard}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.archive}}}\n            </div>\n        </div>\n    </div>",
+        "output": "str",
+        "x": 1030,
+        "y": 1260,
+        "wires": [
+            [
+                "5034ad54.3a76c4"
+            ]
+        ]
+    },
+    {
+        "id": "6ef384b2.271b5c",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "script.updateReadings",
+        "field": "payload.script.updateReadings",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Update Readings Javascript\n        function updateDmaReadings()\n        {\n            $('#linkQualityId').text(device.linkQuality.value);\n            $('#signalLevelId').text(device.signalLevel.value);\n            $('#windSpeed').text(getDirectionText(device.windDirection.value) + ': '  + device.windSpeed.value.toString() + ' m/S');\n            $('#windSpeed1').text(getDirectionText(device.windDirection1.value) + ': '  + device.windSpeed1.value.toString() + ' m/S');\n            $('#windSpeed2').text(getDirectionText(device.windDirection2.value) + ': '  + device.windSpeed2.value.toString() + ' m/S');\n            $('#temperature').text(device.temperature.value + ' C');\n            var wd = device.windDirection1.value;\n\n            var windSpeedGaugeConfig = \n                {\n                    lolo            : device.windSpeed2.alarm.limits.lolo, \n                    low             : device.windSpeed2.alarm.limits.low, \n                    high            : device.windSpeed2.alarm.limits.high, \n                    hihi            : device.windSpeed2.alarm.limits.hihi, \n                    value           : device.windSpeed2.value, \n                    unit            : device.windSpeed2.unit, \n                    textsize        : 38,\n                    label           : getDirectionText(device.windDirection2.value), \n                    lowColor        : '#00ff00', \n                    mediumColor     : '#ffff00',\n                    highColor       : '#ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    size            : 800, \n                    htmlId          : 'windSpeedGaugePlot'\n                };\n            setGaugeWidget(windSpeedGaugeConfig);\n            var temperatureBarConfig = \n                {\n                    lolo            : device.temperature.alarm.limits.lolo, \n                    low             : device.temperature.alarm.limits.low, \n                    high            : device.temperature.alarm.limits.high, \n                    hihi            : device.temperature.alarm.limits.hihi, \n                    value           : device.temperature.value, \n                    unit            : device.temperature.unit, \n                    textsize        : 38,\n                    label           : 'ultraAmp', \n                    lowColor        : '#0000ff', \n                    mediumColor     : '#00ff00',\n                    highColor       : 'ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    gridColor       : '#ffffff',\n                    height          : 300, \n                    htmlId          : 'temperatureBarPlot'\n                };\n            setHorzBarWidget(temperatureBarConfig);\n        }\n        function getDirectionText(wd)\n        {\n            var dirText = '';           \n            if ((  0.0 <= wd) && (wd <=  22.5)) dirText = 'N ';\n            if (( 22.5 <  wd) && (wd <=  67.5)) dirText = 'NE';\n            if (( 67.5 <  wd) && (wd <= 112.5)) dirText = 'E ';\n            if ((112.5 <  wd) && (wd <= 157.5)) dirText = 'SE';\n            if ((157.5 <  wd) && (wd <= 202.5)) dirText = 'S ';\n            if ((202.5 <  wd) && (wd <= 247.5)) dirText = 'SW';\n            if ((247.5 <  wd) && (wd <= 292.5)) dirText = 'W ';\n            if ((292.5 <  wd) && (wd <= 337.5)) dirText = 'NW';\n            if ((337.5 <  wd) && (wd <= 360.0)) dirText = 'N ';\n            return dirText;\n        }\n",
+        "output": "str",
+        "x": 760,
+        "y": 1220,
+        "wires": [
+            [
+                "6089aeb0.eddb5"
+            ]
+        ]
+    },
+    {
+        "id": "6089aeb0.eddb5",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "script.archive",
+        "field": "payload.script.archive",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive2hrButton').attr(\"disabled\", true); \n            $('#archive4hrButton').attr(\"disabled\", true); \n            $('#archive8hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive72hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive2hrButton').css('color', 'var(--color5)'); \n            $('#archive2hrButton').css('background-color', 'var(--color1)'); \n            $('#archive4hrButton').css('color', 'var(--color5)'); \n            $('#archive4hrButton').css('background-color', 'var(--color1)'); \n            $('#archive8hrButton').css('color', 'var(--color5)'); \n            $('#archive8hrButton').css('background-color', 'var(--color1)'); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive72hrButton').css('color', 'var(--color5)'); \n            $('#archive72hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 2:\n                    $('#archive2hrButton').css('color', 'var(--color1)'); \n                    $('#archive2hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 4:\n                    $('#archive4hrButton').css('color', 'var(--color1)'); \n                    $('#archive4hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 8:\n                    $('#archive8hrButton').css('color', 'var(--color1)'); \n                    $('#archive8hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 72:\n                    $('#archive72hrButton').css('color', 'var(--color1)'); \n                    $('#archive72hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : restfulDevice.deviceType,\n                name : restfulDevice.name, \n                attr : ['windSpeed','windSpeed1','windSpeed2','temperature'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n//            $( \"#messageDialog\" ).dialog( \"close\" );\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '500',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : plotConfig.trace1Title,\n                    titlefont       : {color: plotConfig.trace1Color},\n                    tickfont        : {color:plotConfig.trace1Color},\n                    gridcolor       : plotConfig.trace1GridColor,\n                    zerolinecolor   : plotConfig.trace1GridColor,\n                    linecolor       : plotConfig.trace1GridColor\n\n                },\n                yaxis2:\n                {\n                    title           : plotConfig.trace2Title,\n                    titlefont       : {color: plotConfig.trace2Color},\n                    tickfont        : {color:plotConfig.trace2Color},\n                    gridcolor       : plotConfig.trace2GridColor,\n                    zerolinecolor   : plotConfig.trace2GridColor,\n                    linecolor       : plotConfig.trace2GridColor,\n                    overlaying: 'y',\n                    side: 'right',\n                },\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'Speed',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color: plotConfig.trace1Color, dash: 'dot'},\n                visible: true\n\n            };\n            var trace2 = \n            {\n                x: [],\n                y: [],\n                name: '2min Avg',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color: 'blue'},\n            };\n            var trace3 = \n            {\n                x: [],\n                y: [],\n                name: '10min Avg',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color: plotConfig.trace1Color,width:3},\n            };\n            var trace4 = \n            {\n                x: [],\n                y: [],\n                name: 'Temp. (C)',\n                yaxis: 'y2',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  plotConfig.trace2Color,width:3},\n                visible: true\n\n            };\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n//                var x = (archiveList[0].trace[ii].timeStamp - archiveList[0].device.stopDate) / 3600000.0;\n                var x = archiveList[0].trace[ii].timeStamp;\n                trace1.x[ii] = x;\n                trace1.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[0]] ;\n                trace2.x[ii] = x;\n                trace2.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[1]] ;\n                trace3.x[ii] = x;\n                trace3.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[2]] ;\n                trace4.x[ii] = x;\n                trace4.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[3]];\n            }\n            Plotly.newPlot('archiveChart', [trace1, trace3, trace4], layout);\n            $('#archive2hrButton').attr(\"disabled\", false); \n            $('#archive4hrButton').attr(\"disabled\", false); \n            $('#archive8hrButton').attr(\"disabled\", false); \n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive72hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n        }\n",
+        "output": "str",
+        "x": 730,
+        "y": 1260,
+        "wires": [
+            [
+                "93f47b9e.e13948"
+            ]
+        ]
+    },
+    {
+        "id": "1185e440.ee0c4c",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "html.archive",
+        "field": "payload.html.archive",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Archive HTML -->\n                <div class='card' id=archiveCardId>\n                    <p class='card-title'>Archive</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' >\n                            <table width='100%'>\n                                <tr>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive2hrButton\" onclick=\"getArchive(2)\" >2</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive4hrButton\" onclick=\"getArchive(4)\" >4</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive8hrButton\" onclick=\"getArchive(8)\" >8</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive24hrButton\" onclick=\"getArchive(24)\" >24</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive72hrButton\" onclick=\"getArchive(72)\" >72</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive168hrButton\" onclick=\"getArchive(168)\" >168</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <span class='big-text' >Hours</span>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                        <div class='row vert-pad'>\n                            <div class='col-md-12'>\n                                <div id=\"archiveChart\" width=\"100%\" ></div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1050,
+        "y": 1220,
+        "wires": [
+            [
+                "832b205b.b9483"
+            ]
+        ]
+    },
+    {
+        "id": "a1ee4bb.4a1bdb8",
+        "type": "http in",
+        "z": "d6667d7b.35cd6",
+        "name": "/blinky-wind-demo",
+        "url": "/blinky-wind-demo",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 1100,
+        "wires": [
+            [
+                "d4e48597.6557c8"
+            ]
+        ]
+    },
+    {
+        "id": "3a69dfa0.63299",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "script.gaugeWidget",
+        "field": "payload.script.gaugeWidget",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// GaugeWidget\n        function setGaugeWidget(gaugeConfig)\n        {\n            var degrees = 180.0 * (gaugeConfig.hihi - gaugeConfig.value) / (gaugeConfig.hihi - gaugeConfig.lolo);\n            if (degrees < 0.0 )   degrees = 0.0;\n            if (degrees > 180.0 ) degrees = 180.0;\n            // Trig to calc meter point\n            var radius = 0.50;\n            var radians = degrees * Math.PI / 180;\n            var x = radius * Math.cos(radians);\n            var y = radius * Math.sin(radians);\n            var path1 = (degrees < 45 || degrees > 135) ? 'M -0.0 -0.025 L 0.0 0.025 L ' : 'M -0.025 -0.0 L 0.025 0.0 L ';\n            // Path: may have to change to create a better triangle\n            var mainPath = path1,\n                pathX = String(x),\n                space = ' ',\n                pathY = String(y),\n                pathEnd = ' Z';\n            var rotation = (180.0 * (gaugeConfig.high - gaugeConfig.lolo) / (gaugeConfig.hihi - gaugeConfig.lolo)) - 90.0;\n            var path = mainPath.concat(pathX,space,pathY,pathEnd);\n        \n            var valueColor = gaugeConfig.backgroundColor; \n            \n            if ( (gaugeConfig.lolo <= gaugeConfig.value) && (gaugeConfig.value < gaugeConfig.low) )\n            {\n                valueColor = gaugeConfig.lowColor;\n            }\n            if ( (gaugeConfig.low  <= gaugeConfig.value) && (gaugeConfig.value < gaugeConfig.high) )\n            {\n                valueColor = gaugeConfig.mediumColor;\n            }\n            if ( (gaugeConfig.high <= gaugeConfig.value) && (gaugeConfig.value < gaugeConfig.hihi) )\n            {\n              valueColor = gaugeConfig.highColor;\n            }\n            if ( gaugeConfig.hihi <= gaugeConfig.value)\n            {\n                valueColor = gaugeConfig.highColor;\n            }\n            valueColor = 'black'\n        \n        \n            var data = \n                [\n                    { \n                        type: 'scatter',\n                        x: [0], y:[0],\n                        marker: {size: 14, color:valueColor},\n                        showlegend: false,\n                        name: gaugeConfig.label,\n                        text: gaugeConfig.value.toString(),\n                        hoverinfo: 'text+name',\n        \n                        \n                    },\n                    { \n                        values: \n                            [\n                                gaugeConfig.hihi - gaugeConfig.high, \n                                gaugeConfig.high - gaugeConfig.low, \n                                gaugeConfig.low  - gaugeConfig.lolo, \n                                gaugeConfig.hihi - gaugeConfig.lolo \n                            ],\n                        rotation: rotation,\n                        text: \n                            [\n                                gaugeConfig.high.toString() + '-' + gaugeConfig.hihi.toString(), \n                                gaugeConfig.low.toString()  + '-' + gaugeConfig.high.toString(), \n                                gaugeConfig.lolo.toString() + '-' + gaugeConfig.low.toString(), \n                                ''\n                            ],\n                        textinfo: 'text',\n                        textposition:'inside',\n                        textfont: {color: gaugeConfig.labelColor, size:gaugeConfig.textsize},\n                        marker: \n                            {\n                                colors:\n                                    [\n                                        gaugeConfig.highColor,\n                                        gaugeConfig.mediumColor,\n                                        gaugeConfig.lowColor, \n                                        gaugeConfig.backgroundColor\n                                    ]\n                            },\n                        hoverinfo: 'label',\n                        hole: 0.5,\n                        type: 'pie',\n                        showlegend: false,\n                        sort: false\n                    }\n                ];\n            var layout = \n                {\n                    shapes:\n                        [\n                            {\n                                type: 'path',\n                                path: path,\n                                fillcolor: valueColor,\n                                line: {color: valueColor }\n                            }\n                        ],\n                    height: gaugeConfig.size,\n                    width: gaugeConfig.size,\n                    title: \n                        {\n                            text:gaugeConfig.label + ': ' + gaugeConfig.value.toString() + ' ' + gaugeConfig.unit,\n                            font: {color: valueColor, size:gaugeConfig.textsize},\n                         },\n                    xaxis: \n                        {\n                            zeroline:false, \n                            showticklabels:false,\n                            showgrid: false, \n                            range: [-1, 1],\n                        },\n                    yaxis: \n                        {\n                            zeroline:false, \n                            showticklabels:false,\n                            showgrid: false, \n                            range: [-1, 1]\n                        },\n                    margin: \n                        {\n                            t: 80, //top margin\n                            l: 0, //left margin\n                            r: 0, //right margin\n                            b: 20 //bottom margin\n                        },\n                    plot_bgcolor:gaugeConfig.backgroundColor,\n                    paper_bgcolor:gaugeConfig.backgroundColor\n            \n                };\n            $('#' + gaugeConfig.htmlId).attr('style','max-height: calc(' + (gaugeConfig.size / 2).toString() + 'px + 20px) !important; overflow:hidden;');\n            Plotly.newPlot(gaugeConfig.htmlId, data, layout, {'displayModeBar': false});\n        }",
+        "output": "str",
+        "x": 750,
+        "y": 1140,
+        "wires": [
+            [
+                "a2ac1ba1.30bf98"
+            ]
+        ]
+    },
+    {
+        "id": "48ac4898.7b2a68",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "html.windSpeedGauge",
+        "field": "payload.html.windSpeedGauge",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Wind Speed</p>\n                         </div>\n                        <div class='col-md-2'>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"windSpeedGaugePlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1080,
+        "y": 1100,
+        "wires": [
+            [
+                "e9447c06.9f6fb"
+            ]
+        ]
+    },
+    {
+        "id": "a2ac1ba1.30bf98",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "script.horzbarWidget",
+        "field": "payload.script.horzbarWidget",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Horz Bar Widget\n        function setHorzBarWidget(barConfig)\n        {\n            var lowValue = 0;\n            var mediumValue = 0;\n            var highValue = 0;\n        \n            var lowColor = barConfig.backgroundColor;\n            var mediumColor = barConfig.backgroundColor;\n            var highColor = barConfig.backgroundColor;\n            var valueColor = barConfig.backgroundColor; \n            \n            if ( barConfig.value <= barConfig.lolo)\n            {\n                lowValue = barConfig.lolo;\n                lowColor = barConfig.lowColor;\n                valueColor = lowColor;\n            }\n            if ( (barConfig.lolo <= barConfig.value) && (barConfig.value < barConfig.low) )\n            {\n                lowValue = barConfig.value;\n                lowColor = barConfig.lowColor;\n                valueColor = lowColor;\n            }\n            if ( (barConfig.low  <= barConfig.value) && (barConfig.value < barConfig.high) )\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.value - barConfig.low; \n                lowColor = barConfig.mediumColor;\n                mediumColor = barConfig.mediumColor;\n                valueColor = mediumColor;\n        \n            }\n            if ( (barConfig.high <= barConfig.value) && (barConfig.value < barConfig.hihi) )\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.high - barConfig.low;\n                highValue = barConfig.value - barConfig.high;\n                lowColor = barConfig.highColor;\n                mediumColor = barConfig.highColor;\n                highColor = barConfig.highColor;\n                valueColor = highColor;\n            }\n            if ( barConfig.hihi <= barConfig.value)\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.high - barConfig.low; \n                highValue = barConfig.hihi - barConfig.high; \n                lowColor = barConfig.highColor;\n                mediumColor = barConfig.highColor;\n                highColor = barConfig.highColor;\n                valueColor = highColor;\n            }\n            valueColor = 'black';\n            \n            var lowBar = \n            {\n                y: ['', '-'],\n                x: [ barConfig.low, lowValue],\n                type: 'bar',\n                orientation: 'h',\n                showlegend: false,\n                marker:{color: [barConfig.lowColor, lowColor]},\n              width: [0.1, 1.0],\n            };\n            var mediumBar = \n            {\n                y: ['', '-'],\n                x: [barConfig.high - barConfig.low, mediumValue],\n                type: 'bar',\n                orientation: 'h',\n                showlegend: false,\n                marker:{color: [barConfig.mediumColor, mediumColor]},\n              width: [0.1, 1.0],\n            };\n            var highBar = \n            {\n                y: ['', '-'],\n                x: [barConfig.hihi - barConfig.high, highValue],\n                orientation: 'h',\n                type: 'bar',\n                showlegend: false,\n                marker:{color: [barConfig.highColor, highColor]},\n              width: [0.1, 1.0],\n            };\n            var layout = \n                {\n                    barmode: 'stack',\n                    plot_bgcolor:barConfig.backgroundColor,\n                    paper_bgcolor:barConfig.backgroundColor,\n                    margin: \n                        {\n                            t: 70, //top margin\n                            l: 20, //left margin\n                            r: 20, //right margin\n                            b: 70 //bottom margin\n                        },\n \n                    height: barConfig.height,\n                    title: \n                        {\n                            text: barConfig.value.toString() + ' ' + barConfig.unit,\n                            font: {color: valueColor, size:barConfig.textsize},\n                        },\n                    yaxis: \n                        {\n                            tickfont: {color:valueColor, size:barConfig.textsize}\n                        },\n                    xaxis: \n                        {\n                            range: [barConfig.lolo, barConfig.hihi],\n                            tickfont: {color:barConfig.labelColor, size:barConfig.textsize},\n                            gridcolor       : barConfig.gridColor\n\n                        },\n                };\n           Plotly.newPlot(barConfig.htmlId, [lowBar, mediumBar, highBar], layout, {'displayModeBar': false});\n        }\n        \n        \n        \n        \n        \n    \n",
+        "output": "str",
+        "x": 760,
+        "y": 1180,
+        "wires": [
+            [
+                "6ef384b2.271b5c"
+            ]
+        ]
+    },
+    {
+        "id": "e9447c06.9f6fb",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "html.temperatureBar",
+        "field": "payload.html.temperatureBar",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Temperature</p>\n                         </div>\n                        <div class='col-md-2'>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"temperatureBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1080,
+        "y": 1140,
+        "wires": [
+            [
+                "5a433823.fcb158"
+            ]
+        ]
+    },
+    {
+        "id": "5a433823.fcb158",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "html.dashboard",
+        "field": "payload.html.dashboard",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Dashboard HTML -->\n                <div class='card'>\n                    <p class='card-title'>Dashboard</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'  style='padding-top: 0px;'>\n                            <table width='100%'>\n                                <tr>\n                                    <td width='50%' >\n                                        <span class='card-text' id='temperatureLabel' >Temperature</span>\n                                    </td>\n                                    <td width='35%' align='center'>\n                                        <span class='card-text' id='temperature' >-100</span>\n                                    </td>\n                                    <td width='15%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='50%' >\n                                        <span class='card-text' id='windSpeedLabel' >Wind Speed</span>\n                                    </td>\n                                    <td width='35%' align='center'>\n                                        <span class='card-text' id='windSpeed' >-100</span>\n                                    </td>\n                                    <td width='15%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='50%' >\n                                        <span class='card-text' id='windSpeed1Label' >Wind Speed (2 min)</span>\n                                    </td>\n                                    <td width='35%' align='center'>\n                                        <span class='card-text' id='windSpeed1' >-100</span>\n                                    </td>\n                                    <td width='15%'>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='50%' >\n                                        <span class='card-text' id='windSpeed2Label' >Wind Speed (10 min)</span>\n                                    </td>\n                                    <td width='35%' align='center'>\n                                        <span class='card-text' id='windSpeed2' >-100</span>\n                                    </td>\n                                    <td width='15%'>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 1060,
+        "y": 1180,
+        "wires": [
+            [
+                "1185e440.ee0c4c"
+            ]
+        ]
+    },
+    {
+        "id": "58d92e10.6a3b8",
+        "type": "subflow:ca529822.9112f8",
+        "z": "d6667d7b.35cd6",
+        "name": "",
+        "x": 1470,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "5034ad54.3a76c4",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "CSS",
+        "field": "payload.css",
+        "fieldType": "msg",
+        "format": "css",
+        "syntax": "mustache",
+        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n          background-color: white !important;\n          padding-left:25px;\n          padding-right:25px;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
+        "output": "str",
+        "x": 1210,
+        "y": 1260,
+        "wires": [
+            [
+                "62a182d5.356a4c"
+            ]
+        ]
+    },
+    {
+        "id": "62a182d5.356a4c",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "navBar",
+        "field": "payload.navBar",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- navBar -->\n    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/bl-mc-icon-inverse.png\" height=\"75px\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title big-text bold-text\">\n                        <img src=\"/img/{{{payload.navBarIcon}}}\" height=\"75px\" style=\"padding-right:20px;\"/><span>{{{payload.title}}}</span>\n                    </h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                </td>\n            </tr>\n        </table>\n    </div>",
+        "output": "str",
+        "x": 1340,
+        "y": 1260,
+        "wires": [
+            [
+                "58d92e10.6a3b8"
+            ]
+        ]
+    },
+    {
+        "id": "638cccad.2b4304",
+        "type": "websocket out",
+        "z": "d6667d7b.35cd6",
+        "name": "/blinky-wind-demo/websocket",
+        "server": "c026b071.1e826",
+        "client": "",
+        "x": 1280,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "1a07dfbc.75c78",
+        "type": "link in",
+        "z": "d6667d7b.35cd6",
+        "name": "blinky-bastu web socket input",
+        "links": [
+            "304b3835.9b6918",
+            "6d200160.afc65"
+        ],
+        "x": 1125,
+        "y": 1400,
+        "wires": [
+            [
+                "638cccad.2b4304"
+            ]
+        ]
+    },
+    {
+        "id": "c5cd2178.c6503",
+        "type": "json",
+        "z": "d6667d7b.35cd6",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 390,
+        "y": 1400,
+        "wires": [
+            [
+                "289019ef.8c81d6"
+            ]
+        ]
+    },
+    {
+        "id": "289019ef.8c81d6",
+        "type": "function",
+        "z": "d6667d7b.35cd6",
+        "name": "Shift msg",
+        "func": "return msg.payload;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 520,
+        "y": 1400,
+        "wires": [
+            [
+                "e826b9af.41ca18"
+            ]
+        ]
+    },
+    {
+        "id": "172247f5.e6f138",
+        "type": "websocket in",
+        "z": "d6667d7b.35cd6",
+        "name": "/blinky-wind-demo/websocket",
+        "server": "c026b071.1e826",
+        "client": "",
+        "x": 200,
+        "y": 1400,
+        "wires": [
+            [
+                "c5cd2178.c6503"
+            ]
+        ]
+    },
+    {
+        "id": "e826b9af.41ca18",
+        "type": "link out",
+        "z": "d6667d7b.35cd6",
+        "name": "blinky-bastu archive request",
+        "links": [
+            "c4595efc.a717b"
+        ],
+        "x": 635,
+        "y": 1400,
+        "wires": []
     }
 ]
