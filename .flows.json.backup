@@ -16886,6 +16886,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
+        "libs": [],
         "x": 380,
         "y": 460,
         "wires": [
@@ -16982,6 +16983,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
+        "libs": [],
         "x": 890,
         "y": 460,
         "wires": [
@@ -17994,7 +17996,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Global Javascript\n        useWebSockets(true);\n        var archiveRequestList = [];\n        var archiveList = [];\n        var programStarted = false;\n\n        function onDocumentReady()\n        {\n            $('#archiveCardId').hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                getArchive(24);\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    if ((device.deviceType == \"solar-regulator\")    && (device.name == \"01\")) updateAirTemp(device);\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"03\")) updateWaterTemp(device);\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var archiveRequestList = [];\n        var archiveList = [];\n        var programStarted = false;\n\n        function onDocumentReady()\n        {\n            $('#archiveCardId').hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                getArchive(24);\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    if ((device.deviceType == \"solar-regulator\")    && (device.name == \"01\")) updateAirTemp(device);\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"03\")) updateWaterTemp(device);\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateAirTemp(msg.payload[1]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
         "output": "str",
         "x": 770,
         "y": 80,
@@ -18070,7 +18072,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive720hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            $('#archive720hrButton').css('color', 'var(--color5)'); \n            $('#archive720hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 720:\n                    $('#archive720hrButton').css('color', 'var(--color1)'); \n                    $('#archive720hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : 'blinky-DS18B20',\n                name : '03', \n                attr : ['tempA'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            archiveRequestList[1] = \n            {\n                deviceType : 'solar-regulator',\n                name : '01', \n                attr : ['outsideT'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n            var plotConfig = \n            {\n                trace1Title : 'Temp. (C)',\n                trace1Color : '#557a95',\n                trace1GridColor : '#beceda',\n                trace2Title : 'Temp. (C)',\n                trace2Color : '#f2a31f',\n                trace2GridColor : '#f2a31f',\n                plotLength  : 600000,\n                width   : '',\n                height  :   '500',\n                htmlId  :   'historyStripChart'\n            };\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '400',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : 'Temperatur (C)',\n                    titlefont       : {color: 'black'},\n                    tickfont        : {color: 'black'},\n                    gridcolor       : 'grey',\n                    zerolinecolor   : 'grey',\n                    linecolor       : 'grey'\n//                    range           : [0,30],\n//                    dtick           :  5\n\n                },\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'Havstemperatur',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  plotConfig.trace1Color,width:2},\n                visible: true\n\n            };\n            var trace2 = \n            {\n                x: [],\n                y: [],\n                name: 'Lufttemperatur',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  plotConfig.trace2Color,width:2},\n                visible: true\n\n            };\n            var waterTempBeginTime = 1622314838419; //8:04am May 30 2021 is 1622354678419\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                var x = archiveList[0].trace[ii].timeStamp;\n                if (x > waterTempBeginTime)\n                {\n                    trace1.x.push(x);\n                    trace1.y.push(archiveList[0].trace[ii][archiveList[0].device.attr[0]]) ;\n                }\n            }\n            for (var ii = 0; ii < archiveList[1].trace.length; ++ii)\n            {\n                var x = archiveList[1].trace[ii].timeStamp;\n               if (x > waterTempBeginTime)\n                {\n                    trace2.x.push(x);\n                    trace2.y.push(archiveList[1].trace[ii][archiveList[1].device.attr[0]]) ;\n                }\n            }\n            Plotly.newPlot('archiveChart', [trace1,trace2], layout);\n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n            $('#archive720hrButton').attr(\"disabled\", false); \n        }\n",
+        "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive720hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            $('#archive720hrButton').css('color', 'var(--color5)'); \n            $('#archive720hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 720:\n                    $('#archive720hrButton').css('color', 'var(--color1)'); \n                    $('#archive720hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : 'blinky-DS18B20',\n                name : '03', \n                attr : ['tempA'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            archiveRequestList[1] = \n            {\n                deviceType : 'solar-regulator',\n                name : '01', \n                attr : ['outsideT'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n            var plotConfig = \n            {\n                trace1Title : 'Temp. (C)',\n                trace1Color : '#557a95',\n                trace1GridColor : '#beceda',\n                trace2Title : 'Temp. (C)',\n                trace2Color : '#f2a31f',\n                trace2GridColor : '#f2a31f',\n                plotLength  : 600000,\n                width   : '',\n                height  :   '500',\n                htmlId  :   'historyStripChart'\n            };\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '400',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : 'Temperatur (C)',\n                    titlefont       : {color: 'black'},\n                    tickfont        : {color: 'black'},\n                    gridcolor       : 'grey',\n                    zerolinecolor   : 'grey',\n                    linecolor       : 'grey'\n//                    range           : [0,30],\n//                    dtick           :  5\n\n                },\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'Havstemperatur',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  plotConfig.trace1Color,width:2},\n                visible: true\n\n            };\n            var trace2 = \n            {\n                x: [],\n                y: [],\n                name: 'Lufttemperatur',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  plotConfig.trace2Color,width:2},\n                visible: true\n\n            };\n            var waterTempBeginTime = 1622314838419; //8:04am May 30 2021 is 1622354678419\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                var x = archiveList[0].trace[ii].timeStamp;\n                var y = archiveList[0].trace[ii][archiveList[0].device.attr[0]];\n                if ((x > waterTempBeginTime) && (y > 0))\n                {\n                    trace1.x.push(x);\n                    trace1.y.push(y) ;\n                }\n            }\n            for (var ii = 0; ii < archiveList[1].trace.length; ++ii)\n            {\n                var x = archiveList[1].trace[ii].timeStamp;\n               if (x > waterTempBeginTime)\n                {\n                    trace2.x.push(x);\n                    trace2.y.push(archiveList[1].trace[ii][archiveList[1].device.attr[0]]) ;\n                }\n            }\n            Plotly.newPlot('archiveChart', [trace1,trace2], layout);\n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n            $('#archive720hrButton').attr(\"disabled\", false); \n        }\n",
         "output": "str",
         "x": 770,
         "y": 200,
@@ -18223,7 +18225,7 @@
         "y": 320,
         "wires": [
             [
-                "38378280.30819e"
+                "bd26ce43.77c22"
             ]
         ]
     },
@@ -18250,7 +18252,7 @@
         "links": [
             "c4595efc.a717b"
         ],
-        "x": 655,
+        "x": 795,
         "y": 320,
         "wires": []
     },
@@ -19697,5 +19699,142 @@
                 "1ce34c8f.1ead73"
             ]
         ]
+    },
+    {
+        "id": "c7da9dac.c1515",
+        "type": "mongodb3 in",
+        "z": "2b074b3a.632fb4",
+        "service": "_ext_",
+        "configNode": "9cd5ff5e.caf86",
+        "name": "",
+        "collection": "devices",
+        "operation": "find.toArray",
+        "x": 760,
+        "y": 400,
+        "wires": [
+            [
+                "ef3db445.b303c8"
+            ]
+        ]
+    },
+    {
+        "id": "ef3db445.b303c8",
+        "type": "function",
+        "z": "2b074b3a.632fb4",
+        "name": "Parse query",
+        "func": "var air = null;\nvar water = null;\nfor (var ii = 0; ii < 2; ++ii)\n{\n    if ((msg.payload[ii].deviceType == 'solar-regulator') && (msg.payload[ii].name == '01') ) air = msg.payload[ii];\n    if ((msg.payload[ii].deviceType == 'blinky-DS18B20')  && (msg.payload[ii].name == '03') ) water = msg.payload[ii];\n}\nvar newPayload = \n{\n    airTimeStamp    : air.timeStamp,\n    airTemp         : air.outsideT.value,\n    waterTimeStamp  : water.timeStamp,\n    waterTemp       : water.tempA.value,\n};\nif (msg.topic == undefined)\n{\n    msg.payload = newPayload;\n    return [null,msg];\n}\nvar newMsg = \n{\n    topic   :   msg.topic,\n    payload:\n    {\n        topic   :   msg.topic,\n        userID  :   msg.userID,\n        payload :   [water, air]\n    }\n}\nreturn [newMsg,null];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 400,
+        "wires": [
+            [
+                "748d6e1c.891b3",
+                "827d993f.9454d8"
+            ],
+            [
+                "2a2d7c4e.b4fe14"
+            ]
+        ]
+    },
+    {
+        "id": "bd26ce43.77c22",
+        "type": "switch",
+        "z": "2b074b3a.632fb4",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "readDatabase",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "getDevices",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 670,
+        "y": 320,
+        "wires": [
+            [
+                "38378280.30819e"
+            ],
+            [
+                "a379e264.0ddd5"
+            ]
+        ]
+    },
+    {
+        "id": "a379e264.0ddd5",
+        "type": "function",
+        "z": "2b074b3a.632fb4",
+        "name": "Prep get Devices Query",
+        "func": "msg.payload = \n{\n    $or : [ \n        {$and : [ {deviceType: 'solar-regulator'}, {name: '01'} ]}, \n        {$and : [ {deviceType: 'blinky-DS18B20'}, {name: '03'} ]}\n        ]\n     \n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 400,
+        "wires": [
+            [
+                "c7da9dac.c1515"
+            ]
+        ]
+    },
+    {
+        "id": "8377d459.45b4f8",
+        "type": "http in",
+        "z": "2b074b3a.632fb4",
+        "name": "/brantevik.json",
+        "url": "/brantevik.json",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 400,
+        "wires": [
+            [
+                "a379e264.0ddd5"
+            ]
+        ]
+    },
+    {
+        "id": "2a2d7c4e.b4fe14",
+        "type": "http response",
+        "z": "2b074b3a.632fb4",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1230,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "827d993f.9454d8",
+        "type": "debug",
+        "z": "2b074b3a.632fb4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 260,
+        "wires": []
     }
 ]
