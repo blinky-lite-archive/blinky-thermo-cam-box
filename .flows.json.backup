@@ -17996,7 +17996,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Global Javascript\n        useWebSockets(true);\n        var archiveRequestList = [];\n        var archiveList = [];\n        var programStarted = false;\n\n        function onDocumentReady()\n        {\n            $('#archiveCardId').hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                getArchive(24);\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    if ((device.deviceType == \"solar-regulator\")    && (device.name == \"01\")) updateAirTemp(device);\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"03\")) updateWaterTemp(device);\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateAirTemp(msg.payload[1]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var archiveRequestList = [];\n        var archiveList = [];\n        var programStarted = false;\n\n        function onDocumentReady()\n        {\n            $('#archiveCardId').hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                getArchive(24);\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"solar-regulator\")    && (device.name == \"01\")) updateAirTemp(device);\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"03\")) updateWaterTemp(device);\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateAirTemp(msg.payload[1]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
         "output": "str",
         "x": 770,
         "y": 80,
@@ -18053,7 +18053,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Update Readings Javascript\n        function updateAirTemp(device)\n        {\n            var outsideT = Math.round(device.outsideT.value * 10) / 10;\n            var airTempBarConfig = \n                {\n                    lolo            : device.outsideT.alarm.limits.lolo, \n                    low             : device.outsideT.alarm.limits.low, \n                    high            : device.outsideT.alarm.limits.high, \n                    hihi            : device.outsideT.alarm.limits.hihi, \n                    value           : outsideT, \n                    unit            : 'C', \n                    textsize        : 38,\n                    label           : 'ultraAmp', \n                    lowColor        : '#0000ff', \n                    mediumColor     : '#00ff00',\n                    highColor       : 'ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    gridColor       : '#ffffff',\n                    height          : 200, \n                    htmlId          : 'airTempBarPlot'\n                };\n            setHorzBarWidget(airTempBarConfig);\n\n        }\n        function updateWaterTemp(device)\n        {\n            var waterT = Math.round(device.tempA.value * 10) / 10;\n            var waterTempBarConfig = \n                {\n                    lolo            : device.tempA.alarm.limits.lolo, \n                    low             : device.tempA.alarm.limits.low, \n                    high            : device.tempA.alarm.limits.high, \n                    hihi            : device.tempA.alarm.limits.hihi, \n                    value           : waterT, \n                    unit            : 'C', \n                    textsize        : 38,\n                    label           : 'ultraAmp', \n                    lowColor        : '#0000ff', \n                    mediumColor     : '#00ff00',\n                    highColor       : 'ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    gridColor       : '#ffffff',\n                    height          : 200, \n                    htmlId          : 'waterTempBarPlot'\n                };\n            setHorzBarWidget(waterTempBarConfig);\n\n        }\n",
+        "template": "// Update Readings Javascript\n        function updateAirTemp(device)\n        {\n            var time = new Date(device.timeStamp).toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit', second: '2-digit'}).replace(',', '');\n            $('#airTempDate').text(time);\n            var outsideT = Math.round(device.outsideT.value * 10) / 10;\n\n            var airTempBarConfig = \n                {\n                    lolo            : device.outsideT.alarm.limits.lolo, \n                    low             : device.outsideT.alarm.limits.low, \n                    high            : device.outsideT.alarm.limits.high, \n                    hihi            : device.outsideT.alarm.limits.hihi, \n                    value           : outsideT, \n                    unit            : 'C ' + time, \n                    textsize        : 38,\n                    label           : 'ultraAmp', \n                    lowColor        : '#0000ff', \n                    mediumColor     : '#00ff00',\n                    highColor       : 'ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    gridColor       : '#ffffff',\n                    height          : 200, \n                    htmlId          : 'airTempBarPlot'\n                };\n            setHorzBarWidget(airTempBarConfig);\n\n        }\n        function updateWaterTemp(device)\n        {\n            var time = new Date(device.timeStamp).toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit', second: '2-digit'}).replace(',', '');\n            $('#waterTempDate').text(time);\n            var waterT = Math.round(device.tempA.value * 10) / 10;\n            var waterTempBarConfig = \n                {\n                    lolo            : device.tempA.alarm.limits.lolo, \n                    low             : device.tempA.alarm.limits.low, \n                    high            : device.tempA.alarm.limits.high, \n                    hihi            : device.tempA.alarm.limits.hihi, \n                    value           : waterT, \n                    unit            : 'C', \n                    textsize        : 38,\n                    label           : 'ultraAmp', \n                    lowColor        : '#0000ff', \n                    mediumColor     : '#00ff00',\n                    highColor       : 'ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    gridColor       : '#ffffff',\n                    height          : 200, \n                    htmlId          : 'waterTempBarPlot'\n                };\n            setHorzBarWidget(waterTempBarConfig);\n\n        }\n",
         "output": "str",
         "x": 800,
         "y": 160,
@@ -18284,7 +18284,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Lufttemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"airTempBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
+        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Lufttemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                            <span class='card-text' id='airTempDate' style='font-size: 150%;' ></span>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"airTempBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
         "output": "str",
         "x": 1100,
         "y": 120,
@@ -19690,7 +19690,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Havstemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"waterTempBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
+        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Havstemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                            <span class='card-text' id='waterTempDate' style='font-size: 150%;' ></span>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"waterTempBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
         "output": "str",
         "x": 1110,
         "y": 80,
@@ -19732,8 +19732,7 @@
         "y": 400,
         "wires": [
             [
-                "748d6e1c.891b3",
-                "827d993f.9454d8"
+                "748d6e1c.891b3"
             ],
             [
                 "2a2d7c4e.b4fe14"
@@ -19818,23 +19817,6 @@
         "headers": {},
         "x": 1230,
         "y": 400,
-        "wires": []
-    },
-    {
-        "id": "827d993f.9454d8",
-        "type": "debug",
-        "z": "2b074b3a.632fb4",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 980,
-        "y": 260,
         "wires": []
     }
 ]
