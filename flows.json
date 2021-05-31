@@ -37,7 +37,7 @@
     {
         "id": "d6667d7b.35cd6",
         "type": "tab",
-        "label": "blinky-bastu",
+        "label": "Kallis",
         "disabled": false,
         "info": ""
     },
@@ -663,12 +663,6 @@
         "id": "fc576385.12f95",
         "type": "websocket-listener",
         "path": "/blinky-DS18B20/websocket",
-        "wholemsg": "false"
-    },
-    {
-        "id": "a76f24bd.de0e68",
-        "type": "websocket-listener",
-        "path": "/blinky-bastu/websocket",
         "wholemsg": "false"
     },
     {
@@ -16593,417 +16587,6 @@
         ]
     },
     {
-        "id": "33d5b735.342c48",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "Set Title",
-        "field": "payload.title",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "Blinky Bastu",
-        "output": "str",
-        "x": 460,
-        "y": 160,
-        "wires": [
-            [
-                "6917e518.233cdc"
-            ]
-        ]
-    },
-    {
-        "id": "d104091d.ee6a28",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "navBarIcon",
-        "field": "payload.navBarIcon",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "bastuYellow.png",
-        "output": "str",
-        "x": 470,
-        "y": 120,
-        "wires": [
-            [
-                "33d5b735.342c48"
-            ]
-        ]
-    },
-    {
-        "id": "6917e518.233cdc",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "script.global",
-        "field": "payload.script.global",
-        "fieldType": "msg",
-        "format": "javascript",
-        "syntax": "mustache",
-        "template": "// Global Javascript\n        useWebSockets(true);\n        var archiveRequestList = [];\n        var archiveList = [];\n        var programStarted = false;\n\n        function onDocumentReady()\n        {\n            $('#archiveCardId').hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                getArchive(24);\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    if ((device.deviceType == \"blinky-wind\")    && (device.name == \"01\")) updateBlinkyWind(device);\n                    if ((device.deviceType == \"blinky-DS18B20\") && (device.name == \"01\")) updateBlinkyDS18B20_01(device);\n                    if ((device.deviceType == \"blinky-DS18B20\") && (device.name == \"02\")) updateBlinkyDS18B20_02(device);\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
-        "output": "str",
-        "x": 750,
-        "y": 120,
-        "wires": [
-            [
-                "9778ad00.a931a"
-            ]
-        ]
-    },
-    {
-        "id": "426d968d.8e5eb8",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "javascript",
-        "field": "payload.javascript",
-        "fieldType": "msg",
-        "format": "javascript",
-        "syntax": "mustache",
-        "template": "{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.archive}}}\n",
-        "output": "str",
-        "x": 740,
-        "y": 240,
-        "wires": [
-            [
-                "d172603f.cf2fb"
-            ]
-        ]
-    },
-    {
-        "id": "fea047a3.c10208",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "body",
-        "field": "payload.body",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "    <div width=\"100%\">\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.dashboard}}}\n            </div>\n        </div>\n        <div class='row' style='padding-bottom: 25px;'>\n            <div class='col-md-12' align='center'>\n{{{payload.html.archive}}}\n            </div>\n        </div>\n    </div>",
-        "output": "str",
-        "x": 1050,
-        "y": 200,
-        "wires": [
-            [
-                "b78eeb7d.bbf1c8"
-            ]
-        ]
-    },
-    {
-        "id": "9778ad00.a931a",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "script.updateReadings",
-        "field": "payload.script.updateReadings",
-        "fieldType": "msg",
-        "format": "javascript",
-        "syntax": "mustache",
-        "template": "// Update Readings Javascript\n        function updateBlinkyWind(device)\n        {\n\n            $('#windSpeed2').text(getDirectionText(device.windDirection2.value) + ': '  + device.windSpeed2.value.toString());\n\n        }\n        function getDirectionText(wd)\n        {\n            var dirText = '';           \n            if ((  0.0 <= wd) && (wd <=  22.5)) dirText = 'N ';\n            if (( 22.5 <  wd) && (wd <=  67.5)) dirText = 'NE';\n            if (( 67.5 <  wd) && (wd <= 112.5)) dirText = 'E ';\n            if ((112.5 <  wd) && (wd <= 157.5)) dirText = 'SE';\n            if ((157.5 <  wd) && (wd <= 202.5)) dirText = 'S ';\n            if ((202.5 <  wd) && (wd <= 247.5)) dirText = 'SW';\n            if ((247.5 <  wd) && (wd <= 292.5)) dirText = 'W ';\n            if ((292.5 <  wd) && (wd <= 337.5)) dirText = 'NW';\n            if ((337.5 <  wd) && (wd <= 360.0)) dirText = 'N ';\n            return dirText;\n        }\n        function updateBlinkyDS18B20_01(device)\n        {\n            $('#outsideTemperature').text(Math.round(10 * device.tempA.value) / 10);\n            $('#waterTemperature').text(Math.round(10 * device.tempB.value) / 10);\n        }\n        function updateBlinkyDS18B20_02(device)\n        {\n            $('#northSaunaTemperature').text(Math.round(10 * device.tempA.value) / 10);\n            $('#southSaunaTemperature').text(Math.round(10 * device.tempB.value) / 10);\n        }\n",
-        "output": "str",
-        "x": 780,
-        "y": 160,
-        "wires": [
-            [
-                "ac94b9b3.3af698"
-            ]
-        ]
-    },
-    {
-        "id": "ac94b9b3.3af698",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "script.archive",
-        "field": "payload.script.archive",
-        "fieldType": "msg",
-        "format": "javascript",
-        "syntax": "mustache",
-        "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive2hrButton').attr(\"disabled\", true); \n            $('#archive4hrButton').attr(\"disabled\", true); \n            $('#archive8hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive72hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive2hrButton').css('color', 'var(--color5)'); \n            $('#archive2hrButton').css('background-color', 'var(--color1)'); \n            $('#archive4hrButton').css('color', 'var(--color5)'); \n            $('#archive4hrButton').css('background-color', 'var(--color1)'); \n            $('#archive8hrButton').css('color', 'var(--color5)'); \n            $('#archive8hrButton').css('background-color', 'var(--color1)'); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive72hrButton').css('color', 'var(--color5)'); \n            $('#archive72hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 2:\n                    $('#archive2hrButton').css('color', 'var(--color1)'); \n                    $('#archive2hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 4:\n                    $('#archive4hrButton').css('color', 'var(--color1)'); \n                    $('#archive4hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 8:\n                    $('#archive8hrButton').css('color', 'var(--color1)'); \n                    $('#archive8hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 72:\n                    $('#archive72hrButton').css('color', 'var(--color1)'); \n                    $('#archive72hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : 'blinky-wind',\n                name : '01', \n                attr : ['windSpeed','windSpeed2', 'windDirection', 'windDirection2'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            archiveRequestList[1] = \n            {\n                deviceType : 'blinky-DS18B20',\n                name : '01', \n                attr : ['tempA','tempB'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n            var plotConfig = \n            {\n                trace1Title : 'Speed (m/S)',\n                trace1Color : '#557a95',\n                trace1GridColor : '#beceda',\n                trace2Title : 'Temp. (C)',\n                trace2Color : '#f2a31f',\n                trace2GridColor : '#f2a31f',\n                plotLength  : 600000,\n                width   : '',\n                height  :   '500',\n                htmlId  :   'historyStripChart'\n            };\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '500',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : 'Temperatur (C)',\n                    titlefont       : {color: 'black'},\n                    tickfont        : {color: 'black'},\n                    gridcolor       : 'grey',\n                    zerolinecolor   : 'grey',\n                    linecolor       : 'grey',\n                    range           : [0,30],\n                    dtick           :  5\n\n                },\n                yaxis2:\n                {\n                    title           : 'Vindstyrka (m/s)',\n                    titlefont       : {color: '#557a95'},\n                    tickfont        : {color: '#557a95'},\n                    gridcolor       : '#beceda',\n                    zerolinecolor   : '#beceda',\n                    linecolor       : '#beceda',\n                    overlaying: 'y',\n                    side: 'right',\n                    range:[0,15],\n                    dtick           :  2.5\n                },\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                text: [],\n                hovertemplate: '<b>%{text} </b>' + '%{y}m/S',\n                name: 'Vindstyrka',\n                yaxis: 'y2',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color: plotConfig.trace1Color, dash: 'dot'},\n                visible: true\n\n            };\n            var trace2 = \n            {\n                x: [],\n                y: [],\n                text: [],\n                hovertemplate: '<b>%{text} </b>' + '%{y}m/S',\n                name: '10 min avg. Vindstyrka',\n                yaxis: 'y2',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color: plotConfig.trace1Color,width:3},\n            };\n            var trace3 = \n            {\n                x: [],\n                y: [],\n                name: 'Lufttemperatur',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  plotConfig.trace2Color,width:2},\n                visible: true\n\n            };\n            var trace4 = \n            {\n                x: [],\n                y: [],\n                name: 'Vattentemperatur',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  'red',width:2},\n                visible: true\n\n            };\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                var x = archiveList[0].trace[ii].timeStamp;\n                trace1.x[ii] = x;\n                trace1.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[0]] ;\n                trace1.text[ii] = getDirectionText(archiveList[0].trace[ii][archiveList[0].device.attr[2]]);\n                trace2.x[ii] = x;\n                trace2.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[1]] ;\n                trace2.text[ii] = getDirectionText(archiveList[0].trace[ii][archiveList[0].device.attr[3]]);\n            }\n            for (var ii = 0; ii < archiveList[1].trace.length; ++ii)\n            {\n                var x = archiveList[1].trace[ii].timeStamp;\n                trace3.x[ii] = x;\n                trace3.y[ii] = archiveList[1].trace[ii][archiveList[1].device.attr[0]] ;\n                trace4.x[ii] = x;\n                trace4.y[ii] = archiveList[1].trace[ii][archiveList[1].device.attr[1]] ;\n            }\n            Plotly.newPlot('archiveChart', [trace1, trace2, trace3, trace4], layout);\n            $('#archive2hrButton').attr(\"disabled\", false); \n            $('#archive4hrButton').attr(\"disabled\", false); \n            $('#archive8hrButton').attr(\"disabled\", false); \n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive72hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n        }\n",
-        "output": "str",
-        "x": 750,
-        "y": 200,
-        "wires": [
-            [
-                "426d968d.8e5eb8"
-            ]
-        ]
-    },
-    {
-        "id": "a4ebd53e.6accc8",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "html.archive",
-        "field": "payload.html.archive",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "<!-- Archive HTML -->\n                <div class='card' id=archiveCardId>\n                    <p class='card-title'>Historia</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' >\n                            <table width='100%'>\n                                <tr>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive2hrButton\" onclick=\"getArchive(2)\" >2</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive4hrButton\" onclick=\"getArchive(4)\" >4</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive8hrButton\" onclick=\"getArchive(8)\" >8</button>\n                                    </td>\n                                    <td width='10%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive24hrButton\" onclick=\"getArchive(24)\" >24</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive72hrButton\" onclick=\"getArchive(72)\" >72</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive168hrButton\" onclick=\"getArchive(168)\" >168</button>\n                                    </td>\n                                    <td width='10%' align='center'>\n                                        <span class='big-text' >Timmar</span>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                        <div class='row vert-pad'>\n                            <div class='col-md-12'>\n                                <div id=\"archiveChart\" width=\"100%\" ></div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n",
-        "output": "str",
-        "x": 1070,
-        "y": 160,
-        "wires": [
-            [
-                "fea047a3.c10208"
-            ]
-        ]
-    },
-    {
-        "id": "3329e864.f87778",
-        "type": "http in",
-        "z": "d6667d7b.35cd6",
-        "name": "/blinky-bastu",
-        "url": "/blinky-bastu",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 130,
-        "y": 120,
-        "wires": [
-            [
-                "d104091d.ee6a28"
-            ]
-        ]
-    },
-    {
-        "id": "d172603f.cf2fb",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "html.dashboard",
-        "field": "payload.html.dashboard",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "<!-- Dashboard HTML -->\n                <div class='card'>\n                    <p class='card-title'>Instrumentbräda</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'  style='padding-top: 0px;'>\n                            <table width='100%'>\n                                <tr>\n                                    <td width='50%' >\n                                        <span class='card-text' style='color:var(--color1);' >Lufttemperatur</span>\n                                    </td>\n                                    <td width='35%' align='right'>\n                                        <span class='card-text' id='outsideTemperature' >-100</span>\n                                    </td>\n                                    <td width='15%' align='center'>\n                                        <span class='card-text' >C</span>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='50%' >\n                                        <span class='card-text' style='color:var(--color1);'>Vattentemperatur</span>\n                                    </td>\n                                    <td width='35%' align='right'>\n                                        <span class='card-text' id='waterTemperature' >-100</span>\n                                    </td>\n                                    <td width='15%' align='center'>\n                                        <span class='card-text' >C</span>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='50%' >\n                                        <span class='card-text'  style='color:var(--color1);'>Dambastu</span>\n                                    </td>\n                                    <td width='35%' align='right'>\n                                        <span class='card-text' id='northSaunaTemperature' >-100</span>\n                                    </td>\n                                    <td width='15%' align='center'>\n                                        <span class='card-text' >C</span>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='50%' >\n                                        <span class='card-text' style='color:var(--color1);'>Herrbastu</span>\n                                    </td>\n                                    <td width='35%' align='right'>\n                                        <span class='card-text' id='southSaunaTemperature' >-100</span>\n                                    </td>\n                                    <td width='15%' align='center'>\n                                        <span class='card-text' >C</span>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='50%' >\n                                        <span class='card-text'  style='color:var(--color1);' >Vindstyrka</span>\n                                    </td>\n                                    <td width='35%' align='right'>\n                                        <span class='card-text' id='windSpeed2' >-100</span>\n                                    </td>\n                                     <td width='15%' align='center'>\n                                        <span class='card-text'>m/s</span>\n                                    </td>\n                               </tr>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n",
-        "output": "str",
-        "x": 1080,
-        "y": 120,
-        "wires": [
-            [
-                "a4ebd53e.6accc8"
-            ]
-        ]
-    },
-    {
-        "id": "85bf1b19.9ab8d8",
-        "type": "websocket out",
-        "z": "d6667d7b.35cd6",
-        "name": "/blinky-bastu/websocket",
-        "server": "a76f24bd.de0e68",
-        "client": "",
-        "x": 1250,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "4c1a483.bd61eb8",
-        "type": "link in",
-        "z": "d6667d7b.35cd6",
-        "name": "blinky-bastu web socket input",
-        "links": [
-            "304b3835.9b6918",
-            "6d200160.afc65",
-            "a988b405.392318",
-            "62fb9e33.02bff",
-            "1c641721.29eb79",
-            "9b3bde89.b6f61"
-        ],
-        "x": 1105,
-        "y": 360,
-        "wires": [
-            [
-                "85bf1b19.9ab8d8"
-            ]
-        ]
-    },
-    {
-        "id": "6bd301db.8101f",
-        "type": "subflow:ca529822.9112f8",
-        "z": "d6667d7b.35cd6",
-        "name": "",
-        "x": 1450,
-        "y": 200,
-        "wires": []
-    },
-    {
-        "id": "b78eeb7d.bbf1c8",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "CSS",
-        "field": "payload.css",
-        "fieldType": "msg",
-        "format": "css",
-        "syntax": "mustache",
-        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n          background-color: white !important;\n          padding-left:25px;\n          padding-right:25px;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
-        "output": "str",
-        "x": 1190,
-        "y": 200,
-        "wires": [
-            [
-                "4b5cc69e.0335e8"
-            ]
-        ]
-    },
-    {
-        "id": "4b5cc69e.0335e8",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "navBar",
-        "field": "payload.navBar",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "<!-- navBar -->\n    <div class=\"jumbotron\" width=\"100%\">\n        <table width=\"100%\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/bl-mc-icon-inverse.png\" height=\"75px\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                    <h1 class=\"jumbotron-title big-text bold-text\">\n                        <img src=\"/img/{{{payload.navBarIcon}}}\" height=\"75px\" style=\"padding-right:20px;\"/><span>{{{payload.title}}}</span>\n                    </h1>\n                </td>\n                <td style=\"text-align:right; vertical-align:middle;\" width=\"20%\">\n                </td>\n            </tr>\n        </table>\n    </div>",
-        "output": "str",
-        "x": 1320,
-        "y": 200,
-        "wires": [
-            [
-                "6bd301db.8101f"
-            ]
-        ]
-    },
-    {
-        "id": "75845208.f8a2bc",
-        "type": "http in",
-        "z": "d6667d7b.35cd6",
-        "name": "",
-        "url": "/blinky-bastu-data",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 160,
-        "y": 460,
-        "wires": [
-            [
-                "be70bea3.7f61d"
-            ]
-        ]
-    },
-    {
-        "id": "be70bea3.7f61d",
-        "type": "function",
-        "z": "d6667d7b.35cd6",
-        "name": "Prepare Query",
-        "func": "if (msg.payload.action != \"getData\") return null;\nmsg.payload = \n{\n    $or : [ \n        {$and : [ {deviceType: 'blinky-DS18B20'}, {name: '01'} ]}, \n        {$and : [ {deviceType: 'blinky-DS18B20'}, {name: '02'} ]},\n        {$and : [ {deviceType: 'blinky-wind'},    {name: '01'} ]}\n        ]\n     \n}\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 380,
-        "y": 460,
-        "wires": [
-            [
-                "6652587e.9aeef8"
-            ]
-        ]
-    },
-    {
-        "id": "6ea75f0e.a756b",
-        "type": "json",
-        "z": "d6667d7b.35cd6",
-        "name": "",
-        "property": "payload",
-        "action": "obj",
-        "pretty": false,
-        "x": 330,
-        "y": 360,
-        "wires": [
-            [
-                "e819425b.e15ed"
-            ]
-        ]
-    },
-    {
-        "id": "e819425b.e15ed",
-        "type": "function",
-        "z": "d6667d7b.35cd6",
-        "name": "Shift msg",
-        "func": "return msg.payload;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 470,
-        "y": 360,
-        "wires": [
-            [
-                "8257a0f.6bb886"
-            ]
-        ]
-    },
-    {
-        "id": "26237942.142b66",
-        "type": "websocket in",
-        "z": "d6667d7b.35cd6",
-        "name": "/blinky-bastu/websocket",
-        "server": "a76f24bd.de0e68",
-        "client": "",
-        "x": 160,
-        "y": 360,
-        "wires": [
-            [
-                "6ea75f0e.a756b"
-            ]
-        ]
-    },
-    {
-        "id": "8257a0f.6bb886",
-        "type": "link out",
-        "z": "d6667d7b.35cd6",
-        "name": "blinky-bastu archive request",
-        "links": [
-            "c4595efc.a717b"
-        ],
-        "x": 585,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "6652587e.9aeef8",
-        "type": "mongodb3 in",
-        "z": "d6667d7b.35cd6",
-        "service": "_ext_",
-        "configNode": "9cd5ff5e.caf86",
-        "name": "",
-        "collection": "devices",
-        "operation": "find.toArray",
-        "x": 660,
-        "y": 460,
-        "wires": [
-            [
-                "1dc24167.0a6daf"
-            ]
-        ]
-    },
-    {
-        "id": "1dc24167.0a6daf",
-        "type": "function",
-        "z": "d6667d7b.35cd6",
-        "name": "Parse query",
-        "func": "var temp1 = null;\nvar temp2 = null;\nvar wind = null;\nfor (var ii = 0; ii < 3; ++ii)\n{\n    if ((msg.payload[ii].deviceType == 'blinky-DS18B20') && (msg.payload[ii].name == '01') ) temp1 = msg.payload[ii];\n    if ((msg.payload[ii].deviceType == 'blinky-DS18B20') && (msg.payload[ii].name == '02') ) temp2 = msg.payload[ii];\n    if ((msg.payload[ii].deviceType == 'blinky-wind')    && (msg.payload[ii].name == '01') ) wind  = msg.payload[ii];\n}\nvar newPayload = \n{\n    timeStamp       : wind.timeStamp,\n    outsideTemp     : temp1.tempA.value,\n    waterTemp       : temp1.tempB.value,\n    northTemp       : temp2.tempA.value,\n    southTemp       : temp2.tempB.value,\n    windSpeed       : wind.windSpeed2.value,\n    windDir         : wind.windDirection2.value\n};\nmsg.payload = newPayload;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 890,
-        "y": 460,
-        "wires": [
-            [
-                "e6d3f8fc.186f98"
-            ]
-        ]
-    },
-    {
-        "id": "e6d3f8fc.186f98",
-        "type": "http response",
-        "z": "d6667d7b.35cd6",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 1070,
-        "y": 460,
-        "wires": []
-    },
-    {
         "id": "3be76d54.182da2",
         "type": "websocket out",
         "z": "8475ab9.3d26058",
@@ -18155,7 +17738,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- navBar -->\n    <div class='row' style=\"padding-top:10px;\">\n        <div class='col-12' align='center'>\n            <table width=\"900px\" background=\"/img/brantevikBanner.png\">\n                <tr>\n                    <td width=\"300px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"></td>\n                    <td width=\"300px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"></td>\n                    <td width=\"300px\" align=\"right\" style=\"padding-top:25px;padding-bottom:25px;padding-right:25px;\"><a href=\"http://brantevik.se/\" ><img src=\"/img/BrantevikLogo.png\" height=\"100px\"/></a></td>\n               </tr>\n            </table>\n        </div>\n    </div>\n",
+        "template": "<!-- navBar -->\n    <div class='row' style=\"padding-top:10px;\">\n        <div class='col-12' align='center'>\n            <table width=\"900px\" background=\"/img/brantevikBanner.png\">\n                <tr>\n                    <td width=\"300px\" align=\"left\" style=\"padding-top:25px;padding-bottom:25px;padding-left:25px;\"><a href=\"/\" ><img src=\"/img/bl-mc-icon-inverse.png\" height=\"100px\"/></a></td>\n                    <td width=\"300px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"></td>\n                    <td width=\"300px\" align=\"right\" style=\"padding-top:25px;padding-bottom:25px;padding-right:25px;\"><a href=\"http://brantevik.se/\" ><img src=\"/img/BrantevikLogo.png\" height=\"100px\"/></a></td>\n               </tr>\n            </table>\n        </div>\n    </div>\n",
         "output": "str",
         "x": 1340,
         "y": 200,
@@ -18284,7 +17867,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Lufttemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                            <span class='card-text' id='airTempDate' style='font-size: 150%;' ></span>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"airTempBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
+        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Lufttemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                            <span class='card-text' id='airTempDate' style='font-size: 125%;' ></span>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"airTempBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
         "output": "str",
         "x": 1100,
         "y": 120,
@@ -18706,7 +18289,7 @@
         "finalize": "",
         "libs": [],
         "x": 440,
-        "y": 920,
+        "y": 420,
         "wires": [
             [
                 "52081570.379e7c"
@@ -18725,7 +18308,7 @@
         "template": "Kallis badare",
         "output": "str",
         "x": 380,
-        "y": 1000,
+        "y": 500,
         "wires": [
             [
                 "ce4defaa.1e7eb"
@@ -18744,7 +18327,7 @@
         "template": "// Global Javascript\n        useWebSockets(true);\n        var mqttDevice = null;\n        var device = null;\n        var archiveRequestList = [];\n        var archiveList = [];\n        var programStarted = false;\n        var tracesPlotted = false;\n\n        var restfulDevice = \n        {\n            deviceType  : '{{{payload.script.deviceType}}}',\n            name        : '{{{payload.script.name}}}',\n            project     : '{{{payload.script.project}}}'\n        };\n\n\n        function onDocumentReady()\n        {\n            setRemoteApp(true);\n//            getCreds();\n//            setInterval(function(){getCreds();}, 1000);\n            var now = new Date();\n            $( \"#dateId\" ).val(now.toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit'}).replace(',', ''));\n            $( function()\n            {\n                $('#dateId').datepicker();\n            } );\n            setInterval(function()\n            {\n                if ( dateIdIsToday() )\n                {\n                    getHistory(); \n                }\n            }, 120000);\n        }\n        function dateIdIsToday()\n        {\n            var now = new Date();\n            var dateField = new Date($( \"#dateId\" ).val());\n            if (dateField.getFullYear() != now.getFullYear()) return false;\n            if (dateField.getMonth()    != now.getMonth())    return false;\n            if (dateField.getDate()     != now.getDate())     return false;\n            return true;\n        }\n        function getHistory()\n        {\n            $( \"#dateId\" ).prop( \"disabled\", true );\n            var dateField = new Date($( \"#dateId\" ).val());\n            dateField.setHours(1);\n            var startDate = dateField.getTime();\n            dateField.setHours(22);\n            var stopDate = dateField.getTime();\n            archiveRequestList = [];\n            archiveList = [];\n            archiveRequestList[0] = \n            {\n                deviceType : restfulDevice.deviceType,\n                name : restfulDevice.name, \n                attr : ['numTurns'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                $( \"#bathersLastHourLabelId\").hide();\n                $( \"#bathersLastHourId\").hide();\n                if (data.trace == null)\n                {\n                    $( \"#bathersNowId\").text(\"?\");\n                    $( \"#bathersTotalInId\").text(\"?\");\n                    $( \"#bathersTotalOutId\").text(\"?\");\n                    if (tracesPlotted) \n                    {\n                        Plotly.deleteTraces('archiveChart', [-2, -1]);\n                        tracesPlotted = false;\n                    }\n                    $( \"#dateId\" ).prop( \"disabled\", false );\n                    return;\n                }\n                if (data.trace.length < 2)\n                {\n                    $( \"#bathersNowId\").text(\"0\");\n                    $( \"#bathersTotalInId\").text(\"0\");\n                    $( \"#bathersTotalOutId\").text(\"0\");\n                    if (tracesPlotted) \n                    {\n                        Plotly.deleteTraces('archiveChart', [-2, -1]);\n                        tracesPlotted = false;\n                    }\n                    $( \"#dateId\" ).prop( \"disabled\", false );\n                    return;\n                }\n                var bathersTotalIn = 0;\n                var bathersTotalOut = 0;\n                for (var ib = 1; ib < data.trace.length; ++ib)\n                {\n                    if (data.trace[ib].numTurns > data.trace[ib - 1].numTurns) bathersTotalIn = bathersTotalIn + 1;\n                    if (data.trace[ib].numTurns < data.trace[ib - 1].numTurns) bathersTotalOut = bathersTotalOut + 1;\n                }\n                $( \"#bathersTotalInId\").text(bathersTotalIn.toString());\n                $( \"#bathersTotalOutId\").text(bathersTotalOut.toString());\n                $( \"#bathersNowId\").text((bathersTotalIn - bathersTotalOut).toString());\n                \n                var now = new Date().getTime();\n                var bathersInLastHour = 0;\n                if ( dateIdIsToday() )\n                {\n                    for (var ib = 1; ib < data.trace.length; ++ib)\n                    {\n                        if ((now - data.trace[ib].timeStamp) < 3600000)\n                        {\n                            if (data.trace[ib].numTurns > data.trace[ib - 1].numTurns)\n                            {\n                                bathersInLastHour = bathersInLastHour + 1;\n                            }\n                        }\n                    }\n                    $( \"#bathersLastHourLabelId\").show();\n                    $( \"#bathersLastHourId\").show();\n                    $( \"#bathersLastHourId\").text(bathersInLastHour.toString());\n                }\n\n                var dateField = new Date($( \"#dateId\" ).val());\n                dateField.setHours(6);\n                var startDate = dateField.getTime();\n                dateField.setHours(22);\n                var stopDate = dateField.getTime();\n                var layout =\n                {\n                    margin: \n                    {\n                        l: 75,\n                        r: 50,\n                        b: 75,\n                        t: 50,\n                        pad: 4\n                    },\n                    showlegend  : true,\n                    legend      : { x: 0, y: 1.15},\n                    height      : '500',\n                    width       : '',\n                    xaxis       :\n                    {\n//                        title: { font : {size:10}},\n                        type    : 'date',\n                        range   : [startDate,stopDate],\n                        tickfont    : {size:17}\n                    },\n                    yaxis       :\n                    {\n                        title: \n                        {\n                            text : 'Netto badare i',\n                            font : {size:20}\n                        },\n                        dtick   :  1,\n                        tickfont : {size:17}\n\n                    },\n                };                \n                var trace1 = \n                {\n                    x: [],\n                    y: [],\n                    name    : 'badare i',\n                    type: 'scatter',\n                    mode: 'markers',\n                    marker: {\n                        color: '#557a95',\n                        size: 15,\n                        symbol: 'circle'\n                    }        \n                };\n                var trace2 = \n                {\n                    x: [],\n                    y: [],\n                    name    : 'badare ute',\n                    type: 'scatter',\n                    mode: 'markers',\n                    marker: {\n                        color: '#f2a31f',\n                        size: 15,\n                        symbol: 'circle'\n                    }        \n                };\n                trace1.x[0] = data.trace[0].timeStamp;\n                trace1.y[0] = data.trace[0].numTurns;\n                trace2.x[0] = data.trace[0].timeStamp;\n                trace2.y[0] = data.trace[0].numTurns;\n                for (var ib = 1; ib < data.trace.length; ++ib)\n                {\n                    if(data.trace[ib].numTurns > data.trace[ib - 1].numTurns)\n                    {\n                        trace1.x.push(data.trace[ib].timeStamp);\n                        trace1.y.push(data.trace[ib].numTurns);\n                    }\n                    else\n                    {\n                        trace2.x.push(data.trace[ib].timeStamp);\n                        trace2.y.push(data.trace[ib].numTurns);\n                    }\n                }\n\n                Plotly.newPlot('archiveChart', [trace1,trace2], layout);\n                tracesPlotted = true;\n                $( \"#dateId\" ).prop( \"disabled\", false );\n                \n            }\n        }\n        function onWebSocketOpen()\n        {\n            if(!programStarted) getHistory();\n            programStarted = true;\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    if ((msg.mqttDevice.name == restfulDevice.name) && (msg.mqttDevice.deviceType == restfulDevice.deviceType)  && (msg.mqttDevice.project == restfulDevice.project) )\n                    {\n                        device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                        mqttDevice = msg.mqttDevice;\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        if ((msg.payload.device.deviceType == restfulDevice.deviceType) && (msg.payload.device.name == restfulDevice.name) )\n                            putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'renew':\n                    if (msg.userID == userID)\n                    {\n                        updateCookie(msg);\n                    }\n                    break;\n                case 'permissionError':\n                    if (msg.userID == userID)\n                    {\n                        acknowledgeDialog('Permission', 'Error', msg.payload);\n                    }\n                    break;\n                case 'loginExpired':\n                    if (msg.userID == userID)\n                    {\n                       location.reload();\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
         "output": "str",
         "x": 730,
-        "y": 960,
+        "y": 460,
         "wires": [
             [
                 "632862f5.3059ec"
@@ -18763,7 +18346,7 @@
         "template": "{{{payload.script.swedish}}}\n{{{payload.script.global}}}\n{{{payload.script.user}}}\n",
         "output": "str",
         "x": 720,
-        "y": 1000,
+        "y": 500,
         "wires": [
             [
                 "c7ceb671.7cfe88"
@@ -18782,7 +18365,7 @@
         "template": "    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr >\n                <td style='padding-top: 10px;'>\n{{{payload.html.dashboard}}}\n                </td>\n            </tr>\n            <tr>\n                <td style='padding-top: 10px;'>\n{{{payload.html.chart}}}\n                </td>\n            </tr>\n            <tr>\n                <td align='center'>\n                    <span >Powered by </span><a href='/' style=\"color: var(--color1);text-decoration: underline;\">Blinky-Lite</a>\n                </td>\n            </tr>\n        </table>\n    </div>",
         "output": "str",
         "x": 1010,
-        "y": 1000,
+        "y": 500,
         "wires": [
             [
                 "2eb11873.c0b048"
@@ -18801,7 +18384,7 @@
         "template": "turnstileYellow.png",
         "output": "str",
         "x": 390,
-        "y": 960,
+        "y": 460,
         "wires": [
             [
                 "b52f0836.91ae08"
@@ -18820,7 +18403,7 @@
         "template": "<!-- Dashboard HTML -->\n                <div class='card'>\n                    <p class='card-title'>Sammanfattning</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <table width='100%'>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;'>Datum</span>\n                                    </td>\n                                    <td width='30%' align='center'>\n                                        <input class=\"form-control\" style='font-size: 250%;' id=\"dateId\" type=\"text\" onchange=\"getHistory()\"/>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;'>Netto antal badare inne nu</span>\n                                    </td>\n                                    <td width='30%' align='center' valign='center'>\n                                        <span class='card-text' style='font-size: 250%;' id='bathersNowId' ></span>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;'>Totalt antal inpasseringar idag</span>\n                                    </td>\n                                    <td width='40%' align='center' valign='center'>\n                                        <span class='card-text' style='font-size: 250%;' id='bathersTotalInId' ></span>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text' style='color:var(--color1); font-size: 250%;'>Totalt antal inpasseringar ute idag</span>\n                                    </td>\n                                    <td width='30%' align='center' valign='center'>\n                                        <span class='card-text' style='font-size: 250%;' id='bathersTotalOutId' ></span>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;' id='bathersLastHourLabelId' >Antal inpasseringar senaste timmen</span>\n                                    </td>\n                                    <td width='30%' align='center' valign='center'>\n                                        <span class='card-text' style='font-size: 250%;' id='bathersLastHourId' ></span>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                   </div>\n                </div>\n",
         "output": "str",
         "x": 1040,
-        "y": 920,
+        "y": 420,
         "wires": [
             [
                 "49dd92e3.83185c"
@@ -18837,7 +18420,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 130,
-        "y": 920,
+        "y": 420,
         "wires": [
             [
                 "f375d269.de94a"
@@ -18852,7 +18435,7 @@
         "server": "85c4c7aa.d48438",
         "client": "",
         "x": 1250,
-        "y": 1140,
+        "y": 640,
         "wires": []
     },
     {
@@ -18865,7 +18448,7 @@
             "9b3bde89.b6f61"
         ],
         "x": 1105,
-        "y": 1140,
+        "y": 640,
         "wires": [
             [
                 "1f39b8fe.670497"
@@ -18880,7 +18463,7 @@
         "server": "85c4c7aa.d48438",
         "client": "",
         "x": 170,
-        "y": 1140,
+        "y": 640,
         "wires": [
             [
                 "435bd7c4.790818"
@@ -18896,7 +18479,7 @@
             "c4595efc.a717b"
         ],
         "x": 615,
-        "y": 1140,
+        "y": 640,
         "wires": []
     },
     {
@@ -18911,7 +18494,7 @@
         "template": "        /* Swedish initialisation for the jQuery UI date picker plugin. */\n        /* Written by Anders Ekdahl ( anders@nomadiz.se). */\n        ( function( factory ) {\n        \tif ( typeof define === \"function\" && define.amd ) {\n        \n        \t\t// AMD. Register as an anonymous module.\n        \t\tdefine( [ \"../widgets/datepicker\" ], factory );\n        \t} else {\n        \n        \t\t// Browser globals\n        \t\tfactory( jQuery.datepicker );\n        \t}\n        }( function( datepicker ) {\n        \n        datepicker.regional.sv = {\n        \tcloseText: \"Stäng\",\n        \tprevText: \"&#xAB;Förra\",\n        \tnextText: \"Nästa&#xBB;\",\n        \tcurrentText: \"Idag\",\n        \tmonthNames: [ \"januari\",\"februari\",\"mars\",\"april\",\"maj\",\"juni\",\n        \t\"juli\",\"augusti\",\"september\",\"oktober\",\"november\",\"december\" ],\n        \tmonthNamesShort: [ \"jan.\",\"feb.\",\"mars\",\"apr.\",\"maj\",\"juni\",\n        \t\"juli\",\"aug.\",\"sep.\",\"okt.\",\"nov.\",\"dec.\" ],\n        \tdayNamesShort: [ \"sön\",\"mån\",\"tis\",\"ons\",\"tor\",\"fre\",\"lör\" ],\n        \tdayNames: [ \"söndag\",\"måndag\",\"tisdag\",\"onsdag\",\"torsdag\",\"fredag\",\"lördag\" ],\n        \tdayNamesMin: [ \"sö\",\"må\",\"ti\",\"on\",\"to\",\"fr\",\"lö\" ],\n        \tweekHeader: \"Ve\",\n        \tdateFormat: \"yy-mm-dd\",\n        \tfirstDay: 1,\n        \tisRTL: false,\n        \tshowMonthAfterYear: false,\n        \tyearSuffix: \"\" };\n        datepicker.setDefaults( datepicker.regional.sv );\n        \n        return datepicker.regional.sv;\n        \n        } ) );\n",
         "output": "str",
         "x": 740,
-        "y": 920,
+        "y": 420,
         "wires": [
             [
                 "bab0f61.ea1cd08"
@@ -18924,7 +18507,7 @@
         "z": "d6667d7b.35cd6",
         "name": "",
         "x": 1450,
-        "y": 1000,
+        "y": 500,
         "wires": []
     },
     {
@@ -18939,7 +18522,7 @@
         "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n          background-color: white !important;\n          padding-left:25px;\n          padding-right:25px;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .ui-widget\n        {\n            font-size :200%;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
         "output": "str",
         "x": 1190,
-        "y": 1000,
+        "y": 500,
         "wires": [
             [
                 "464bc44d.d9caac"
@@ -18958,7 +18541,7 @@
         "template": "<!-- navBar -->\n    <div class='row' style=\"padding-top:10px;\">\n        <div class='col-12' align='center'>\n            <table width=\"900px\" background=\"/img/longaBryggan.png\">\n                <tr>\n                    <td width=\"300px\" align=\"left\" style=\"padding-top:25px;padding-bottom:25px;padding-left:25px;\"><a href=\"/\" ><img src=\"/img/bl-mc-icon.png\" height=\"100px\"/></a></td>\n                    <td width=\"300px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"></td>\n                    <td width=\"300px\" align=\"right\" style=\"padding-top:25px;padding-bottom:25px;padding-right:25px;\"><a href=\"/kallis\" ><img src=\"/img/bastuYellow.png\" height=\"100px\"/></a></td>\n               </tr>\n            </table>\n        </div>\n    </div>\n",
         "output": "str",
         "x": 1320,
-        "y": 1000,
+        "y": 500,
         "wires": [
             [
                 "4e6ae767.7e1d48"
@@ -18977,7 +18560,7 @@
         "template": "                <div class='card' id=archiveCardId>\n                    <p class='card-title'>Historia</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row vert-pad'>\n                            <div class='col-md-12'>\n                                <div id=\"archiveChart\" width=\"100%\" ></div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n",
         "output": "str",
         "x": 1020,
-        "y": 960,
+        "y": 460,
         "wires": [
             [
                 "9b4373d5.a7d01"
@@ -19010,7 +18593,7 @@
         "template": "Kallis väder",
         "output": "str",
         "x": 300,
-        "y": 1300,
+        "y": 800,
         "wires": [
             [
                 "e3de0460.6dbde8"
@@ -19029,7 +18612,7 @@
         "template": "BrantevikLogo.png",
         "output": "str",
         "x": 310,
-        "y": 1260,
+        "y": 760,
         "wires": [
             [
                 "61e62bc4.56f574"
@@ -19045,10 +18628,10 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Global Javascript\n        useWebSockets(true);\n        var archiveRequestList = [];\n        var archiveList = [];\n        var programStarted = false;\n\n        function onDocumentReady()\n        {\n            $('#archiveCardId').hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                getArchive(24);\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    if ((device.deviceType == \"blinky-DS18B20\")    && (device.name == \"01\")) updateTemperature(device);\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var archiveRequestList = [];\n        var archiveList = [];\n        var programStarted = false;\n\n        function onDocumentReady()\n        {\n            $('#archiveCardId').hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                getArchive(24);\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"blinky-DS18B20\")    && (device.name == \"01\")) updateTemperature(device);\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateTemperature(msg.payload[0]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
         "output": "str",
         "x": 590,
-        "y": 1260,
+        "y": 760,
         "wires": [
             [
                 "6f674daf.374674"
@@ -19067,7 +18650,7 @@
         "template": "{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.archive}}}\n{{{payload.script.horzbarWidget}}}\n",
         "output": "str",
         "x": 580,
-        "y": 1420,
+        "y": 920,
         "wires": [
             [
                 "5c7de9ea.4ff628"
@@ -19086,7 +18669,7 @@
         "template": "    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr >\n                <td style='padding-top: 10px;'>\n{{{payload.html.waterTempBar}}}\n                </td>\n            </tr>\n            <tr >\n                <td style='padding-top: 10px;'>\n{{{payload.html.airTempBar}}}\n                </td>\n            </tr>\n            <tr>\n                <td style='padding-top: 10px;'>\n{{{payload.html.archive}}}\n                </td>\n            </tr>\n            <tr>\n                <td align='center'>\n                    <span >Powered by </span><a href='/' style=\"color: var(--color1);text-decoration: underline;\">Blinky-Lite</a>\n                </td>\n            </tr>\n        </table>\n    </div>",
         "output": "str",
         "x": 890,
-        "y": 1380,
+        "y": 880,
         "wires": [
             [
                 "e7847577.e59018"
@@ -19102,10 +18685,10 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Update Readings Javascript\n        function updateTemperature(device)\n        {\n            var outsideT = Math.round(device.tempA.value * 10) / 10;\n            var airTempBarConfig = \n                {\n                    lolo            : device.tempA.alarm.limits.lolo, \n                    low             : device.tempA.alarm.limits.low, \n                    high            : device.tempA.alarm.limits.high, \n                    hihi            : device.tempA.alarm.limits.hihi, \n                    value           : outsideT, \n                    unit            : 'C', \n                    textsize        : 38,\n                    label           : 'ultraAmp', \n                    lowColor        : '#0000ff', \n                    mediumColor     : '#00ff00',\n                    highColor       : 'ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    gridColor       : '#ffffff',\n                    height          : 200, \n                    htmlId          : 'airTempBarPlot'\n                };\n            setHorzBarWidget(airTempBarConfig);\n            var waterT = Math.round(device.tempB.value * 10) / 10;\n            var waterTempBarConfig = \n                {\n                    lolo            : device.tempB.alarm.limits.lolo, \n                    low             : device.tempB.alarm.limits.low, \n                    high            : device.tempB.alarm.limits.high, \n                    hihi            : device.tempB.alarm.limits.hihi, \n                    value           : waterT, \n                    unit            : 'C', \n                    textsize        : 38,\n                    label           : 'ultraAmp', \n                    lowColor        : '#0000ff', \n                    mediumColor     : '#00ff00',\n                    highColor       : 'ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    gridColor       : '#ffffff',\n                    height          : 200, \n                    htmlId          : 'waterTempBarPlot'\n                };\n            setHorzBarWidget(waterTempBarConfig);\n\n        }\n",
+        "template": "// Update Readings Javascript\n        function updateTemperature(device)\n        {\n            var time = new Date(device.timeStamp).toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit', second: '2-digit'}).replace(',', '');\n            $('#airTempDate').text(time);\n            $('#waterTempDate').text(time);\n            var outsideT = Math.round(device.tempA.value * 10) / 10;\n            var airTempBarConfig = \n                {\n                    lolo            : device.tempA.alarm.limits.lolo, \n                    low             : device.tempA.alarm.limits.low, \n                    high            : device.tempA.alarm.limits.high, \n                    hihi            : device.tempA.alarm.limits.hihi, \n                    value           : outsideT, \n                    unit            : 'C', \n                    textsize        : 38,\n                    label           : 'ultraAmp', \n                    lowColor        : '#0000ff', \n                    mediumColor     : '#00ff00',\n                    highColor       : 'ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    gridColor       : '#ffffff',\n                    height          : 200, \n                    htmlId          : 'airTempBarPlot'\n                };\n            setHorzBarWidget(airTempBarConfig);\n            var waterT = Math.round(device.tempB.value * 10) / 10;\n            var waterTempBarConfig = \n                {\n                    lolo            : device.tempB.alarm.limits.lolo, \n                    low             : device.tempB.alarm.limits.low, \n                    high            : device.tempB.alarm.limits.high, \n                    hihi            : device.tempB.alarm.limits.hihi, \n                    value           : waterT, \n                    unit            : 'C', \n                    textsize        : 38,\n                    label           : 'ultraAmp', \n                    lowColor        : '#0000ff', \n                    mediumColor     : '#00ff00',\n                    highColor       : 'ff0000', \n                    backgroundColor : '#9eb5c7', \n                    labelColor      : '#000000', \n                    gridColor       : '#ffffff',\n                    height          : 200, \n                    htmlId          : 'waterTempBarPlot'\n                };\n            setHorzBarWidget(waterTempBarConfig);\n\n        }\n",
         "output": "str",
         "x": 620,
-        "y": 1340,
+        "y": 840,
         "wires": [
             [
                 "a4ced76d.d36618"
@@ -19124,7 +18707,7 @@
         "template": "// Archive JavaScript\n        function getArchive(hours)\n        { \n            $('#archiveCardId').show();\n\n//            if (hours > 2) messageDialog('Info', 'Wait', 'Getting Archive Data');\n            $('#archive24hrButton').attr(\"disabled\", true); \n            $('#archive168hrButton').attr(\"disabled\", true); \n            $('#archive720hrButton').attr(\"disabled\", true); \n            $('#archive24hrButton').css('color', 'var(--color5)'); \n            $('#archive24hrButton').css('background-color', 'var(--color1)'); \n            $('#archive168hrButton').css('color', 'var(--color5)'); \n            $('#archive168hrButton').css('background-color', 'var(--color1)'); \n            $('#archive720hrButton').css('color', 'var(--color5)'); \n            $('#archive720hrButton').css('background-color', 'var(--color1)'); \n            switch(hours)\n            {\n                case 24:\n                    $('#archive24hrButton').css('color', 'var(--color1)'); \n                    $('#archive24hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 168:\n                    $('#archive168hrButton').css('color', 'var(--color1)'); \n                    $('#archive168hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                case 720:\n                    $('#archive720hrButton').css('color', 'var(--color1)'); \n                    $('#archive720hrButton').css('background-color', 'var(--color5)'); \n                    break;\n                default:\n                // code block\n            }\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : 'blinky-DS18B20',\n                name : '01', \n                attr : ['tempA','tempB'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n            var plotConfig = \n            {\n                trace1Title : 'Temp. (C)',\n                trace1Color : '#557a95',\n                trace1GridColor : '#beceda',\n                trace2Title : 'Temp. (C)',\n                trace2Color : '#f2a31f',\n                trace2GridColor : '#f2a31f',\n                plotLength  : 600000,\n                width   : '',\n                height  :   '500',\n                htmlId  :   'historyStripChart'\n            };\n            var layout =\n            {\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15},\n                height      : '400',\n                width       : '',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date'\n                },\n                yaxis:\n                {\n                    title           : 'Temperatur (C)',\n                    titlefont       : {color: 'black'},\n                    tickfont        : {color: 'black'},\n                    gridcolor       : 'grey',\n                    zerolinecolor   : 'grey',\n                    linecolor       : 'grey'\n//                    range           : [0,30],\n//                    dtick           :  5\n\n                },\n                margin: \n                    {\n                        t: 30, //top margin\n    //                    l: 0, //left margin\n    //                    r: 0, //right margin\n    //                    b: 20 //bottom margin\n                    },\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'Vattentemperatur',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  plotConfig.trace1Color,width:2},\n                visible: true\n            };\n            var trace2 = \n            {\n                x: [],\n                y: [],\n                name: 'Lufttemperatur',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  plotConfig.trace2Color,width:2},\n                visible: true\n            };\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                var x = archiveList[0].trace[ii].timeStamp;\n                trace1.x[ii] = x;\n                trace1.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[1]] ;\n                trace2.x[ii] = x;\n                trace2.y[ii] = archiveList[0].trace[ii][archiveList[0].device.attr[0]] ;\n            }\n            Plotly.newPlot('archiveChart', [trace1,trace2], layout);\n            $('#archive24hrButton').attr(\"disabled\", false); \n            $('#archive168hrButton').attr(\"disabled\", false); \n            $('#archive720hrButton').attr(\"disabled\", false); \n        }\n",
         "output": "str",
         "x": 590,
-        "y": 1380,
+        "y": 880,
         "wires": [
             [
                 "ba179b61.21c5b8"
@@ -19143,7 +18726,7 @@
         "template": "<!-- Archive HTML -->\n                <div class='card' id=archiveCardId>\n                    <p class='card-title'>Historia</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' >\n                            <table width='100%'>\n                                <tr>\n                                    <td width='20%' align='center'>\n                                        <span class='big-text' ></span>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive24hrButton\" onclick=\"getArchive(24)\" >1</button>\n                                    </td>\n                                    <td width='20%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive168hrButton\" onclick=\"getArchive(168)\" >7</button>\n                                    </td>\n                                    <td width='20%'  align='center'>\n                                        <button class='btn btn-block big-text' style='background-color:var(--color1);color:var(--color5)' id=\"archive720hrButton\" onclick=\"getArchive(720)\" >30</button>\n                                    </td>\n                                    <td width='20%' align='center'>\n                                        <span class='big-text' >dagar</span>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                        <div class='row vert-pad'>\n                            <div class='col-md-12'>\n                                <div id=\"archiveChart\" width=\"100%\" ></div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n",
         "output": "str",
         "x": 910,
-        "y": 1340,
+        "y": 840,
         "wires": [
             [
                 "fb6ed145.53564"
@@ -19156,7 +18739,7 @@
         "z": "d6667d7b.35cd6",
         "name": "",
         "x": 1290,
-        "y": 1380,
+        "y": 880,
         "wires": []
     },
     {
@@ -19171,7 +18754,7 @@
         "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n          background-color: white !important;\n          padding-left:25px;\n          padding-right:25px;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
         "output": "str",
         "x": 1030,
-        "y": 1380,
+        "y": 880,
         "wires": [
             [
                 "7014e3ec.c12bbc"
@@ -19190,7 +18773,7 @@
         "template": "<!-- navBar -->\n    <div class='row' style=\"padding-top:10px;\">\n        <div class='col-12' align='center'>\n            <table width=\"900px\" background=\"/img/longaBryggan.png\">\n                <tr>\n                    <td width=\"300px\" align=\"left\" style=\"padding-top:25px;padding-bottom:25px;padding-left:25px;\"><a href=\"/\" ><img src=\"/img/bl-mc-icon.png\" height=\"100px\"/></a></td>\n                    <td width=\"300px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"></td>\n                    <td width=\"300px\" align=\"right\" style=\"padding-top:25px;padding-bottom:25px;padding-right:25px;\"><a href=\"/kallis\" ><img src=\"/img/bastuYellow.png\" height=\"100px\"/></a></td>\n               </tr>\n            </table>\n        </div>\n    </div>\n",
         "output": "str",
         "x": 1160,
-        "y": 1380,
+        "y": 880,
         "wires": [
             [
                 "618875f1.f70d4c"
@@ -19204,8 +18787,8 @@
         "name": "/kallis-weather/websocket",
         "server": "f4be01a.3f255",
         "client": "",
-        "x": 1250,
-        "y": 1500,
+        "x": 1230,
+        "y": 1020,
         "wires": []
     },
     {
@@ -19215,10 +18798,11 @@
         "name": "brantevik web socket input",
         "links": [
             "62fb9e33.02bff",
-            "a988b405.392318"
+            "a988b405.392318",
+            "ca636790.fc91f8"
         ],
-        "x": 1105,
-        "y": 1500,
+        "x": 1075,
+        "y": 1020,
         "wires": [
             [
                 "f12f38cd.8e9bc8"
@@ -19233,8 +18817,8 @@
         "property": "payload",
         "action": "obj",
         "pretty": false,
-        "x": 370,
-        "y": 1500,
+        "x": 350,
+        "y": 1020,
         "wires": [
             [
                 "b91fd9e8.204d38"
@@ -19251,11 +18835,11 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 500,
-        "y": 1500,
+        "x": 480,
+        "y": 1020,
         "wires": [
             [
-                "c7ccca02.902f08"
+                "ff4be1c.86a372"
             ]
         ]
     },
@@ -19266,8 +18850,8 @@
         "name": "/kallis-weather/websocket",
         "server": "f4be01a.3f255",
         "client": "",
-        "x": 170,
-        "y": 1500,
+        "x": 150,
+        "y": 1020,
         "wires": [
             [
                 "75add378.427e0c"
@@ -19282,8 +18866,8 @@
         "links": [
             "c4595efc.a717b"
         ],
-        "x": 615,
-        "y": 1500,
+        "x": 735,
+        "y": 1000,
         "wires": []
     },
     {
@@ -19298,7 +18882,7 @@
         "template": "// Horz Bar Widget\n        function setHorzBarWidget(barConfig)\n        {\n            var lowValue = 0;\n            var mediumValue = 0;\n            var highValue = 0;\n        \n            var lowColor = barConfig.backgroundColor;\n            var mediumColor = barConfig.backgroundColor;\n            var highColor = barConfig.backgroundColor;\n            var valueColor = barConfig.backgroundColor; \n            \n            if ( barConfig.value <= barConfig.lolo)\n            {\n                lowValue = barConfig.lolo;\n                lowColor = barConfig.lowColor;\n                valueColor = lowColor;\n            }\n            if ( (barConfig.lolo <= barConfig.value) && (barConfig.value < barConfig.low) )\n            {\n                lowValue = barConfig.value;\n                lowColor = barConfig.lowColor;\n                valueColor = lowColor;\n            }\n            if ( (barConfig.low  <= barConfig.value) && (barConfig.value < barConfig.high) )\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.value - barConfig.low; \n                lowColor = barConfig.mediumColor;\n                mediumColor = barConfig.mediumColor;\n                valueColor = mediumColor;\n        \n            }\n            if ( (barConfig.high <= barConfig.value) && (barConfig.value < barConfig.hihi) )\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.high - barConfig.low;\n                highValue = barConfig.value - barConfig.high;\n                lowColor = barConfig.highColor;\n                mediumColor = barConfig.highColor;\n                highColor = barConfig.highColor;\n                valueColor = highColor;\n            }\n            if ( barConfig.hihi <= barConfig.value)\n            {\n                lowValue = barConfig.low;\n                mediumValue = barConfig.high - barConfig.low; \n                highValue = barConfig.hihi - barConfig.high; \n                lowColor = barConfig.highColor;\n                mediumColor = barConfig.highColor;\n                highColor = barConfig.highColor;\n                valueColor = highColor;\n            }\n            valueColor = 'black';\n            \n            var lowBar = \n            {\n                y: ['', '-'],\n                x: [ barConfig.low, lowValue],\n                type: 'bar',\n                orientation: 'h',\n                showlegend: false,\n                marker:{color: [barConfig.lowColor, lowColor]},\n              width: [0.1, 1.0],\n            };\n            var mediumBar = \n            {\n                y: ['', '-'],\n                x: [barConfig.high - barConfig.low, mediumValue],\n                type: 'bar',\n                orientation: 'h',\n                showlegend: false,\n                marker:{color: [barConfig.mediumColor, mediumColor]},\n              width: [0.1, 1.0],\n            };\n            var highBar = \n            {\n                y: ['', '-'],\n                x: [barConfig.hihi - barConfig.high, highValue],\n                orientation: 'h',\n                type: 'bar',\n                showlegend: false,\n                marker:{color: [barConfig.highColor, highColor]},\n              width: [0.1, 1.0],\n            };\n            var layout = \n                {\n                    barmode: 'stack',\n                    plot_bgcolor:barConfig.backgroundColor,\n                    paper_bgcolor:barConfig.backgroundColor,\n                    margin: \n                        {\n                            t: 70, //top margin\n                            l: 20, //left margin\n                            r: 20, //right margin\n                            b: 70 //bottom margin\n                        },\n \n                    height: barConfig.height,\n                    title: \n                        {\n                            text: barConfig.value.toString() + ' ' + barConfig.unit,\n                            font: {color: valueColor, size: barConfig.textsize},\n                        },\n                    yaxis: \n                        {\n                            tickfont: {color:valueColor, size:barConfig.textsize}\n                        },\n                    xaxis: \n                        {\n                            range: [barConfig.lolo, barConfig.hihi],\n                            tickfont: {color:barConfig.labelColor, size:barConfig.textsize},\n                            gridcolor       : barConfig.gridColor\n\n                        },\n                };\n           Plotly.newPlot(barConfig.htmlId, [lowBar, mediumBar, highBar], layout, {'displayModeBar': false});\n        }\n        \n        \n        \n        \n        \n    \n",
         "output": "str",
         "x": 620,
-        "y": 1300,
+        "y": 800,
         "wires": [
             [
                 "e91c1550.e1e3c8"
@@ -19314,10 +18898,10 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Vattentemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"waterTempBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
+        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Vattentemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                            <span class='card-text' id='waterTempDate' style='font-size: 125%;' ></span>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"waterTempBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
         "output": "str",
         "x": 930,
-        "y": 1260,
+        "y": 760,
         "wires": [
             [
                 "6777110d.b525d"
@@ -19334,7 +18918,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 130,
-        "y": 1260,
+        "y": 760,
         "wires": [
             [
                 "e9a474ab.cefc28"
@@ -19350,10 +18934,10 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Lufttemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"airTempBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
+        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Lufttemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                            <span class='card-text' id='airTempDate' style='font-size: 125%;' ></span>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"airTempBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
         "output": "str",
         "x": 920,
-        "y": 1300,
+        "y": 800,
         "wires": [
             [
                 "3deaa4e1.32958c"
@@ -19369,7 +18953,7 @@
         "action": "obj",
         "pretty": false,
         "x": 370,
-        "y": 1140,
+        "y": 640,
         "wires": [
             [
                 "ffe72477.e66918"
@@ -19387,7 +18971,7 @@
         "initialize": "",
         "finalize": "",
         "x": 500,
-        "y": 1140,
+        "y": 640,
         "wires": [
             [
                 "8a054338.b6be3"
@@ -19406,7 +18990,7 @@
         "template": "Kallis",
         "output": "str",
         "x": 380,
-        "y": 620,
+        "y": 120,
         "wires": [
             [
                 "b6a458d6.462ad8"
@@ -19422,10 +19006,10 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Global Javascript\n        useWebSockets(true);\n        var mqttDevice = null;\n        var device = null;\n        var archiveRequestList = [];\n        var archiveList = [];\n        var programStarted = false;\n\n        function onDocumentReady()\n        {\n            setRemoteApp(true);\n//            getCreds();\n//            setInterval(function(){getCreds();}, 1000);\n            var now = new Date();\n        }\n        function getHistory()\n        {\n            var dateField = new Date();\n            dateField.setHours(1);\n            var startDate = dateField.getTime();\n            dateField.setHours(22);\n            var stopDate = dateField.getTime();\n            archiveRequestList = [];\n            archiveList = [];\n            archiveRequestList[0] = \n            {\n                deviceType : 'blinky-turnstile',\n                name : '01', \n                attr : ['numTurns'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                if (data.trace == null)\n                {\n                    $( \"#bathersNowId\").text(\"?\");\n                    $( \"#bathersTotalInId\").text(\"?\");\n                    $( \"#bathersLastHourId\").text(\"?\");\n                    return;\n                }\n                if (data.trace.length < 2)\n                {\n                    $( \"#bathersNowId\").text(\"0\");\n                    $( \"#bathersTotalInId\").text(\"0\");\n                    $( \"#bathersLastHourId\").text(\"0\");\n                    return;\n                }\n                var bathersTotalIn = 0;\n                var bathersTotalOut = 0;\n                for (var ib = 1; ib < data.trace.length; ++ib)\n                {\n                    if (data.trace[ib].numTurns > data.trace[ib - 1].numTurns) bathersTotalIn = bathersTotalIn + 1;\n                    if (data.trace[ib].numTurns < data.trace[ib - 1].numTurns) bathersTotalOut = bathersTotalOut + 1;\n                }\n                if (bathersTotalOut > bathersTotalIn ) bathersTotalOut = bathersTotalIn; \n                $( \"#bathersTotalInId\").text(bathersTotalIn.toString());\n                $( \"#bathersNowId\").text((bathersTotalIn - bathersTotalOut).toString());\n                var now = new Date().getTime();\n                var bathersInLastHour = 0;\n                for (var ib = 1; ib < data.trace.length; ++ib)\n                {\n                    if ((now - data.trace[ib].timeStamp) < 3600000)\n                    {\n                        if (data.trace[ib].numTurns > data.trace[ib - 1].numTurns)\n                        {\n                            bathersInLastHour = bathersInLastHour + 1;\n                        }\n                    }\n                }\n                $( \"#bathersLastHourId\").text(bathersInLastHour.toString());\n            }\n        }\n        function onWebSocketOpen()\n        {\n            if(!programStarted) getHistory();\n            programStarted = true;\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    if ((device.deviceType == \"blinky-DS18B20\")    && (device.name == \"01\"))\n                    {\n                        var outsideT = Math.round(device.tempA.value * 10) / 10;\n                        var waterT = Math.round(device.tempB.value * 10) / 10;\n                        $( \"#waterTemperature\").text(waterT.toString() + ' C');\n                        $( \"#outsideTemperature\").text(outsideT.toString() + ' C');\n                    }\n                    if ((device.deviceType == \"blinky-turnstile\")  && (device.name == \"01\")) getHistory();\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        if ((msg.payload.device.deviceType == 'blinky-turnstile') && (msg.payload.device.name == '01') )\n                            putArchiveValues(msg.payload);\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var mqttDevice = null;\n        var device = null;\n        var archiveRequestList = [];\n        var archiveList = [];\n        var programStarted = false;\n\n        function onDocumentReady()\n        {\n            setRemoteApp(true);\n//            getCreds();\n//            setInterval(function(){getCreds();}, 1000);\n            var now = new Date();\n        }\n        function getHistory()\n        {\n            var dateField = new Date();\n            dateField.setHours(1);\n            var startDate = dateField.getTime();\n            dateField.setHours(22);\n            var stopDate = dateField.getTime();\n            archiveRequestList = [];\n            archiveList = [];\n            archiveRequestList[0] = \n            {\n                deviceType : 'blinky-turnstile',\n                name : '01', \n                attr : ['numTurns'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                if (data.trace == null)\n                {\n                    $( \"#bathersNowId\").text(\"?\");\n                    $( \"#bathersTotalInId\").text(\"?\");\n                    $( \"#bathersLastHourId\").text(\"?\");\n                    return;\n                }\n                if (data.trace.length < 2)\n                {\n                    $( \"#bathersNowId\").text(\"0\");\n                    $( \"#bathersTotalInId\").text(\"0\");\n                    $( \"#bathersLastHourId\").text(\"0\");\n                    return;\n                }\n                var bathersTotalIn = 0;\n                var bathersTotalOut = 0;\n                for (var ib = 1; ib < data.trace.length; ++ib)\n                {\n                    if (data.trace[ib].numTurns > data.trace[ib - 1].numTurns) bathersTotalIn = bathersTotalIn + 1;\n                    if (data.trace[ib].numTurns < data.trace[ib - 1].numTurns) bathersTotalOut = bathersTotalOut + 1;\n                }\n                if (bathersTotalOut > bathersTotalIn ) bathersTotalOut = bathersTotalIn; \n                $( \"#bathersTotalInId\").text(bathersTotalIn.toString());\n                $( \"#bathersNowId\").text((bathersTotalIn - bathersTotalOut).toString());\n                var now = new Date().getTime();\n                var bathersInLastHour = 0;\n                for (var ib = 1; ib < data.trace.length; ++ib)\n                {\n                    if ((now - data.trace[ib].timeStamp) < 3600000)\n                    {\n                        if (data.trace[ib].numTurns > data.trace[ib - 1].numTurns)\n                        {\n                            bathersInLastHour = bathersInLastHour + 1;\n                        }\n                    }\n                }\n                $( \"#bathersLastHourId\").text(bathersInLastHour.toString());\n            }\n        }\n        function onWebSocketOpen()\n        {\n            if(!programStarted)\n            {   \n                getHistory();\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"blinky-DS18B20\")    && (device.name == \"01\"))\n                    {\n                        updateTemperature(device);\n                    }\n                    if ((device.deviceType == \"blinky-turnstile\")  && (device.name == \"01\")) getHistory();\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        if ((msg.payload.device.deviceType == 'blinky-turnstile') && (msg.payload.device.name == '01') )\n                            putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateTemperature(msg.payload[0]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function updateTemperature(device)\n        {\n            var time = new Date(device.timeStamp).toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit', second: '2-digit'}).replace(',', '');\n            $('#airTempDate').text(time);\n            var outsideT = Math.round(device.tempA.value * 10) / 10;\n            var waterT = Math.round(device.tempB.value * 10) / 10;\n            $( \"#waterTemperature\").text(waterT.toString() + ' C');\n            $( \"#outsideTemperature\").text(outsideT.toString() + ' C');\n        }\n",
         "output": "str",
         "x": 730,
-        "y": 620,
+        "y": 120,
         "wires": [
             [
                 "c6cbbcc8.32f82"
@@ -19444,7 +19028,7 @@
         "template": "{{{payload.script.swedish}}}\n{{{payload.script.global}}}\n{{{payload.script.user}}}\n",
         "output": "str",
         "x": 720,
-        "y": 660,
+        "y": 160,
         "wires": [
             [
                 "a211c38b.249"
@@ -19463,7 +19047,7 @@
         "template": "    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr >\n                <td style='padding-top: 10px;'>\n{{{payload.html.dashboard}}}\n                </td>\n            </tr>\n            <tr>\n                <td align='center'>\n                    <span >Powered by </span><a href='/' style=\"color: var(--color1);text-decoration: underline;\">Blinky-Lite</a>\n                </td>\n            </tr>\n        </table>\n    </div>",
         "output": "str",
         "x": 1010,
-        "y": 620,
+        "y": 120,
         "wires": [
             [
                 "5f0a7a6b.f0b164"
@@ -19482,7 +19066,7 @@
         "template": "turnstileYellow.png",
         "output": "str",
         "x": 390,
-        "y": 580,
+        "y": 80,
         "wires": [
             [
                 "7c79a515.ef020c"
@@ -19498,10 +19082,10 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Dashboard HTML -->\n                <div class='card'>\n                    <p class='card-title'>Sammanfattning</p>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <table width='100%'>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text' style='color:var(--color1); font-size: 250%;'>Vattentemperatur</span>\n                                    </td>\n                                    <td width='20%' align='right'>\n                                        <span class='card-text' id='waterTemperature' style='padding-right:10px;font-size: 250%;' ></span>\n                                    </td>\n                                    <td width='10%' align='right'>\n                                        <a class=\"btn card-button\"  href='/kallis-weather'>historia</a>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text' style='color:var(--color1); font-size: 250%;' >Lufttemperatur</span>\n                                    </td>\n                                    <td width='20%' align='right'>\n                                        <span class='card-text' id='outsideTemperature' style='padding-right:10px;font-size: 250%;' ></span>\n                                    </td>\n                                    <td width='10%' align='right'>\n                                        <a class=\"btn card-button\"  href='/kallis-weather'>historia</a>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;'>Netto antal badare inne nu</span>\n                                    </td>\n                                    <td width='20%' align='right'>\n                                        <span class='card-text' id='bathersNowId'  style='padding-right:10px;font-size: 250%;' >0</span>\n                                    </td>\n                                    <td width='10%' align='right'>\n                                        <a class=\"btn card-button\"  href='/kallis-bathers'>historia</a>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;'>Totalt antal inpasseringar idag</span>\n                                    </td>\n                                    <td width='20%' align='right'>\n                                        <span class='card-text' id='bathersTotalInId'  style='padding-right:10px;font-size: 250%;' >0</span>\n                                    </td>\n                                    <td width='10%' align='right'>\n                                        <a class=\"btn card-button\"  href='/kallis-bathers'>historia</a>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;' id='bathersLastHourLabelId' >Antal inpasseringar senaste timmen</span>\n                                    </td>\n                                    <td width='20%' align='right' valign='center'>\n                                        <span class='card-text' id='bathersLastHourId'  style='padding-right:10px;font-size: 250%;' >0</span>\n                                    </td>\n                                    <td width='10%' align='right' valign='center'>\n                                        <a class=\"btn card-button\"  href='/kallis-bathers'>historia</a>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                   </div>\n                </div>\n",
+        "template": "<!-- Dashboard HTML -->\n                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Sammanfattning</p>\n                         </div>\n                        <div class='col-md-2'>\n                            <span class='card-text' id='airTempDate' style='font-size: 125%;' ></span>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <table width='100%'>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text' style='color:var(--color1); font-size: 250%;'>Vattentemperatur</span>\n                                    </td>\n                                    <td width='20%' align='right'>\n                                        <span class='card-text' id='waterTemperature' style='padding-right:10px;font-size: 250%;' ></span>\n                                    </td>\n                                    <td width='10%' align='right'>\n                                        <a class=\"btn card-button\"  href='/kallis-weather'>historia</a>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text' style='color:var(--color1); font-size: 250%;' >Lufttemperatur</span>\n                                    </td>\n                                    <td width='20%' align='right'>\n                                        <span class='card-text' id='outsideTemperature' style='padding-right:10px;font-size: 250%;' ></span>\n                                    </td>\n                                    <td width='10%' align='right'>\n                                        <a class=\"btn card-button\"  href='/kallis-weather'>historia</a>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;'>Netto antal badare inne nu</span>\n                                    </td>\n                                    <td width='20%' align='right'>\n                                        <span class='card-text' id='bathersNowId'  style='padding-right:10px;font-size: 250%;' >0</span>\n                                    </td>\n                                    <td width='10%' align='right'>\n                                        <a class=\"btn card-button\"  href='/kallis-bathers'>historia</a>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;'>Totalt antal inpasseringar idag</span>\n                                    </td>\n                                    <td width='20%' align='right'>\n                                        <span class='card-text' id='bathersTotalInId'  style='padding-right:10px;font-size: 250%;' >0</span>\n                                    </td>\n                                    <td width='10%' align='right'>\n                                        <a class=\"btn card-button\"  href='/kallis-bathers'>historia</a>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;' id='bathersLastHourLabelId' >Antal inpasseringar senaste timmen</span>\n                                    </td>\n                                    <td width='20%' align='right' valign='center'>\n                                        <span class='card-text' id='bathersLastHourId'  style='padding-right:10px;font-size: 250%;' >0</span>\n                                    </td>\n                                    <td width='10%' align='right' valign='center'>\n                                        <a class=\"btn card-button\"  href='/kallis-bathers'>historia</a>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                   </div>\n                </div>\n",
         "output": "str",
         "x": 1040,
-        "y": 580,
+        "y": 80,
         "wires": [
             [
                 "c1abe5bc.9c4c18"
@@ -19518,7 +19102,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 110,
-        "y": 580,
+        "y": 80,
         "wires": [
             [
                 "a6d94543.cb6628"
@@ -19537,7 +19121,7 @@
         "template": "        /* Swedish initialisation for the jQuery UI date picker plugin. */\n        /* Written by Anders Ekdahl ( anders@nomadiz.se). */\n        ( function( factory ) {\n        \tif ( typeof define === \"function\" && define.amd ) {\n        \n        \t\t// AMD. Register as an anonymous module.\n        \t\tdefine( [ \"../widgets/datepicker\" ], factory );\n        \t} else {\n        \n        \t\t// Browser globals\n        \t\tfactory( jQuery.datepicker );\n        \t}\n        }( function( datepicker ) {\n        \n        datepicker.regional.sv = {\n        \tcloseText: \"Stäng\",\n        \tprevText: \"&#xAB;Förra\",\n        \tnextText: \"Nästa&#xBB;\",\n        \tcurrentText: \"Idag\",\n        \tmonthNames: [ \"januari\",\"februari\",\"mars\",\"april\",\"maj\",\"juni\",\n        \t\"juli\",\"augusti\",\"september\",\"oktober\",\"november\",\"december\" ],\n        \tmonthNamesShort: [ \"jan.\",\"feb.\",\"mars\",\"apr.\",\"maj\",\"juni\",\n        \t\"juli\",\"aug.\",\"sep.\",\"okt.\",\"nov.\",\"dec.\" ],\n        \tdayNamesShort: [ \"sön\",\"mån\",\"tis\",\"ons\",\"tor\",\"fre\",\"lör\" ],\n        \tdayNames: [ \"söndag\",\"måndag\",\"tisdag\",\"onsdag\",\"torsdag\",\"fredag\",\"lördag\" ],\n        \tdayNamesMin: [ \"sö\",\"må\",\"ti\",\"on\",\"to\",\"fr\",\"lö\" ],\n        \tweekHeader: \"Ve\",\n        \tdateFormat: \"yy-mm-dd\",\n        \tfirstDay: 1,\n        \tisRTL: false,\n        \tshowMonthAfterYear: false,\n        \tyearSuffix: \"\" };\n        datepicker.setDefaults( datepicker.regional.sv );\n        \n        return datepicker.regional.sv;\n        \n        } ) );\n",
         "output": "str",
         "x": 740,
-        "y": 580,
+        "y": 80,
         "wires": [
             [
                 "d94eaa89.a1bb58"
@@ -19550,7 +19134,7 @@
         "z": "d6667d7b.35cd6",
         "name": "",
         "x": 1450,
-        "y": 620,
+        "y": 120,
         "wires": []
     },
     {
@@ -19565,7 +19149,7 @@
         "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n          background-color: white !important;\n          padding-left:25px;\n          padding-right:25px;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .ui-widget\n        {\n            font-size :200%;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
         "output": "str",
         "x": 1190,
-        "y": 620,
+        "y": 120,
         "wires": [
             [
                 "8a387212.eccf1"
@@ -19584,7 +19168,7 @@
         "template": "<!-- navBar -->\n    <div class='row' style=\"padding-top:10px;\">\n        <div class='col-12' align='center'>\n            <table width=\"900px\" background=\"/img/longaBryggan.png\">\n                <tr>\n                    <td width=\"300px\" align=\"left\" style=\"padding-top:25px;padding-bottom:25px;padding-left:25px;\"><a href=\"/\" ><img src=\"/img/bl-mc-icon.png\" height=\"100px\"/></a></td>\n                    <td width=\"300px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"></td>\n                    <td width=\"300px\" align=\"right\" style=\"padding-top:25px;padding-bottom:25px;padding-right:25px;\"><a href=\"https://www.bjerredssaltsjobad.se/sv\" ><img src=\"/img/bastuYellow.png\" height=\"100px\"/></a></td>\n               </tr>\n            </table>\n        </div>\n    </div>\n",
         "output": "str",
         "x": 1320,
-        "y": 620,
+        "y": 120,
         "wires": [
             [
                 "dc09ca29.f0bed8"
@@ -19599,7 +19183,7 @@
         "server": "bffd74cb.9a56d8",
         "client": "",
         "x": 1230,
-        "y": 780,
+        "y": 280,
         "wires": []
     },
     {
@@ -19610,10 +19194,11 @@
         "links": [
             "1c641721.29eb79",
             "9b3bde89.b6f61",
-            "a988b405.392318"
+            "a988b405.392318",
+            "ca636790.fc91f8"
         ],
         "x": 1105,
-        "y": 780,
+        "y": 280,
         "wires": [
             [
                 "b3abc198.4c70b"
@@ -19628,7 +19213,7 @@
         "server": "bffd74cb.9a56d8",
         "client": "",
         "x": 140,
-        "y": 780,
+        "y": 280,
         "wires": [
             [
                 "73ee7cb7.4e3c64"
@@ -19643,8 +19228,8 @@
         "links": [
             "c4595efc.a717b"
         ],
-        "x": 615,
-        "y": 780,
+        "x": 735,
+        "y": 260,
         "wires": []
     },
     {
@@ -19656,7 +19241,7 @@
         "action": "obj",
         "pretty": false,
         "x": 370,
-        "y": 780,
+        "y": 280,
         "wires": [
             [
                 "58d9e0b0.5f98c"
@@ -19674,10 +19259,10 @@
         "initialize": "",
         "finalize": "",
         "x": 500,
-        "y": 780,
+        "y": 280,
         "wires": [
             [
-                "7ceba2d4.4dcf3c"
+                "f6730369.3763d"
             ]
         ]
     },
@@ -19690,7 +19275,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Havstemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                            <span class='card-text' id='waterTempDate' style='font-size: 150%;' ></span>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"waterTempBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
+        "template": "                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Havstemperatur</p>\n                         </div>\n                        <div class='col-md-2'>\n                            <span class='card-text' id='waterTempDate' style='font-size: 125%;' ></span>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row'>\n                            <div class='col-md-12'>\n                                <div id=\"waterTempBarPlot\" width=\"100%\" ></div>\n                           </div>\n                        </div>\n                    </div>\n                </div>\n",
         "output": "str",
         "x": 1110,
         "y": 80,
@@ -19817,6 +19402,212 @@
         "headers": {},
         "x": 1230,
         "y": 400,
+        "wires": []
+    },
+    {
+        "id": "47f1a8eb.938b38",
+        "type": "mongodb3 in",
+        "z": "d6667d7b.35cd6",
+        "service": "_ext_",
+        "configNode": "9cd5ff5e.caf86",
+        "name": "",
+        "collection": "devices",
+        "operation": "find.toArray",
+        "x": 770,
+        "y": 1140,
+        "wires": [
+            [
+                "cede4726.6ec938"
+            ]
+        ]
+    },
+    {
+        "id": "cede4726.6ec938",
+        "type": "function",
+        "z": "d6667d7b.35cd6",
+        "name": "Parse query",
+        "func": "var temp = null;\nvar turnstile = null;\nfor (var ii = 0; ii < 2; ++ii)\n{\n    if ((msg.payload[ii].deviceType == 'blinky-DS18B20') && (msg.payload[ii].name == '01') ) temp = msg.payload[ii];\n    if ((msg.payload[ii].deviceType == 'blinky-turnstile')  && (msg.payload[ii].name == '01') ) turnstile = msg.payload[ii];\n}\nvar newPayload = \n{\n    tempStamp       : temp.timeStamp,\n    airTemp         : temp.tempA.value,\n    waterTemp       : temp.tempB.value,\n    turnstileStamp  : turnstile.timeStamp,\n    turnstilePos    : turnstile.position.value,\n    turnstileTurns  : turnstile.numTurns.value,\n};\nif (msg.topic == undefined)\n{\n    msg.payload = newPayload;\n    return [null,msg];\n}\nvar newMsg = \n{\n    topic   :   msg.topic,\n    payload :\n    {\n        topic   :   msg.topic,\n        userID  :   msg.userID,\n        payload :   [temp, turnstile]\n    }\n}\nreturn [newMsg,null];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 1140,
+        "wires": [
+            [
+                "ca636790.fc91f8"
+            ],
+            [
+                "fa0e4e7e.48379"
+            ]
+        ]
+    },
+    {
+        "id": "8777941d.290748",
+        "type": "function",
+        "z": "d6667d7b.35cd6",
+        "name": "Prep get Devices Query",
+        "func": "msg.payload = \n{\n    $or : [ \n        {$and : [ {deviceType: 'blinky-DS18B20'}, {name: '01'} ]}, \n        {$and : [ {deviceType: 'blinky-turnstile'}, {name: '01'} ]}\n        ]\n     \n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 1140,
+        "wires": [
+            [
+                "47f1a8eb.938b38"
+            ]
+        ]
+    },
+    {
+        "id": "42589a18.a08314",
+        "type": "http in",
+        "z": "d6667d7b.35cd6",
+        "name": "/kallis.json",
+        "url": "/kallis.json",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 300,
+        "y": 1160,
+        "wires": [
+            [
+                "8777941d.290748"
+            ]
+        ]
+    },
+    {
+        "id": "fa0e4e7e.48379",
+        "type": "http response",
+        "z": "d6667d7b.35cd6",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1190,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "ff4be1c.86a372",
+        "type": "switch",
+        "z": "d6667d7b.35cd6",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "readDatabase",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "getDevices",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 610,
+        "y": 1020,
+        "wires": [
+            [
+                "c7ccca02.902f08"
+            ],
+            [
+                "bf06d509.3bffa8"
+            ]
+        ]
+    },
+    {
+        "id": "8f5c3594.065be8",
+        "type": "link in",
+        "z": "d6667d7b.35cd6",
+        "name": "kallis device query in",
+        "links": [
+            "bf06d509.3bffa8",
+            "f219db61.44f1d8"
+        ],
+        "x": 335,
+        "y": 1100,
+        "wires": [
+            [
+                "8777941d.290748"
+            ]
+        ]
+    },
+    {
+        "id": "bf06d509.3bffa8",
+        "type": "link out",
+        "z": "d6667d7b.35cd6",
+        "name": "kallis weather web socket out",
+        "links": [
+            "8f5c3594.065be8"
+        ],
+        "x": 735,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "ca636790.fc91f8",
+        "type": "link out",
+        "z": "d6667d7b.35cd6",
+        "name": "kallis device query out",
+        "links": [
+            "3f5e997d.8aa756",
+            "416a2a7a.685b94"
+        ],
+        "x": 1155,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "f6730369.3763d",
+        "type": "switch",
+        "z": "d6667d7b.35cd6",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "readDatabase",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "getDevices",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 630,
+        "y": 280,
+        "wires": [
+            [
+                "7ceba2d4.4dcf3c"
+            ],
+            [
+                "f219db61.44f1d8"
+            ]
+        ]
+    },
+    {
+        "id": "f219db61.44f1d8",
+        "type": "link out",
+        "z": "d6667d7b.35cd6",
+        "name": "kallis web socket out",
+        "links": [
+            "8f5c3594.065be8"
+        ],
+        "x": 735,
+        "y": 300,
         "wires": []
     }
 ]
