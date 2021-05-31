@@ -77,6 +77,13 @@
         "info": ""
     },
     {
+        "id": "bfca38d7.6e7878",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "ca529822.9112f8",
         "type": "subflow",
         "name": "HTML",
@@ -359,6 +366,28 @@
         ],
         "out": [],
         "env": [],
+        "color": "#DDAA99"
+    },
+    {
+        "id": "adce79c2.bd6fa8",
+        "type": "subflow",
+        "name": "Widget Html",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 40,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "132e93cb.ae000c"
+                    }
+                ]
+            }
+        ],
+        "out": [],
+        "env": [],
+        "meta": {},
         "color": "#DDAA99"
     },
     {
@@ -19710,7 +19739,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n\n        function onDocumentReady()\n        {\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"solar-regulator\")    && (device.name == \"01\")) updateAirTemp(device);\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"03\")) updateWaterTemp(device);\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateAirTemp(msg.payload[1]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n\n        function onDocumentReady()\n        {\n            var picNum =  Math.floor(Math.random() * 5) + 1;\n            $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic0\" + picNum.toString() +\".jpg\");\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"solar-regulator\")    && (device.name == \"01\")) updateAirTemp(device);\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"03\"))\n                    {\n                        updateWaterTemp(device);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateAirTemp(msg.payload[1]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
         "output": "str",
         "x": 730,
         "y": 560,
@@ -19748,7 +19777,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "    <div width=\"200px\" align=\"center\">\n        <table width=\"200px\">\n            <tr>\n                <td>\n                    <table width=\"200px\">\n                        <tr>\n                            <td align='left' width='150px'>\n                                <img src=\"/img/sea-icon.png\" height=\"50px\"/>\n                            </td>\n                            <td  align='center' width='150px'>\n                                <span id='waterTemp' style='font-size: 200%;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left' width='150px'>\n                                <img src=\"/img/air-icon.png\" height=\"50px\"/>\n                            </td>\n                            <td align='center' width='150px'>\n                                <span id='airTemp' style='font-size: 200%;' ></span>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td align='center'>\n                    <span style=\"font-size: 70%;\">Powered by </span><a href='/' style=\"font-size: 70%; color: var(--color1);text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                </td>\n            </tr>\n        </table>\n    </div>",
+        "template": "    <div width=\"300px\" align=\"center\">\n        <table id=\"widgetTable\" width=\"300px\" background=\"/img/brantevikPics/BrantePic04.jpg\" style=\"background-size:100%;background-repeat:no-repeat;background-position:center;\">\n            <tr>\n                <td>\n                    <table width=\"300px\">\n                        <tr>\n                            <td align='center' width='150px'>\n                                <img src=\"/img/sea-icon.png\" height=\"80px\"/>\n                            </td>\n                            <td  align='center' width='150px'>\n                                <span id='waterTemp' style='font-size: 300%; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='center' width='150px'>\n                                <img src=\"/img/air-icon.png\" height=\"80px\"/>\n                            </td>\n                            <td align='center' width='150px'>\n                                <span id='airTemp' style='font-size: 300%; color:white;' ></span>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td align='center'>\n                    <span style=\"font-size: 70%; color:white;\">Powered by </span><a href='/' style=\"font-size: 70%; color: white;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                </td>\n            </tr>\n        </table>\n    </div>",
         "output": "str",
         "x": 930,
         "y": 640,
@@ -19803,43 +19832,15 @@
         "fieldType": "msg",
         "format": "css",
         "syntax": "mustache",
-        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n          max-width: 200px;\n          background-color: white !important;\n          padding-left:25px;\n          padding-right:25px;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
+        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n          max-width: 200px;\n          background-color: white !important;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
         "output": "str",
         "x": 1070,
         "y": 640,
         "wires": [
             [
-                "dd05d1c0.80957"
+                "2630746d.107cdc"
             ]
         ]
-    },
-    {
-        "id": "dd05d1c0.80957",
-        "type": "template",
-        "z": "2b074b3a.632fb4",
-        "name": "navBar",
-        "field": "payload.navBar",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "<!-- navBar -->\n",
-        "output": "str",
-        "x": 1200,
-        "y": 640,
-        "wires": [
-            [
-                "b4024f0d.95c66"
-            ]
-        ]
-    },
-    {
-        "id": "b4024f0d.95c66",
-        "type": "subflow:ca529822.9112f8",
-        "z": "2b074b3a.632fb4",
-        "name": "",
-        "x": 1330,
-        "y": 640,
-        "wires": []
     },
     {
         "id": "cf2981ef.3b94f",
@@ -19955,6 +19956,219 @@
         ],
         "x": 715,
         "y": 800,
+        "wires": []
+    },
+    {
+        "id": "56f5d51f.3bd8bc",
+        "type": "template",
+        "z": "adce79c2.bd6fa8",
+        "name": "HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n{{{payload.head}}}\n  </head>\n  <body>\n{{{payload.body}}}\n{{{payload.foot}}}\n  </body>\n</html>",
+        "output": "str",
+        "x": 1130,
+        "y": 80,
+        "wires": [
+            [
+                "55c86631.39a728"
+            ]
+        ]
+    },
+    {
+        "id": "687f3503.18d94c",
+        "type": "template",
+        "z": "adce79c2.bd6fa8",
+        "name": "Foot",
+        "field": "payload.foot",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <script src=\"/scripts/popper.js\"></script>\n    <script src=\"/scripts/bootstrap.js\"></script>",
+        "output": "str",
+        "x": 670,
+        "y": 80,
+        "wires": [
+            [
+                "b9f0df99.46a35"
+            ]
+        ]
+    },
+    {
+        "id": "25f0c237.ce8a1e",
+        "type": "template",
+        "z": "adce79c2.bd6fa8",
+        "name": "Head",
+        "field": "payload.head",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <meta charset=\"UTF-8\">\n    <link rel=\"icon\" href=\"/img/favicon.ico?v=4\" type=\"image/x-icon\"/>\n    <title>{{payload.title}}</title>\n    <link rel=\"stylesheet\" href=\"/css/bootstrap.css\"/>\n    <link rel=\"stylesheet\" href=\"/jquery/jquery-ui.css\"/>\n    <link rel=\"stylesheet\" href=\"/jquery/jquery-ui-timepicker-addon.css\"/>\n    <script src=\"/jquery/jquery.js\"></script>\n    <script src=\"/jquery/jquery-ui.js\"></script>\n    <script src=\"/jquery/jquery-ui-timepicker-addon.js\"></script>\n    <script src=\"/scripts/plotly-latest.min.js\"></script>\n    <script src=\"/scripts/pako.min.js\"></script>\n{{{payload.extraScripts}}}\n    <style>\n{{{payload.css}}}\n    </style>\n    <style>\n{{{payload.extraCss}}}\n    </style>\n    <script>\n{{{payload.utilityScripts}}}\n    </script>\n    <script>\n{{{payload.javascript}}}\n    </script>",
+        "output": "str",
+        "x": 550,
+        "y": 80,
+        "wires": [
+            [
+                "687f3503.18d94c"
+            ]
+        ]
+    },
+    {
+        "id": "55c86631.39a728",
+        "type": "http response",
+        "z": "adce79c2.bd6fa8",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1250,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "a38619a7.d98538",
+        "type": "template",
+        "z": "adce79c2.bd6fa8",
+        "name": "Utility Scripts",
+        "field": "payload.utilityScripts",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        var remoteApp = true;\n        var ws;\n        var userID = -1;\n        var useWebSocketsFlag = true;\n        var project = '{{{payload.project}}}';\n        var heartBeatImage = false;\n        var wsUri = '';\n        var wsConnected = false;\n\n        function setRemoteApp(remoteAppSet)\n        {\n            remoteApp  = remoteAppSet;\n        }\n        function webSocketConnected()\n        {\n            return wsConnected;\n        }\n        function useWebSockets(webSocketsFlag)\n        {\n            useWebSocketsFlag = webSocketsFlag;\n        }\n        function wsConnectC()\n        {\n            if (!useWebSocketsFlag)\n            {\n                return;\n            }\n            if (wsUri.length < 1)\n            {\n                var uri = window.location.href.split('://');\n                var wslead = 'ws://';\n                if (uri[0] == 'https') wslead = 'wss://';\n                var questionLocation = uri[1].indexOf('?');\n                if (questionLocation >= 0)\n                {\n                    uri[1] = uri[1].substring(0,questionLocation);\n//                    console.log(uri[1]);\n                }\n                if (uri[1].indexOf('/') < (uri[1].length - 1))\n                {\n                    wsUri = wslead + uri[1] + '/websocket';\n                }\n                else\n                {\n                    wsUri = wslead + uri[1] + 'websocket';\n                }\n            }\n            ws = new WebSocket(wsUri);\n            ws.onmessage = function(event)\n            {\n                onWebSocketMessage(JSON.parse(event.data));\n        \n            };\n            ws.onopen = function()\n            {\n                console.log(\"Websocket connected\");\n                wsConnected = true;\n                $('#webSocketStatus').html('Open');\n                $('#reOpenWebSocketButton').hide();\n                $('#webSocketStatusRow').css('padding-bottom','0px');\n                $('#webSocketStatusCard').hide();\n                onWebSocketOpen();\n            };\n            ws.onclose = function()\n            {\n                console.log(\"Websocket closed\");\n                wsConnected = false;\n                $('#webSocketStatus').html('Closed');\n                $('#reOpenWebSocketButton').show();\n                $('#webSocketStatusCard').show();\n                $('#webSocketStatusRow').css('padding-bottom','25px');\n                onWebSocketClose();\n                wsConnectC();\n            };\n        }\n\n        function getRandomInt(max)\n        {\n          return Math.floor(Math.random() * Math.floor(max));\n        }\n        $( document ).ready(function()\n        {\n            userID  = {{{payload.userID}}};\n            if (!useWebSocketsFlag)\n            {\n                $('#webSocketStatusRow').css('padding-bottom','0px');\n                $('#webSocketStatusCard').hide();\n            }\n            wsConnectC();\n            onDocumentReady();\n       });\n        $( function() \n        {\n            $( \"#acknowledgeDialog\" ).dialog(\n                {\n                    width:    500,\n                    autoOpen: false,\n                    buttons:\n                    [\n                        {\n                            text: \"Ok\",\n                            click: function() { $( this ).dialog( \"close\" );},\n                            showText: false\n                        },\n                   ]\n                });\n            $( \"#messageDialog\" ).dialog(\n                {\n                    width:    500,\n                    autoOpen: false,\n                    buttons:[]\n                });\n        } );\n        function optionDialog(headerText, title, text, buttonTexts, buttonFunctions)\n        {\n            var buttonDefinitions = [];\n            for (var ii = 0; ii < buttonTexts.length; ++ii)\n            {\n                buttonDefinitions[ii] = \n                    {\n                        text: buttonTexts[ii],\n                        click: buttonFunctions[ii],\n                        showText: false\n                    };\n            }\n            $( \"#optionDialog\" ).dialog( \"option\", \"title\", headerText );   \n            $( \"#optionDialog\" ).dialog( \"option\", \"buttons\", buttonDefinitions);\n            $( \"#optionDialogTitle\" ).html(title);\n            $( \"#optionDialogText\" ).html(text);\n            $( \"#optionDialog\" ).dialog( \"open\" );\n        }\n        $( function() \n        {\n            $( \"#optionDialog\" ).dialog(\n                {\n                    width:    500,\n                    autoOpen: false,\n                    buttons:\n                    [\n                        {\n                            text: \"Ok\",\n                            click: function() {$( this ).dialog( \"close\" );},\n                            showText: false\n                        },\n                        {\n                            text: \"Cancel\",\n                            click: function() {$( this ).dialog( \"close\" );},\n                            showText: false\n                        },\n                   ]\n                });\n        } );\n        function acknowledgeDialog(headerText, title, text)\n        {\n            $( \"#acknowledgeDialog\" ).dialog( \"option\", \"title\", headerText );    \n            $( \"#acknowledgeDialogTitle\" ).html(title);\n            $( \"#acknowledgeDialogText\" ).html(text);\n            $( \"#acknowledgeDialog\" ).dialog( \"open\" );\n        }\n        function messageDialog(headerText, title, text)\n        {\n            $( \"#messageDialog\" ).dialog( \"option\", \"title\", headerText );    \n            $( \"#messageDialogTitle\" ).html(title);\n            $( \"#messageDialogText\" ).html(text);\n            $( \"#messageDialog\" ).dialog( \"open\" );\n        }\n        function heartbeat()\n        {\n            heartBeatImage = !heartBeatImage;\n            var heartBeatImageSrc = '/img/heartRed.png';\n            if (heartBeatImage) heartBeatImageSrc = '/img/heartPink.png';\n            $('#heartBeatID').attr('src',heartBeatImageSrc);\n        }\n        function getCookie(extension)\n        {\n            var cookies = document.cookie.split(';');\n            var token = null;\n            var cookieName = project + extension + \"=\";\n            for (var icookie = 0; icookie < cookies.length; ++icookie)\n            {\n                var index = cookies[icookie].indexOf(cookieName);\n                if (index >= 0)\n                {\n                    token = cookies[icookie].substring(index + cookieName.length);\n                }\n            }\n            return token;\n        }\n        function sendActionMsg(topic,role,actionMsg)\n        {\n            var roleToken = \"\";\n            if (remoteApp) roleToken  = getCookie('Role');\n            if (roleToken == null)\n            {\n                location.reload();\n                return;\n            }\n            var webSocketMsg = \n            {\n                topic     : topic,\n                payload   : actionMsg,\n                userID    : userID,\n                token     : getCookie('Role'),\n                role      : role\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n        }\n",
+        "output": "str",
+        "x": 410,
+        "y": 80,
+        "wires": [
+            [
+                "25f0c237.ce8a1e"
+            ]
+        ]
+    },
+    {
+        "id": "132e93cb.ae000c",
+        "type": "function",
+        "z": "adce79c2.bd6fa8",
+        "name": "Get project name and userID",
+        "func": "function getRandomInt(max)\n{\n  return Math.floor(Math.random() * Math.floor(max));\n}\nmsg.payload['project'] = global.get('project')\nmsg.payload['userID'] = getRandomInt(32768);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 80,
+        "wires": [
+            [
+                "a38619a7.d98538"
+            ]
+        ]
+    },
+    {
+        "id": "395db2cd.82c91e",
+        "type": "mongodb3 in",
+        "z": "adce79c2.bd6fa8",
+        "service": "_ext_",
+        "configNode": "9cd5ff5e.caf86",
+        "name": "",
+        "collection": "accessLog",
+        "operation": "insertOne",
+        "x": 1070,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b9f0df99.46a35",
+        "type": "function",
+        "z": "adce79c2.bd6fa8",
+        "name": "IP filter",
+        "func": "var ipfilter = [\n    \"127.0.0.16\"];\nvar ipAddress = ( msg.req.headers['x-forwarded-for'] || '').split(',').pop() || \n          msg.req.connection.remoteAddress || \n          msg.req.socket.remoteAddress || \n          msg.req.connection.socket.remoteAddress;\nif (ipAddress==undefined) return null;\nvar ipAddressSplit = ipAddress.split(\".\");\nfor (var ii =  0; ii < ipfilter.length; ++ii)\n{\n    var ipfilterSplit = ipfilter[ii].split(\".\");\n    if (ipAddress == ipfilter[ii])\n    { \n        return null;\n    }\n    if (ipfilterSplit[2] == '*')\n    {\n        if ((ipfilterSplit[0] == ipAddressSplit[0]) && (ipfilterSplit[1] == ipAddressSplit[1]))\n        {\n            return null;\n        }\n    }\n}\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 970,
+        "y": 80,
+        "wires": [
+            [
+                "56f5d51f.3bd8bc",
+                "f3f83772.745e08"
+            ]
+        ]
+    },
+    {
+        "id": "fed7a4fc.f63bf8",
+        "type": "function",
+        "z": "adce79c2.bd6fa8",
+        "name": "parseIpRequest",
+        "func": "var data = msg.payload.data.geo;\ndata['url'] = msg.extraInfo.url;\ndata['userID'] = msg.extraInfo.userID;\ndata['timeStamp'] = new Date().getTime();\nreturn {topic:'ipData', payload:data};\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1020,
+        "y": 220,
+        "wires": [
+            [
+                "395db2cd.82c91e"
+            ]
+        ]
+    },
+    {
+        "id": "b41b9de6.c56eb",
+        "type": "http request",
+        "z": "adce79c2.bd6fa8",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://tools.keycdn.com/geo.json?host={{{payload.ipAddress}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "basic",
+        "x": 1010,
+        "y": 180,
+        "wires": [
+            [
+                "fed7a4fc.f63bf8"
+            ]
+        ]
+    },
+    {
+        "id": "f3f83772.745e08",
+        "type": "function",
+        "z": "adce79c2.bd6fa8",
+        "name": "ClientInfo",
+        "func": "var ipAddress = ( msg.req.headers['x-forwarded-for'] || '').split(',').pop() || \n          msg.req.connection.remoteAddress || \n          msg.req.socket.remoteAddress || \n          msg.req.connection.socket.remoteAddress;\nvar url = msg.req.url;\nvar header = {};\nheader['User-Agent'] = 'keycdn-tools:' + global.get('ipRefWeb');\nreturn {\n    topic:'clientInfo', \n    headers: header,\n    payload:{\n        ipAddress   : ipAddress\n    },\n    extraInfo       : {url:url, userID:msg.payload.userID},\n};\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1000,
+        "y": 140,
+        "wires": [
+            [
+                "b41b9de6.c56eb"
+            ]
+        ]
+    },
+    {
+        "id": "2f17767c.86ca8a",
+        "type": "subflow:adce79c2.bd6fa8",
+        "z": "bfca38d7.6e7878",
+        "x": 740,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "2630746d.107cdc",
+        "type": "subflow:adce79c2.bd6fa8",
+        "z": "2b074b3a.632fb4",
+        "name": "",
+        "x": 1210,
+        "y": 640,
         "wires": []
     }
 ]
