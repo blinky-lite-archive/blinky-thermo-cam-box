@@ -19715,7 +19715,7 @@
         "y": 600,
         "wires": [
             [
-                "18987e8b.74ea01"
+                "d333b08f.60a6b"
             ]
         ]
     },
@@ -19739,82 +19739,6 @@
         ]
     },
     {
-        "id": "18987e8b.74ea01",
-        "type": "template",
-        "z": "2b074b3a.632fb4",
-        "name": "script.global",
-        "field": "payload.script.global",
-        "fieldType": "msg",
-        "format": "javascript",
-        "syntax": "mustache",
-        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n        var validArchiveData = false;\n\n        function onDocumentReady()\n        {\n            var picNum =  Math.floor(Math.random() * 30) + 1;\n            if (picNum < 10)\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic0\" + picNum.toString() +\".jpg\");\n            }\n            else\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic\" + picNum.toString() +\".jpg\");\n            }\n            $(\"#historyChartContainer\").hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"solar-regulator\")    && (device.name == \"01\")) updateAirTemp(device);\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"03\"))\n                    {\n                        updateWaterTemp(device);\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateAirTemp(msg.payload[1]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function getStatus()\n        {\n            $(\"#historyChartContainer\").hide();\n            $(\"#status\").show();\n        }\n",
-        "output": "str",
-        "x": 730,
-        "y": 560,
-        "wires": [
-            [
-                "38316224.35f9ce"
-            ]
-        ]
-    },
-    {
-        "id": "221e091d.175126",
-        "type": "template",
-        "z": "2b074b3a.632fb4",
-        "name": "javascript",
-        "field": "payload.javascript",
-        "fieldType": "msg",
-        "format": "javascript",
-        "syntax": "mustache",
-        "template": "{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.archive}}}\n",
-        "output": "str",
-        "x": 720,
-        "y": 680,
-        "wires": [
-            [
-                "b986a63.3069058"
-            ]
-        ]
-    },
-    {
-        "id": "b986a63.3069058",
-        "type": "template",
-        "z": "2b074b3a.632fb4",
-        "name": "body",
-        "field": "payload.body",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "    <div id=\"status\" width=\"100%\" align=\"center\">\n        <table id=\"widgetTable\" width=\"100%\" background=\"/img/brantevikPics/BrantePic01.jpg\" style=\"background-size:100%;background-repeat:no-repeat;background-position:center;\">\n            <tr>\n                <td align='center' width=\"100%\" style=\"padding-top:10px;\">\n                    <span id=\"waterTempDate\" style=\"font-size: 100%; color:white;\"></span> \n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='center'  width=\"40%\">\n                                <img src=\"/img/sea-icon-text.png\" height=\"60px\"/>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:30px;\">\n                                <span id='waterTemp' style='font-size: 250%; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='center' width=\"40%\">\n                                <img src=\"/img/air-icon-text.png\" height=\"60px\"/>\n                            </td>\n                            <td align='right' width=\"60%\" style=\"padding-right:30px;\"> \n                                <span id='airTemp' style='font-size: 250%; color:white;' ></span>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td align='center' style=\"padding-top:10px;\">\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' style=\"padding-left:15px;\">\n                                <span style=\"font-size: 70%; color:white;\">Powered by </span><a href='https://www.bl-mc.se' style=\"font-size: 70%; color: white;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                            </td>\n                            <td align='right' style=\"padding-right:15px;\">\n                                <span id=\"dataFetchMessage\" style=\"font-size: 100%; color:white;\"></span>\n                            </td>\n                            <td align='right' style=\"padding-right:15px;\">\n                                <button class='btn button-link-white' id=\"historyButton\" onclick=\"getArchive(72)\" >Historia</button>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>\n    <div id=\"historyChartContainer\" width=\"100%\" align=\"center\">\n        <table width=\"100%\">\n            <tr>\n                <td width=\"100%\">\n                    <div id=\"historyChart\" width=\"100%\" align=\"center\" style=\"border-width: 2px; border-style: solid; border-color: '#557a95'; border-radius: 10px;background-color: #ecf2fe;\"></div>\n                </td>\n            </tr>\n            <tr>\n                <td align='center' >\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' style=\"padding-left:15px;\">\n                                <span style=\"font-size: 70%; color:black;\">Powered by </span><a href='https://www.bl-mc.se' style=\"font-size: 70%; color: black;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                            </td>\n                            <td align='right' style=\"padding-right:15px;\">\n                                <button class='btn button-link-black' onclick=\"getStatus()\" >tillbaka</button>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>\n\n",
-        "output": "str",
-        "x": 930,
-        "y": 680,
-        "wires": [
-            [
-                "46923b61.4522e4"
-            ]
-        ]
-    },
-    {
-        "id": "38316224.35f9ce",
-        "type": "template",
-        "z": "2b074b3a.632fb4",
-        "name": "script.updateReadings",
-        "field": "payload.script.updateReadings",
-        "fieldType": "msg",
-        "format": "javascript",
-        "syntax": "mustache",
-        "template": "// Update Readings Javascript\n        function updateAirTemp(device)\n        {\n            $('#airTemp').text(device.outsideT.value.toFixed(0) + ' C');\n        }\n        function updateWaterTemp(device)\n        {\n            var time = new Date(device.timeStamp).toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit', second: '2-digit'}).replace(',', '');\n            $('#waterTempDate').text('Brantevik ' + time);\n            $('#waterTemp').text(device.tempA.value.toFixed(0) + ' C');\n        }\n",
-        "output": "str",
-        "x": 760,
-        "y": 600,
-        "wires": [
-            [
-                "ad41ca97.a72968"
-            ]
-        ]
-    },
-    {
         "id": "7bb93983.e9da18",
         "type": "http in",
         "z": "2b074b3a.632fb4",
@@ -19832,25 +19756,6 @@
         ]
     },
     {
-        "id": "46923b61.4522e4",
-        "type": "template",
-        "z": "2b074b3a.632fb4",
-        "name": "CSS",
-        "field": "payload.css",
-        "fieldType": "msg",
-        "format": "css",
-        "syntax": "mustache",
-        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n          max-width: 300px;\n          background-color: white !important;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n        .button-link-white \n        {\n            background: none!important;\n            border-type: solid;\n            border-color: white !important;\n            font-size: 100%;\n            padding: 2px!important;\n            color: white;\n            cursor: pointer;\n        }\n        .button-link-black \n        {\n            background: none!important;\n            border-type: solid;\n            border-color: black !important;\n            font-size: 100%;\n            padding: 2px!important;\n            color: black;\n            cursor: pointer;\n        }\n",
-        "output": "str",
-        "x": 1070,
-        "y": 680,
-        "wires": [
-            [
-                "2630746d.107cdc"
-            ]
-        ]
-    },
-    {
         "id": "cf2981ef.3b94f",
         "type": "websocket out",
         "z": "2b074b3a.632fb4",
@@ -19858,7 +19763,7 @@
         "server": "4d01cc56.b625c4",
         "client": "",
         "x": 1240,
-        "y": 800,
+        "y": 860,
         "wires": []
     },
     {
@@ -19874,7 +19779,7 @@
             "e4b5cdfb.1cf63"
         ],
         "x": 1085,
-        "y": 800,
+        "y": 860,
         "wires": [
             [
                 "cf2981ef.3b94f"
@@ -19890,7 +19795,7 @@
         "action": "obj",
         "pretty": false,
         "x": 350,
-        "y": 800,
+        "y": 860,
         "wires": [
             [
                 "faf6245.91b20d8"
@@ -19908,7 +19813,7 @@
         "initialize": "",
         "finalize": "",
         "x": 480,
-        "y": 800,
+        "y": 860,
         "wires": [
             [
                 "b19e36ee.345798"
@@ -19923,7 +19828,7 @@
         "server": "4d01cc56.b625c4",
         "client": "",
         "x": 160,
-        "y": 800,
+        "y": 860,
         "wires": [
             [
                 "d9d211c5.d2deb"
@@ -19939,7 +19844,7 @@
             "6506cd6c.93ac74"
         ],
         "x": 695,
-        "y": 820,
+        "y": 880,
         "wires": []
     },
     {
@@ -20287,7 +20192,7 @@
         "fieldType": "msg",
         "format": "css",
         "syntax": "mustache",
-        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n            max-width: 50%;\n            background-color: white !important;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n        .button-link \n        {\n            background: none!important;\n            border-type: solid;\n            padding: 2px!important;\n            cursor: pointer;\n        }\n",
+        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n            min-width: 250px;\n            max-width: 100%;\n            background-color: white !important;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n        .button-link \n        {\n            background: none!important;\n            border-type: solid;\n            padding: 2px!important;\n            cursor: pointer;\n        }\n",
         "output": "str",
         "x": 1070,
         "y": 1420,
@@ -20432,25 +20337,6 @@
         "wires": []
     },
     {
-        "id": "ad41ca97.a72968",
-        "type": "template",
-        "z": "2b074b3a.632fb4",
-        "name": "script.archive",
-        "field": "payload.script.archive",
-        "fieldType": "msg",
-        "format": "javascript",
-        "syntax": "mustache",
-        "template": "// Archive JavaScript\n        var archiveRequestList = [];\n        var archiveList = [];\n        function getArchive(hours)\n        { \n            if (validArchiveData)\n            {\n                $(\"#status\").hide();\n                $(\"#historyChartContainer\").show();\n                return;\n            }\n            $(\"#historyButton\").hide();\n            $(\"#dataFetchMessage\").text('Hämtar data...');\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : 'blinky-DS18B20',\n                name : '03', \n                attr : ['tempA'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            archiveRequestList[1] = \n            {\n                deviceType : 'solar-regulator',\n                name : '01', \n                attr : ['outsideT'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n            $(\"#dataFetchMessage\").text('');\n            $(\"#historyButton\").show();\n            $(\"#status\").hide();\n            $(\"#historyChartContainer\").show();\n            validArchiveData = true;\n            var layout =\n            {\n                plot_bgcolor:\"#ecf2fe\",\n                paper_bgcolor:\"#ecf2fe\",\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15,\"orientation\": \"h\"},\n                height      : '200',\n                width       : '275',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date',\n                    tickformat: '%d-%m' // For more time formatting types, see: https://github.com/d3/d3-time-format/blob/master/README.md\n                },\n                yaxis:\n                {\n                    title           : 'Temperatur',\n                    titlefont       : {color: 'black'},\n                    tickfont        : {color: 'black'},\n                    gridcolor       : 'grey',\n                    zerolinecolor   : 'grey',\n                    linecolor       : 'grey'\n//                    range           : [0,30],\n//                    dtick           :  5\n\n                },\n                margin: \n                {\n                    l: 35,\n                    r: 5,\n                    b: 20,\n                    t: 1,\n                    pad: 0\n                }\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'Hav',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  '#557a95',width:2},\n                visible: true\n\n            };\n            var trace2 = \n            {\n                x: [],\n                y: [],\n                name: 'Luft',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  '#f2a31f',width:2},\n                visible: true\n\n            };\n            var waterTempBeginTime = 1622314838419; //8:04am May 30 2021 is 1622354678419\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                var x = archiveList[0].trace[ii].timeStamp;\n                var y = archiveList[0].trace[ii][archiveList[0].device.attr[0]];\n                if ((x > waterTempBeginTime) && (y > 0))\n                {\n                    trace1.x.push(x);\n                    trace1.y.push(y) ;\n                }\n            }\n            for (var ii = 0; ii < archiveList[1].trace.length; ++ii)\n            {\n                var x = archiveList[1].trace[ii].timeStamp;\n               if (x > waterTempBeginTime)\n                {\n                    trace2.x.push(x);\n                    trace2.y.push(archiveList[1].trace[ii][archiveList[1].device.attr[0]]) ;\n                }\n            }\n            Plotly.newPlot('historyChart', [trace1,trace2], layout, {displayModeBar: false, staticPlot: true});\n        }\n",
-        "output": "str",
-        "x": 730,
-        "y": 640,
-        "wires": [
-            [
-                "221e091d.175126"
-            ]
-        ]
-    },
-    {
         "id": "b19e36ee.345798",
         "type": "switch",
         "z": "2b074b3a.632fb4",
@@ -20473,7 +20359,7 @@
         "repair": false,
         "outputs": 2,
         "x": 610,
-        "y": 800,
+        "y": 860,
         "wires": [
             [
                 "3d600dd.1fe0cf2"
@@ -20492,7 +20378,7 @@
             "c4595efc.a717b"
         ],
         "x": 695,
-        "y": 780,
+        "y": 840,
         "wires": []
     },
     {
@@ -20542,6 +20428,232 @@
         "wires": [
             [
                 "6a06a119.c28c5"
+            ]
+        ]
+    },
+    {
+        "id": "39498d8a.97eb42",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n        var validArchiveData = false;\n\n        function onDocumentReady()\n        {\n            var picNum =  Math.floor(Math.random() * 30) + 1;\n            if (picNum < 10)\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic0\" + picNum.toString() +\".jpg\");\n            }\n            else\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic\" + picNum.toString() +\".jpg\");\n            }\n            $(\"#historyChartContainer\").hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"solar-regulator\")    && (device.name == \"01\")) updateAirTemp(device);\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"03\"))\n                    {\n                        updateWaterTemp(device);\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateAirTemp(msg.payload[1]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function getStatus()\n        {\n            $(\"#historyChartContainer\").hide();\n            $(\"#status\").show();\n        }\n",
+        "output": "str",
+        "x": 510,
+        "y": 1600,
+        "wires": [
+            [
+                "37c052ab.36e06e"
+            ]
+        ]
+    },
+    {
+        "id": "48f40bf6.f2d4a4",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.archive}}}\n",
+        "output": "str",
+        "x": 500,
+        "y": 1720,
+        "wires": [
+            [
+                "2a033850.51bf08"
+            ]
+        ]
+    },
+    {
+        "id": "2a033850.51bf08",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <div id=\"status\" width=\"100%\" align=\"center\">\n        <table id=\"widgetTable\" width=\"100%\" background=\"/img/brantevikPics/BrantePic01.jpg\" style=\"background-size:100%;background-repeat:no-repeat;background-position:center;\">\n            <tr>\n                <td align='center' width=\"100%\" style=\"padding-top:10px;\">\n                    <span id=\"waterTempDate\" style=\"font-size: 100%; color:white;\"></span> \n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='center'  width=\"40%\">\n                                <img src=\"/img/sea-icon-text.png\" height=\"60px\"/>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:30px;\">\n                                <span id='waterTemp' style='font-size: 250%; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='center' width=\"40%\">\n                                <img src=\"/img/air-icon-text.png\" height=\"60px\"/>\n                            </td>\n                            <td align='right' width=\"60%\" style=\"padding-right:30px;\"> \n                                <span id='airTemp' style='font-size: 250%; color:white;' ></span>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td align='center' style=\"padding-top:10px;\">\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' style=\"padding-left:15px;\">\n                                <span style=\"font-size: 70%; color:white;\">Powered by </span><a href='https://www.bl-mc.se' style=\"font-size: 70%; color: white;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                            </td>\n                            <td align='right' style=\"padding-right:15px;\">\n                                <span id=\"dataFetchMessage\" style=\"font-size: 100%; color:white;\"></span>\n                            </td>\n                            <td align='right' style=\"padding-right:15px;\">\n                                <button class='btn button-link-white' id=\"historyButton\" onclick=\"getArchive(72)\" >Historia</button>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>\n    <div id=\"historyChartContainer\" width=\"100%\" align=\"center\">\n        <table width=\"100%\">\n            <tr>\n                <td width=\"100%\">\n                    <div id=\"historyChart\" width=\"100%\" align=\"center\" style=\"border-width: 2px; border-style: solid; border-color: '#557a95'; border-radius: 10px;background-color: #ecf2fe;\"></div>\n                </td>\n            </tr>\n            <tr>\n                <td align='center' >\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' style=\"padding-left:15px;\">\n                                <span style=\"font-size: 70%; color:black;\">Powered by </span><a href='https://www.bl-mc.se' style=\"font-size: 70%; color: black;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                            </td>\n                            <td align='right' style=\"padding-right:15px;\">\n                                <button class='btn button-link-black' onclick=\"getStatus()\" >tillbaka</button>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>\n\n",
+        "output": "str",
+        "x": 710,
+        "y": 1720,
+        "wires": [
+            [
+                "b975dd49.b3fca"
+            ]
+        ]
+    },
+    {
+        "id": "37c052ab.36e06e",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "script.updateReadings",
+        "field": "payload.script.updateReadings",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Update Readings Javascript\n        function updateAirTemp(device)\n        {\n            $('#airTemp').text(device.outsideT.value.toFixed(0) + ' C');\n        }\n        function updateWaterTemp(device)\n        {\n            var time = new Date(device.timeStamp).toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit', second: '2-digit'}).replace(',', '');\n            $('#waterTempDate').text('Brantevik ' + time);\n            $('#waterTemp').text(device.tempA.value.toFixed(0) + ' C');\n        }\n",
+        "output": "str",
+        "x": 540,
+        "y": 1640,
+        "wires": [
+            [
+                "77a93ff2.c2458"
+            ]
+        ]
+    },
+    {
+        "id": "b975dd49.b3fca",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "CSS",
+        "field": "payload.css",
+        "fieldType": "msg",
+        "format": "css",
+        "syntax": "mustache",
+        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n          max-width: 300px;\n          background-color: white !important;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n        .button-link-white \n        {\n            background: none!important;\n            border-type: solid;\n            border-color: white !important;\n            font-size: 100%;\n            padding: 2px!important;\n            color: white;\n            cursor: pointer;\n        }\n        .button-link-black \n        {\n            background: none!important;\n            border-type: solid;\n            border-color: black !important;\n            font-size: 100%;\n            padding: 2px!important;\n            color: black;\n            cursor: pointer;\n        }\n",
+        "output": "str",
+        "x": 850,
+        "y": 1720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "77a93ff2.c2458",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "script.archive",
+        "field": "payload.script.archive",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Archive JavaScript\n        var archiveRequestList = [];\n        var archiveList = [];\n        function getArchive(hours)\n        { \n            if (validArchiveData)\n            {\n                $(\"#status\").hide();\n                $(\"#historyChartContainer\").show();\n                return;\n            }\n            $(\"#historyButton\").hide();\n            $(\"#dataFetchMessage\").text('Hämtar data...');\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : 'blinky-DS18B20',\n                name : '03', \n                attr : ['tempA'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            archiveRequestList[1] = \n            {\n                deviceType : 'solar-regulator',\n                name : '01', \n                attr : ['outsideT'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n\n        function plotArchive()\n        {\n            $(\"#dataFetchMessage\").text('');\n            $(\"#historyButton\").show();\n            $(\"#status\").hide();\n            $(\"#historyChartContainer\").show();\n            validArchiveData = true;\n            var layout =\n            {\n                plot_bgcolor:\"#ecf2fe\",\n                paper_bgcolor:\"#ecf2fe\",\n                showlegend  : true,\n                legend      : { x: 0, y: 1.15,\"orientation\": \"h\"},\n                height      : '200',\n                width       : '275',\n                xaxis       :\n                {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                    type: 'date',\n                    tickformat: '%d-%m' // For more time formatting types, see: https://github.com/d3/d3-time-format/blob/master/README.md\n                },\n                yaxis:\n                {\n                    title           : 'Temperatur',\n                    titlefont       : {color: 'black'},\n                    tickfont        : {color: 'black'},\n                    gridcolor       : 'grey',\n                    zerolinecolor   : 'grey',\n                    linecolor       : 'grey'\n//                    range           : [0,30],\n//                    dtick           :  5\n\n                },\n                margin: \n                {\n                    l: 35,\n                    r: 5,\n                    b: 20,\n                    t: 1,\n                    pad: 0\n                }\n            };\n            var trace1 = \n            {\n                x: [],\n                y: [],\n                name: 'Hav',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  '#557a95',width:2},\n                visible: true\n\n            };\n            var trace2 = \n            {\n                x: [],\n                y: [],\n                name: 'Luft',\n                hovertemplate: '%{y}C',\n                yaxis: 'y1',\n                type: 'scatter',\n                mode: 'lines',\n                line: { color:  '#f2a31f',width:2},\n                visible: true\n\n            };\n            var waterTempBeginTime = 1622314838419; //8:04am May 30 2021 is 1622354678419\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                var x = archiveList[0].trace[ii].timeStamp;\n                var y = archiveList[0].trace[ii][archiveList[0].device.attr[0]];\n                if ((x > waterTempBeginTime) && (y > 0))\n                {\n                    trace1.x.push(x);\n                    trace1.y.push(y) ;\n                }\n            }\n            for (var ii = 0; ii < archiveList[1].trace.length; ++ii)\n            {\n                var x = archiveList[1].trace[ii].timeStamp;\n               if (x > waterTempBeginTime)\n                {\n                    trace2.x.push(x);\n                    trace2.y.push(archiveList[1].trace[ii][archiveList[1].device.attr[0]]) ;\n                }\n            }\n            Plotly.newPlot('historyChart', [trace1,trace2], layout, {displayModeBar: false, staticPlot: true});\n        }\n",
+        "output": "str",
+        "x": 510,
+        "y": 1680,
+        "wires": [
+            [
+                "48f40bf6.f2d4a4"
+            ]
+        ]
+    },
+    {
+        "id": "d333b08f.60a6b",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n        var validArchiveData = false;\n\n        function onDocumentReady()\n        {\n            var picNum =  Math.floor(Math.random() * 22) + 1;\n            if (picNum < 10)\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic0\" + picNum.toString() +\".jpg\");\n            }\n            else\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic\" + picNum.toString() +\".jpg\");\n            }\n            $(\"#historyChartContainer\").hide();\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"solar-regulator\")    && (device.name == \"01\")) updateAirTemp(device);\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"03\"))\n                    {\n                        updateWaterTemp(device);\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateAirTemp(msg.payload[1]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function getStatus()\n        {\n            $(\"#historyChartContainer\").hide();\n            $(\"#status\").show();\n        }\n",
+        "output": "str",
+        "x": 710,
+        "y": 560,
+        "wires": [
+            [
+                "5f7cbdf1.80f034"
+            ]
+        ]
+    },
+    {
+        "id": "20a03ac4.739066",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.archive}}}\n",
+        "output": "str",
+        "x": 700,
+        "y": 680,
+        "wires": [
+            [
+                "87ace2e8.f675e"
+            ]
+        ]
+    },
+    {
+        "id": "87ace2e8.f675e",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <div id=\"status\" width=\"100%\" align=\"center\">\n        <table id=\"widgetTable\" width=\"100%\" background=\"/img/brantevikPics/BrantePic01.jpg\" style=\"background-size:100%;background-repeat:no-repeat;background-position:center;\">\n            <tr>\n                <td align='center' width=\"100%\" style=\"padding-top:3vw;padding-bottom:3vw;\">\n                    <span id=\"waterTempDate\" style=\"font-size: 5vw; color:white;\"></span> \n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left'  width=\"60%\" style=\"padding-left:10vw;\">\n                                <span id='waterTempLabel' style='font-size: 11vw; color:white;' >Vatten</span>\n                            </td>\n                            <td  align='right' width=\"40%\" style=\"padding-right:10vw;\">\n                                <span id='waterTemp' style='font-size: 11vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left' width=\"60%\" style=\"padding-left:10vw;\">\n                                <span id='airTempLabel' style='font-size: 11vw; color:white;' >Luft</span>\n                            </td>\n                            <td align='right' width=\"40%\" style=\"padding-right:10vw;\"> \n                                <span id='airTemp' style='font-size: 11vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td align='center' style=\"padding-top:3vw;padding-bottom:3vw;\">\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' style=\"padding-left:0vw;\">\n                                <span id='powerWhite' style=\"font-size: 4vw; color:white;\">Powered by </span><a href='https://www.bl-mc.se' id='blinkyLinkWhite' style=\"font-size: 4vw; color: white;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                            </td>\n                            <td align='right' style=\"padding-right:5vw;\">\n                                <span id=\"dataFetchMessage\" style=\"font-size: 4vw; color:white;\"></span>\n                            </td>\n                            <td align='right' style=\"padding-right:5vw;\">\n                                <button class='btn button-link' id=\"historyButton\" style=\"font-size: 5vw; color:white; border-color:white;\" onclick=\"getArchive(72)\" >Historia</button>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>\n    <div id=\"historyChartContainer\" width=\"100%\" align=\"center\">\n        <table width=\"100%\">\n            <tr>\n                <td width=\"100%\">\n                    <div id=\"historyChart\" width=\"100%\" align=\"center\" style=\"border-width: 2px; border-style: solid; border-color: '#557a95'; border-radius: 3vw;background-color: #ecf2fe;\"></div>\n                </td>\n            </tr>\n            <tr>\n                <td align='center' >\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' style=\"padding-left:0vw;\">\n                                <span id='powerBlack' style=\"font-size: 4vw; color:black;\">Powered by </span><a href='https://www.bl-mc.se' id='blinkyLinkBlack' style=\"font-size: 4vw; color: black;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                            </td>\n                            <td align='right' style=\"padding-right:5vw;\">\n                                <button class='btn button-link' id=\"backButton\" style=\"font-size: 5vw; color:black; border-color:black;\" onclick=\"getStatus()\" >tillbaka</button>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>\n",
+        "output": "str",
+        "x": 910,
+        "y": 680,
+        "wires": [
+            [
+                "d3be5a17.091488"
+            ]
+        ]
+    },
+    {
+        "id": "5f7cbdf1.80f034",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "script.updateReadings",
+        "field": "payload.script.updateReadings",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Update Readings Javascript\n        function updateAirTemp(device)\n        {\n            $('#airTemp').text(device.outsideT.value.toFixed(0) + ' C');\n        }\n        function updateWaterTemp(device)\n        {\n            var time = new Date(device.timeStamp).toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit', second: '2-digit'}).replace(',', '');\n            $('#waterTempDate').text('Brantevik ' + time);\n            $('#waterTemp').text(device.tempA.value.toFixed(0) + ' C');\n        }\n",
+        "output": "str",
+        "x": 740,
+        "y": 600,
+        "wires": [
+            [
+                "280d91d.827076e"
+            ]
+        ]
+    },
+    {
+        "id": "d3be5a17.091488",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "CSS",
+        "field": "payload.css",
+        "fieldType": "msg",
+        "format": "css",
+        "syntax": "mustache",
+        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n            min-width: 200px;\n            max-width: 100%;\n            background-color: white !important;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n        .button-link \n        {\n            background: none!important;\n            border-type: solid;\n            padding: 2px!important;\n            cursor: pointer;\n        }\n",
+        "output": "str",
+        "x": 1050,
+        "y": 680,
+        "wires": [
+            [
+                "2630746d.107cdc"
+            ]
+        ]
+    },
+    {
+        "id": "280d91d.827076e",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "script.archive",
+        "field": "payload.script.archive",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Archive JavaScript\n        var archiveRequestList = [];\n        var archiveList = [];\n        function getArchive(hours)\n        { \n            if (validArchiveData)\n            {\n                var width = $(\"#status\").width() * 0.92;\n                var height = $(\"#status\").height() * 0.80;\n                historyPlotLayout.width = width.toFixed(0);\n                historyPlotLayout.height = height.toFixed(0);\n                $(\"#status\").hide();\n                $(\"#historyChartContainer\").show();\n                Plotly.newPlot('historyChart', [historyPlotTrace1,historyPlotTrace2], historyPlotLayout, {displayModeBar: false, staticPlot: true});\n                return;\n            }\n            $(\"#historyButton\").hide();\n            $(\"#dataFetchMessage\").text('Hämtar data...');\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            archiveRequestList[0] = \n            {\n                deviceType : 'blinky-DS18B20',\n                name : '03', \n                attr : ['tempA'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            archiveRequestList[1] = \n            {\n                deviceType : 'solar-regulator',\n                name : '01', \n                attr : ['outsideT'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n        var historyPlotLayout = \n        {\n            plot_bgcolor:\"#ecf2fe\",\n            paper_bgcolor:\"#ecf2fe\",\n            showlegend  : true,\n            legend      : { x: 0, y: 1.15,\"orientation\": \"h\"},\n            height      : '100',\n            width       : '200',\n            xaxis       :\n            {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                type: 'date',\n                tickformat: '%d-%m' // For more time formatting types, see: https://github.com/d3/d3-time-format/blob/master/README.md\n            },\n            yaxis:\n            {\n                title           : 'Temperatur',\n                titlefont       : {color: 'black'},\n                tickfont        : {color: 'black'},\n                gridcolor       : 'grey',\n                zerolinecolor   : 'grey',\n                linecolor       : 'grey'\n//                    range           : [0,30],\n//                    dtick           :  5\n\n            },\n            margin: \n            {\n                l: 35,\n                r: 5,\n                b: 20,\n                t: 1,\n                pad: 0\n            }\n        };\n        var historyPlotTrace1 = \n        {\n            x: [],\n            y: [],\n            name: 'Hav',\n            hovertemplate: '%{y}C',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: { color:  '#557a95',width:2},\n            visible: true\n\n        };\n        var historyPlotTrace2 = \n        {\n            x: [],\n            y: [],\n            name: 'Luft',\n            hovertemplate: '%{y}C',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: { color:  '#f2a31f',width:2},\n            visible: true\n\n        };\n        function plotArchive()\n        {\n            $(\"#dataFetchMessage\").text('');\n            $(\"#historyButton\").show();\n            \n            var width = $(\"#status\").width() * 0.92;\n            var height = $(\"#status\").height() * 0.80;\n            historyPlotLayout.width = width.toFixed(0);\n            historyPlotLayout.height = height.toFixed(0);\n            \n            $(\"#status\").hide();\n            $(\"#historyChartContainer\").show();\n            validArchiveData = true;\n            historyPlotTrace1.x = [];\n            historyPlotTrace1.y = [];\n            historyPlotTrace2.x = [];\n            historyPlotTrace2.y = [];\n            var waterTempBeginTime = 1622314838419; //8:04am May 30 2021 is 1622354678419\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                var x = archiveList[0].trace[ii].timeStamp;\n                var y = archiveList[0].trace[ii][archiveList[0].device.attr[0]];\n                if ((x > waterTempBeginTime) && (y > 0))\n                {\n                    historyPlotTrace1.x.push(x);\n                    historyPlotTrace1.y.push(y) ;\n                }\n            }\n            for (var ii = 0; ii < archiveList[1].trace.length; ++ii)\n            {\n                var x = archiveList[1].trace[ii].timeStamp;\n               if (x > waterTempBeginTime)\n                {\n                    historyPlotTrace2.x.push(x);\n                    historyPlotTrace2.y.push(archiveList[1].trace[ii][archiveList[1].device.attr[0]]) ;\n                }\n            }\n            Plotly.newPlot('historyChart', [historyPlotTrace1,historyPlotTrace2], historyPlotLayout, {displayModeBar: false, staticPlot: true});\n        }\n",
+        "output": "str",
+        "x": 710,
+        "y": 640,
+        "wires": [
+            [
+                "20a03ac4.739066"
             ]
         ]
     }
