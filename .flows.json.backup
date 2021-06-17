@@ -21033,7 +21033,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "Blinky Wind {{{payload.script.name}}}",
+        "template": "Blinky Wind Kallis",
         "output": "str",
         "x": 380,
         "y": 1840,
