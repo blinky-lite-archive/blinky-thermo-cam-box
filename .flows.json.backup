@@ -718,12 +718,6 @@
         "wholemsg": "false"
     },
     {
-        "id": "bffd74cb.9a56d8",
-        "type": "websocket-listener",
-        "path": "/kallis-summary/websocket",
-        "wholemsg": "false"
-    },
-    {
         "id": "4d01cc56.b625c4",
         "type": "websocket-listener",
         "path": "/brantevik-widget/websocket",
