@@ -718,12 +718,6 @@
         "wholemsg": "false"
     },
     {
-        "id": "bffd74cb.9a56d8",
-        "type": "websocket-listener",
-        "path": "/kallis-summary/websocket",
-        "wholemsg": "false"
-    },
-    {
         "id": "4d01cc56.b625c4",
         "type": "websocket-listener",
         "path": "/brantevik-widget/websocket",
@@ -3593,7 +3587,7 @@
         "type": "function",
         "z": "e17f7487.2a78e8",
         "name": "Find Device Type",
-        "func": "var queryFilter = \n{\n    $and :\n    [\n        {\n            \"deviceType\": \"blinky-DS18B20\"\n        },\n        {\n            \"name\": \"03\"\n        },\n        {\n            \"tempA.value\" : -100\n        }\n    ] \n    \n}\nvar newMsg = \n{\n    topic           : 'getArchiveValues',\n    payload         :  [queryFilter,{projection:{timeStamp:1, _id:0}}]\n};\nreturn newMsg",
+        "func": "var queryFilter = \n{\n    $and :\n    [\n        {\n            \"deviceType\": \"blinky-wind\"\n        },\n        {\n            \"name\": \"01\"\n        }\n    ] \n    \n}\nvar newMsg = \n{\n    topic           : 'getArchiveValues',\n    payload         :  [queryFilter]\n};\nreturn newMsg",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -18647,295 +18641,6 @@
         ]
     },
     {
-        "id": "7c79a515.ef020c",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "Set Title",
-        "field": "payload.title",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "Kallis Sammanfattning",
-        "output": "str",
-        "x": 380,
-        "y": 360,
-        "wires": [
-            [
-                "b6a458d6.462ad8"
-            ]
-        ]
-    },
-    {
-        "id": "d94eaa89.a1bb58",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "script.global",
-        "field": "payload.script.global",
-        "fieldType": "msg",
-        "format": "javascript",
-        "syntax": "mustache",
-        "template": "// Global Javascript\n        useWebSockets(true);\n        var mqttDevice = null;\n        var device = null;\n        var archiveRequestList = [];\n        var archiveList = [];\n        var programStarted = false;\n\n        function onDocumentReady()\n        {\n            setRemoteApp(true);\n//            getCreds();\n//            setInterval(function(){getCreds();}, 1000);\n            var now = new Date();\n        }\n        function getHistory()\n        {\n            var dateField = new Date();\n            dateField.setHours(1);\n            var startDate = dateField.getTime();\n            dateField.setHours(22);\n            var stopDate = dateField.getTime();\n            archiveRequestList = [];\n            archiveList = [];\n            archiveRequestList[0] = \n            {\n                deviceType : 'blinky-turnstile',\n                name : '01', \n                attr : ['numTurns'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                if (data.trace == null)\n                {\n                    $( \"#bathersNowId\").text(\"?\");\n                    $( \"#bathersTotalInId\").text(\"?\");\n                    $( \"#bathersLastHourId\").text(\"?\");\n                    return;\n                }\n                if (data.trace.length < 2)\n                {\n                    $( \"#bathersNowId\").text(\"0\");\n                    $( \"#bathersTotalInId\").text(\"0\");\n                    $( \"#bathersLastHourId\").text(\"0\");\n                    return;\n                }\n                var bathersTotalIn = 0;\n                var bathersTotalOut = 0;\n                for (var ib = 1; ib < data.trace.length; ++ib)\n                {\n                    if (data.trace[ib].numTurns > data.trace[ib - 1].numTurns) bathersTotalIn = bathersTotalIn + 1;\n                    if (data.trace[ib].numTurns < data.trace[ib - 1].numTurns) bathersTotalOut = bathersTotalOut + 1;\n                }\n                if (bathersTotalOut > bathersTotalIn ) bathersTotalOut = bathersTotalIn; \n                $( \"#bathersTotalInId\").text(bathersTotalIn.toString());\n                $( \"#bathersNowId\").text((bathersTotalIn - bathersTotalOut).toString());\n                var now = new Date().getTime();\n                var bathersInLastHour = 0;\n                for (var ib = 1; ib < data.trace.length; ++ib)\n                {\n                    if ((now - data.trace[ib].timeStamp) < 3600000)\n                    {\n                        if (data.trace[ib].numTurns > data.trace[ib - 1].numTurns)\n                        {\n                            bathersInLastHour = bathersInLastHour + 1;\n                        }\n                    }\n                }\n                $( \"#bathersLastHourId\").text(bathersInLastHour.toString());\n            }\n        }\n        function onWebSocketOpen()\n        {\n            if(!programStarted)\n            {   \n                getHistory();\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"blinky-DS18B20\")    && (device.name == \"01\"))\n                    {\n                        updateTemperature(device);\n                    }\n                    if ((device.deviceType == \"blinky-turnstile\")  && (device.name == \"01\")) getHistory();\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        if ((msg.payload.device.deviceType == 'blinky-turnstile') && (msg.payload.device.name == '01') )\n                            putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateTemperature(msg.payload[0]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function updateTemperature(device)\n        {\n            var time = new Date(device.timeStamp).toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit'}).replace(',', '');\n            $('#airTempDate').text(time);\n            $( \"#waterTemperature\").text(device.tempB.value.toFixed(0) + ' C');\n            $( \"#outsideTemperature\").text(device.tempA.value.toFixed(0) + ' C');\n        }\n",
-        "output": "str",
-        "x": 730,
-        "y": 360,
-        "wires": [
-            [
-                "c6cbbcc8.32f82"
-            ]
-        ]
-    },
-    {
-        "id": "c6cbbcc8.32f82",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "javascript",
-        "field": "payload.javascript",
-        "fieldType": "msg",
-        "format": "javascript",
-        "syntax": "mustache",
-        "template": "{{{payload.script.swedish}}}\n{{{payload.script.global}}}\n{{{payload.script.user}}}\n",
-        "output": "str",
-        "x": 720,
-        "y": 400,
-        "wires": [
-            [
-                "a211c38b.249"
-            ]
-        ]
-    },
-    {
-        "id": "c1abe5bc.9c4c18",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "body",
-        "field": "payload.body",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr >\n                <td style='padding-top: 10px;'>\n{{{payload.html.dashboard}}}\n                </td>\n            </tr>\n            <tr>\n                <td align='center'>\n                    <span >Powered by </span><a href='/' style=\"color: var(--color1);text-decoration: underline;\">Blinky-Lite</a>\n                </td>\n            </tr>\n        </table>\n    </div>",
-        "output": "str",
-        "x": 1010,
-        "y": 360,
-        "wires": [
-            [
-                "5f0a7a6b.f0b164"
-            ]
-        ]
-    },
-    {
-        "id": "a6d94543.cb6628",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "navBarIcon",
-        "field": "payload.navBarIcon",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "turnstileYellow.png",
-        "output": "str",
-        "x": 390,
-        "y": 320,
-        "wires": [
-            [
-                "7c79a515.ef020c"
-            ]
-        ]
-    },
-    {
-        "id": "a211c38b.249",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "html.dashboard",
-        "field": "payload.html.dashboard",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "<!-- Dashboard HTML -->\n                <div class='card'>\n                    <div class='row'>\n                        <div class='col-md-2'>\n                        </div>\n                        <div class='col-md-8'>\n                            <p class='card-title'>Sammanfattning</p>\n                         </div>\n                        <div class='col-md-2'>\n                            <span class='card-text' id='airTempDate' style='font-size: 125%;' ></span>\n                        </div>\n                    </div>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <table width='100%'>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text' style='color:var(--color1); font-size: 250%;'>Vattentemperatur</span>\n                                    </td>\n                                    <td width='20%' align='right'>\n                                        <span class='card-text' id='waterTemperature' style='padding-right:10px;font-size: 250%;' ></span>\n                                    </td>\n                                    <td width='10%' align='right'>\n                                        <a class=\"btn card-button\"  href='/kallis-weather'>historia</a>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text' style='color:var(--color1); font-size: 250%;' >Lufttemperatur</span>\n                                    </td>\n                                    <td width='20%' align='right'>\n                                        <span class='card-text' id='outsideTemperature' style='padding-right:10px;font-size: 250%;' ></span>\n                                    </td>\n                                    <td width='10%' align='right'>\n                                        <a class=\"btn card-button\"  href='/kallis-weather'>historia</a>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;'>Netto antal badare inne nu</span>\n                                    </td>\n                                    <td width='20%' align='right'>\n                                        <span class='card-text' id='bathersNowId'  style='padding-right:10px;font-size: 250%;' >0</span>\n                                    </td>\n                                    <td width='10%' align='right'>\n                                        <a class=\"btn card-button\"  href='/kallis-bathers'>historia</a>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;'>Totalt antal inpasseringar idag</span>\n                                    </td>\n                                    <td width='20%' align='right'>\n                                        <span class='card-text' id='bathersTotalInId'  style='padding-right:10px;font-size: 250%;' >0</span>\n                                    </td>\n                                    <td width='10%' align='right'>\n                                        <a class=\"btn card-button\"  href='/kallis-bathers'>historia</a>\n                                    </td>\n                                </tr>\n                                <tr>\n                                    <td width='70%' >\n                                        <span class='card-text'  style='color:var(--color1); font-size: 250%;' id='bathersLastHourLabelId' >Antal inpasseringar senaste timmen</span>\n                                    </td>\n                                    <td width='20%' align='right' valign='center'>\n                                        <span class='card-text' id='bathersLastHourId'  style='padding-right:10px;font-size: 250%;' >0</span>\n                                    </td>\n                                    <td width='10%' align='right' valign='center'>\n                                        <a class=\"btn card-button\"  href='/kallis-bathers'>historia</a>\n                                    </td>\n                                </tr>\n                            </table>\n                        </div>\n                   </div>\n                </div>\n",
-        "output": "str",
-        "x": 1040,
-        "y": 320,
-        "wires": [
-            [
-                "c1abe5bc.9c4c18"
-            ]
-        ]
-    },
-    {
-        "id": "7e4b92f5.87e14c",
-        "type": "http in",
-        "z": "d6667d7b.35cd6",
-        "name": "/kallis-summary",
-        "url": "/kallis-summary",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 140,
-        "y": 320,
-        "wires": [
-            [
-                "a6d94543.cb6628"
-            ]
-        ]
-    },
-    {
-        "id": "b6a458d6.462ad8",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "script.swedish",
-        "field": "payload.script.swedish",
-        "fieldType": "msg",
-        "format": "javascript",
-        "syntax": "mustache",
-        "template": "        /* Swedish initialisation for the jQuery UI date picker plugin. */\n        /* Written by Anders Ekdahl ( anders@nomadiz.se). */\n        ( function( factory ) {\n        \tif ( typeof define === \"function\" && define.amd ) {\n        \n        \t\t// AMD. Register as an anonymous module.\n        \t\tdefine( [ \"../widgets/datepicker\" ], factory );\n        \t} else {\n        \n        \t\t// Browser globals\n        \t\tfactory( jQuery.datepicker );\n        \t}\n        }( function( datepicker ) {\n        \n        datepicker.regional.sv = {\n        \tcloseText: \"Stäng\",\n        \tprevText: \"&#xAB;Förra\",\n        \tnextText: \"Nästa&#xBB;\",\n        \tcurrentText: \"Idag\",\n        \tmonthNames: [ \"januari\",\"februari\",\"mars\",\"april\",\"maj\",\"juni\",\n        \t\"juli\",\"augusti\",\"september\",\"oktober\",\"november\",\"december\" ],\n        \tmonthNamesShort: [ \"jan.\",\"feb.\",\"mars\",\"apr.\",\"maj\",\"juni\",\n        \t\"juli\",\"aug.\",\"sep.\",\"okt.\",\"nov.\",\"dec.\" ],\n        \tdayNamesShort: [ \"sön\",\"mån\",\"tis\",\"ons\",\"tor\",\"fre\",\"lör\" ],\n        \tdayNames: [ \"söndag\",\"måndag\",\"tisdag\",\"onsdag\",\"torsdag\",\"fredag\",\"lördag\" ],\n        \tdayNamesMin: [ \"sö\",\"må\",\"ti\",\"on\",\"to\",\"fr\",\"lö\" ],\n        \tweekHeader: \"Ve\",\n        \tdateFormat: \"yy-mm-dd\",\n        \tfirstDay: 1,\n        \tisRTL: false,\n        \tshowMonthAfterYear: false,\n        \tyearSuffix: \"\" };\n        datepicker.setDefaults( datepicker.regional.sv );\n        \n        return datepicker.regional.sv;\n        \n        } ) );\n",
-        "output": "str",
-        "x": 740,
-        "y": 320,
-        "wires": [
-            [
-                "d94eaa89.a1bb58"
-            ]
-        ]
-    },
-    {
-        "id": "dc09ca29.f0bed8",
-        "type": "subflow:ca529822.9112f8",
-        "z": "d6667d7b.35cd6",
-        "name": "",
-        "x": 1450,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "5f0a7a6b.f0b164",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "CSS",
-        "field": "payload.css",
-        "fieldType": "msg",
-        "format": "css",
-        "syntax": "mustache",
-        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n          background-color: white !important;\n          padding-left:25px;\n          padding-right:25px;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .ui-widget\n        {\n            font-size :200%;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
-        "output": "str",
-        "x": 1190,
-        "y": 360,
-        "wires": [
-            [
-                "8a387212.eccf1"
-            ]
-        ]
-    },
-    {
-        "id": "8a387212.eccf1",
-        "type": "template",
-        "z": "d6667d7b.35cd6",
-        "name": "navBar",
-        "field": "payload.navBar",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "<!-- navBar -->\n    <div class='row' style=\"padding-top:10px;\">\n        <div class='col-12' align='center'>\n            <table width=\"900px\" background=\"/img/longaBryggan.png\">\n                <tr>\n                    <td width=\"300px\" align=\"left\" style=\"padding-top:25px;padding-bottom:25px;padding-left:25px;\"><a href=\"/\" ><img src=\"/img/bl-mc-icon.png\" height=\"100px\"/></a></td>\n                    <td width=\"300px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"></td>\n                    <td width=\"300px\" align=\"right\" style=\"padding-top:25px;padding-bottom:25px;padding-right:25px;\"><a href=\"https://www.bjerredssaltsjobad.se/sv\" ><img src=\"/img/bastuYellow.png\" height=\"100px\"/></a></td>\n               </tr>\n            </table>\n        </div>\n    </div>\n",
-        "output": "str",
-        "x": 1320,
-        "y": 360,
-        "wires": [
-            [
-                "dc09ca29.f0bed8"
-            ]
-        ]
-    },
-    {
-        "id": "b3abc198.4c70b",
-        "type": "websocket out",
-        "z": "d6667d7b.35cd6",
-        "name": "/kallis-summary/websocket",
-        "server": "bffd74cb.9a56d8",
-        "client": "",
-        "x": 1260,
-        "y": 520,
-        "wires": []
-    },
-    {
-        "id": "416a2a7a.685b94",
-        "type": "link in",
-        "z": "d6667d7b.35cd6",
-        "name": "kallis-bathers web socket input",
-        "links": [
-            "1c641721.29eb79",
-            "9b3bde89.b6f61",
-            "a988b405.392318",
-            "ca636790.fc91f8",
-            "a91cdcd0.61dc6"
-        ],
-        "x": 1105,
-        "y": 520,
-        "wires": [
-            [
-                "b3abc198.4c70b"
-            ]
-        ]
-    },
-    {
-        "id": "5464df4d.f636d",
-        "type": "websocket in",
-        "z": "d6667d7b.35cd6",
-        "name": "/kallis-summary/websocket",
-        "server": "bffd74cb.9a56d8",
-        "client": "",
-        "x": 170,
-        "y": 520,
-        "wires": [
-            [
-                "73ee7cb7.4e3c64"
-            ]
-        ]
-    },
-    {
-        "id": "7ceba2d4.4dcf3c",
-        "type": "link out",
-        "z": "d6667d7b.35cd6",
-        "name": "kallis-bathers archive request",
-        "links": [
-            "c4595efc.a717b"
-        ],
-        "x": 735,
-        "y": 500,
-        "wires": []
-    },
-    {
-        "id": "73ee7cb7.4e3c64",
-        "type": "json",
-        "z": "d6667d7b.35cd6",
-        "name": "",
-        "property": "payload",
-        "action": "obj",
-        "pretty": false,
-        "x": 370,
-        "y": 520,
-        "wires": [
-            [
-                "58d9e0b0.5f98c"
-            ]
-        ]
-    },
-    {
-        "id": "58d9e0b0.5f98c",
-        "type": "function",
-        "z": "d6667d7b.35cd6",
-        "name": "Shift msg",
-        "func": "return msg.payload;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 500,
-        "y": 520,
-        "wires": [
-            [
-                "f6730369.3763d"
-            ]
-        ]
-    },
-    {
         "id": "11ea6dea.624982",
         "type": "template",
         "z": "2b074b3a.632fb4",
@@ -19095,7 +18800,7 @@
         "type": "function",
         "z": "d6667d7b.35cd6",
         "name": "Parse query",
-        "func": "var temp = null;\nvar turnstile = null;\nvar wind = null;\nfor (var ii = 0; ii < 3; ++ii)\n{\n    if ((msg.payload[ii].deviceType == 'blinky-DS18B20') && (msg.payload[ii].name == '01') ) temp = msg.payload[ii];\n    if ((msg.payload[ii].deviceType == 'blinky-turnstile')  && (msg.payload[ii].name == '01') ) turnstile = msg.payload[ii];\n    if ((msg.payload[ii].deviceType == 'blinky-wind')  && (msg.payload[ii].name == '01') ) wind = msg.payload[ii];\n}\nvar newPayload = \n{\n    tempStamp       : temp.timeStamp,\n    airTemp         : temp.tempA.value,\n    waterTemp       : temp.tempB.value,\n    turnstileStamp  : turnstile.timeStamp,\n    turnstilePos    : turnstile.position.value,\n    turnstileTurns  : turnstile.numTurns.value,\n    windSpeed       : wind.windSpeed.value,\n    windDirection   : wind.windDirection.value\n};\nif (msg.topic == undefined)\n{\n    msg.payload = newPayload;\n    return [null,msg];\n}\nvar newMsg = \n{\n    topic   :   msg.topic,\n    payload :\n    {\n        topic   :   msg.topic,\n        userID  :   msg.userID,\n        payload :   [temp, turnstile,wind]\n    }\n}\nreturn [newMsg,null];",
+        "func": "var temp = null;\nvar turnstile = null;\nvar wind = null;\nfor (var ii = 0; ii < 3; ++ii)\n{\n    if ((msg.payload[ii].deviceType == 'blinky-DS18B20') && (msg.payload[ii].name == '01') ) temp = msg.payload[ii];\n    if ((msg.payload[ii].deviceType == 'blinky-turnstile')  && (msg.payload[ii].name == '01') ) turnstile = msg.payload[ii];\n    if ((msg.payload[ii].deviceType == 'blinky-wind')  && (msg.payload[ii].name == 'Kallis') ) wind = msg.payload[ii];\n}\nvar newPayload = \n{\n    tempStamp       : temp.timeStamp,\n    airTemp         : temp.tempA.value,\n    waterTemp       : temp.tempB.value,\n    turnstileStamp  : turnstile.timeStamp,\n    turnstilePos    : turnstile.position.value,\n    turnstileTurns  : turnstile.numTurns.value,\n    windSpeed       : wind.windSpeed.value,\n    windDirection   : wind.windDirection.value\n};\nif (msg.topic == undefined)\n{\n    msg.payload = newPayload;\n    return [null,msg];\n}\nvar newMsg = \n{\n    topic   :   msg.topic,\n    payload :\n    {\n        topic   :   msg.topic,\n        userID  :   msg.userID,\n        payload :   [temp, turnstile,wind]\n    }\n}\nreturn [newMsg,null];",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -19117,7 +18822,7 @@
         "type": "function",
         "z": "d6667d7b.35cd6",
         "name": "Prep get Devices Query",
-        "func": "msg.payload = \n{\n    $or : [ \n        {$and : [ {deviceType: 'blinky-DS18B20'}, {name: '01'} ]}, \n        {$and : [ {deviceType: 'blinky-turnstile'}, {name: '01'} ]},\n        {$and : [ {deviceType: 'blinky-wind'}, {name: '01'} ]},\n        ]\n     \n};\nreturn msg;",
+        "func": "msg.payload = \n{\n    $or : [ \n        {$and : [ {deviceType: 'blinky-DS18B20'}, {name: '01'} ]}, \n        {$and : [ {deviceType: 'blinky-turnstile'}, {name: '01'} ]},\n        {$and : [ {deviceType: 'blinky-wind'}, {name: 'Kallis'} ]},\n        ]\n     \n};\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -19234,51 +18939,6 @@
         ],
         "x": 1155,
         "y": 1360,
-        "wires": []
-    },
-    {
-        "id": "f6730369.3763d",
-        "type": "switch",
-        "z": "d6667d7b.35cd6",
-        "name": "",
-        "property": "topic",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "readDatabase",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "getDevices",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 630,
-        "y": 520,
-        "wires": [
-            [
-                "7ceba2d4.4dcf3c"
-            ],
-            [
-                "f219db61.44f1d8"
-            ]
-        ]
-    },
-    {
-        "id": "f219db61.44f1d8",
-        "type": "link out",
-        "z": "d6667d7b.35cd6",
-        "name": "kallis web socket out",
-        "links": [
-            "8f5c3594.065be8"
-        ],
-        "x": 735,
-        "y": 540,
         "wires": []
     },
     {
@@ -19724,7 +19384,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n        var validArchiveData = false;\n\n        function onDocumentReady()\n        {\n/*\n            var picNum =  Math.floor(Math.random() * 22) + 1;\n            if (picNum < 10)\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/kallisPics/kallisPic0\" + picNum.toString() +\".jpg\");\n            }\n            else\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/kallisPics/kallisPic\" + picNum.toString() +\".jpg\");\n            }\n*/\n            $(\"#widgetTable\").attr(\"background\",'img/blinky-webcam/blinky-webcam-02.jpg' +'?t=' + new Date().getTime().toString());\n\n            setInterval(function()\n            {\n                $(\"#widgetTable\").attr(\"background\",'img/blinky-webcam/blinky-webcam-02.jpg' +'?t=' + new Date().getTime().toString());\n            }, 60000);\n\n            $(\"#historyChartContainer\").hide();\n            $(window).resize(function()\n            {\n                resizeText();\n            });\n        }\n        function resizeText()\n        {\n            if($('#status').is(\":visible\")) return;\n            if (validArchiveData)\n            {\n                windowWidth = $( '#historyChartContainer' ).width();\n                var width = $(\"#historyChartContainer\").width() * 0.92;\n                var height = historyPlotHeightRatio * width;\n                historyPlotLayout.width = width.toFixed(0);\n                historyPlotLayout.height = height.toFixed(0);\n                Plotly.newPlot('historyChart', [historyPlotTrace1,historyPlotTrace2], historyPlotLayout, {displayModeBar: false, staticPlot: true});\n                return;\n            }\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n                getTurnstileHistory();\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"01\"))\n                    {\n                        updateWaterTemp(device);\n                        updateAirTemp(device);\n                    }\n                    if ((device.deviceType == \"blinky-wind\")     && (device.name == \"01\"))\n                    {\n                        updateWind(device);\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        if ((msg.payload.device.deviceType == 'blinky-turnstile') && (msg.payload.device.name == '01') )\n                        {\n                            putTurnstileArchiveValues(msg.payload);\n                        }\n                        else\n                        {\n                            putArchiveValues(msg.payload);\n                        }\n                    }\n\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateAirTemp(msg.payload[0]);\n                        updateWind(msg.payload[2])\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function getStatus()\n        {\n            $(\"#historyChartContainer\").hide();\n            $(\"#status\").show();\n        }\n",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n        var validArchiveData = false;\n\n        function onDocumentReady()\n        {\n/*\n            var picNum =  Math.floor(Math.random() * 22) + 1;\n            if (picNum < 10)\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/kallisPics/kallisPic0\" + picNum.toString() +\".jpg\");\n            }\n            else\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/kallisPics/kallisPic\" + picNum.toString() +\".jpg\");\n            }\n*/\n            $(\"#widgetTable\").attr(\"background\",'img/blinky-webcam/blinky-webcam-02.jpg' +'?t=' + new Date().getTime().toString());\n\n            setInterval(function()\n            {\n                $(\"#widgetTable\").attr(\"background\",'img/blinky-webcam/blinky-webcam-02.jpg' +'?t=' + new Date().getTime().toString());\n            }, 60000);\n\n            $(\"#historyChartContainer\").hide();\n            $(window).resize(function()\n            {\n                resizeText();\n            });\n        }\n        function resizeText()\n        {\n            if($('#status').is(\":visible\")) return;\n            if (validArchiveData)\n            {\n                windowWidth = $( '#historyChartContainer' ).width();\n                var width = $(\"#historyChartContainer\").width() * 0.92;\n                var height = historyPlotHeightRatio * width;\n                historyPlotLayout.width = width.toFixed(0);\n                historyPlotLayout.height = height.toFixed(0);\n                Plotly.newPlot('historyChart', [historyPlotTrace1,historyPlotTrace2], historyPlotLayout, {displayModeBar: false, staticPlot: true});\n                return;\n            }\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n                getTurnstileHistory();\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"01\"))\n                    {\n                        updateWaterTemp(device);\n                        updateAirTemp(device);\n                    }\n                    if ((device.deviceType == \"blinky-wind\")     && (device.name == \"kallis\"))\n                    {\n                        updateWind(device);\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        if ((msg.payload.device.deviceType == 'blinky-turnstile') && (msg.payload.device.name == '01') )\n                        {\n                            putTurnstileArchiveValues(msg.payload);\n                        }\n                        else\n                        {\n                            putArchiveValues(msg.payload);\n                        }\n                    }\n\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateAirTemp(msg.payload[0]);\n                        updateWind(msg.payload[2])\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function getStatus()\n        {\n            $(\"#historyChartContainer\").hide();\n            $(\"#status\").show();\n        }\n",
         "output": "str",
         "x": 730,
         "y": 1500,
