@@ -14875,8 +14875,8 @@
             "1a07dfbc.75c78",
             "b5c8eac4.7c3928",
             "cdf75a81.2fb1a8",
-            "f42dd5f2.45fce8",
-            "8643a67.20cf058"
+            "8643a67.20cf058",
+            "f42dd5f2.45fce8"
         ],
         "x": 1295,
         "y": 2600,
@@ -15392,8 +15392,8 @@
             "3f5e997d.8aa756",
             "416a2a7a.685b94",
             "6b2597a0.5798c8",
-            "f42dd5f2.45fce8",
-            "8643a67.20cf058"
+            "8643a67.20cf058",
+            "f42dd5f2.45fce8"
         ],
         "x": 775,
         "y": 880,
@@ -15424,8 +15424,8 @@
             "8d0f331.1da14d",
             "3f5e997d.8aa756",
             "6b2597a0.5798c8",
-            "f42dd5f2.45fce8",
-            "8643a67.20cf058"
+            "8643a67.20cf058",
+            "f42dd5f2.45fce8"
         ],
         "x": 1295,
         "y": 2640,
@@ -17482,7 +17482,7 @@
         "type": "function",
         "z": "2b074b3a.632fb4",
         "name": "Parse query",
-        "func": "var water = null;\nvar windAir = null;\nfor (var ii = 0; ii < 2; ++ii)\n{\n    if ((msg.payload[ii].deviceType == 'blinky-DS18B20')  && (msg.payload[ii].name == '03') ) water = msg.payload[ii];\n    if ((msg.payload[ii].deviceType == 'blinky-wind')  && (msg.payload[ii].name == 'Brantevik') ) windAir = msg.payload[ii];\n}\nvar newPayload = \n{\n    airTimeStamp    : windAir.timeStamp,\n    airTemp         : windAir.temperature.value,\n    waterTimeStamp  : water.timeStamp,\n    waterTemp       : water.tempA.value,\n    windSpeed       : windAir.windSpeed.value,\n    windDirection   : windAir.windDirection.value\n};\nif (msg.topic == undefined)\n{\n    msg.payload = newPayload;\n    return [null,msg];\n}\nvar newMsg = \n{\n    topic   :   msg.topic,\n    payload:\n    {\n        topic   :   msg.topic,\n        userID  :   msg.userID,\n        payload :   [water, windAir]\n    }\n}\nreturn [newMsg,null];",
+        "func": "var water = null;\nvar windAir = null;\nfor (var ii = 0; ii < 2; ++ii)\n{\n    if ((msg.payload[ii].deviceType == 'blinky-DS18B20')  && (msg.payload[ii].name == 'Brantevik') ) water = msg.payload[ii];\n    if ((msg.payload[ii].deviceType == 'blinky-wind')  && (msg.payload[ii].name == 'Brantevik') ) windAir = msg.payload[ii];\n}\nvar newPayload = \n{\n    airTimeStamp    : windAir.timeStamp,\n    airTemp         : windAir.temperature.value,\n    waterTimeStamp  : water.timeStamp,\n    waterTemp       : water.tempA.value,\n    windSpeed       : windAir.windSpeed.value,\n    windDirection   : windAir.windDirection.value\n};\nif (msg.topic == undefined)\n{\n    msg.payload = newPayload;\n    return [null,msg];\n}\nvar newMsg = \n{\n    topic   :   msg.topic,\n    payload:\n    {\n        topic   :   msg.topic,\n        userID  :   msg.userID,\n        payload :   [water, windAir]\n    }\n}\nreturn [newMsg,null];",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -17504,7 +17504,7 @@
         "type": "function",
         "z": "2b074b3a.632fb4",
         "name": "Prep get Devices Query",
-        "func": "msg.payload = \n{\n    $or : [ \n        {$and : [ {deviceType: 'blinky-DS18B20'}, {name: '03'} ]},\n        {$and : [ {deviceType: 'blinky-wind'}, {name: 'Brantevik'} ]}\n        ]\n     \n};\nreturn msg;",
+        "func": "msg.payload = \n{\n    $or : [ \n        {$and : [ {deviceType: 'blinky-DS18B20'}, {name: 'Brantevik'} ]},\n        {$and : [ {deviceType: 'blinky-wind'}, {name: 'Brantevik'} ]}\n        ]\n     \n};\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -18482,7 +18482,7 @@
         "fieldType": "msg",
         "format": "javascript",
         "syntax": "mustache",
-        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n        var validArchiveData = false;\n\n        function onDocumentReady()\n        {\n/*\n            var picNum =  Math.floor(Math.random() * 22) + 1;\n            if (picNum < 10)\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic0\" + picNum.toString() +\".jpg\");\n            }\n            else\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic\" + picNum.toString() +\".jpg\");\n            }\n*/\n            $(\"#widgetTable\").attr(\"background\",'img/blinky-webcam/blinky-webcam-01.jpg' +'?t=' + new Date().getTime().toString());\n\n            setInterval(function()\n            {\n                $(\"#widgetTable\").attr(\"background\",'img/blinky-webcam/blinky-webcam-01.jpg' +'?t=' + new Date().getTime().toString());\n            }, 60000);\n\n            $(\"#historyChartContainer\").hide();\n            $(window).resize(function()\n            {\n                resizeText();\n            });\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n//                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"03\")) updateWaterTemp(device);\n                    if ((device.deviceType == \"blinky-wind\")     && (device.name == \"Brantevik\"))\n                    {\n                        updateWind(device);\n                        updateAirTemp(device);\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateWind(msg.payload[1]);\n                        updateAirTemp(msg.payload[1]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function getStatus()\n        {\n            $(\"#historyChartContainer\").hide();\n            $(\"#status\").show();\n        }\n        function resizeText()\n        {\n            if($('#status').is(\":visible\")) return;\n            if (validArchiveData)\n            {\n                windowWidth = $( '#historyChartContainer' ).width();\n                var width = $(\"#historyChartContainer\").width() * 0.92;\n                var height = historyPlotHeightRatio * width;\n                historyPlotLayout.width = width.toFixed(0);\n                historyPlotLayout.height = height.toFixed(0);\n                Plotly.newPlot('historyChart', [historyPlotTrace1,historyPlotTrace2], historyPlotLayout, {displayModeBar: false, staticPlot: true});\n                return;\n            }\n        }\n",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n        var validArchiveData = false;\n\n        function onDocumentReady()\n        {\n/*\n            var picNum =  Math.floor(Math.random() * 22) + 1;\n            if (picNum < 10)\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic0\" + picNum.toString() +\".jpg\");\n            }\n            else\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic\" + picNum.toString() +\".jpg\");\n            }\n*/\n            $(\"#widgetTable\").attr(\"background\",'img/blinky-webcam/blinky-webcam-01.jpg' +'?t=' + new Date().getTime().toString());\n\n            setInterval(function()\n            {\n                $(\"#widgetTable\").attr(\"background\",'img/blinky-webcam/blinky-webcam-01.jpg' +'?t=' + new Date().getTime().toString());\n            }, 60000);\n\n            $(\"#historyChartContainer\").hide();\n            $(window).resize(function()\n            {\n                resizeText();\n            });\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"Brantevik\")) updateWaterTemp(device);\n                    if ((device.deviceType == \"blinky-wind\")     && (device.name == \"Brantevik\"))\n                    {\n                        updateWind(device);\n                        updateAirTemp(device);\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateWind(msg.payload[1]);\n                        updateAirTemp(msg.payload[1]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function getStatus()\n        {\n            $(\"#historyChartContainer\").hide();\n            $(\"#status\").show();\n        }\n        function resizeText()\n        {\n            if($('#status').is(\":visible\")) return;\n            if (validArchiveData)\n            {\n                windowWidth = $( '#historyChartContainer' ).width();\n                var width = $(\"#historyChartContainer\").width() * 0.92;\n                var height = historyPlotHeightRatio * width;\n                historyPlotLayout.width = width.toFixed(0);\n                historyPlotLayout.height = height.toFixed(0);\n                Plotly.newPlot('historyChart', [historyPlotTrace1,historyPlotTrace2], historyPlotLayout, {displayModeBar: false, staticPlot: true});\n                return;\n            }\n        }\n",
         "output": "str",
         "x": 710,
         "y": 260,
