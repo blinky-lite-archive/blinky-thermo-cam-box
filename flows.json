@@ -737,6 +737,12 @@
         "wholemsg": "false"
     },
     {
+        "id": "e865fc91.88a2a",
+        "type": "websocket-listener",
+        "path": "/mybrantevik-widget/websocket",
+        "wholemsg": "false"
+    },
+    {
         "id": "d8aea031.7f89d",
         "type": "http in",
         "z": "dc20c6e0.0feb98",
@@ -5736,7 +5742,8 @@
             "721a7865.6ff7e8",
             "3d600dd.1fe0cf2",
             "d958fbdd.fe1e48",
-            "a92d4c9a.7f5e4"
+            "a92d4c9a.7f5e4",
+            "b9a67318.b5255"
         ],
         "x": 295,
         "y": 2400,
@@ -14870,7 +14877,8 @@
             "1a07dfbc.75c78",
             "b5c8eac4.7c3928",
             "cdf75a81.2fb1a8",
-            "f42dd5f2.45fce8"
+            "f42dd5f2.45fce8",
+            "f5fe39ed.3730c8"
         ],
         "x": 775,
         "y": 820,
@@ -14887,7 +14895,8 @@
             "1a07dfbc.75c78",
             "b5c8eac4.7c3928",
             "cdf75a81.2fb1a8",
-            "f42dd5f2.45fce8"
+            "f42dd5f2.45fce8",
+            "f5fe39ed.3730c8"
         ],
         "x": 1295,
         "y": 2600,
@@ -15404,7 +15413,8 @@
             "416a2a7a.685b94",
             "6b2597a0.5798c8",
             "8643a67.20cf058",
-            "f42dd5f2.45fce8"
+            "f42dd5f2.45fce8",
+            "f5fe39ed.3730c8"
         ],
         "x": 775,
         "y": 880,
@@ -15436,7 +15446,8 @@
             "3f5e997d.8aa756",
             "6b2597a0.5798c8",
             "8643a67.20cf058",
-            "f42dd5f2.45fce8"
+            "f42dd5f2.45fce8",
+            "f5fe39ed.3730c8"
         ],
         "x": 1295,
         "y": 2640,
@@ -17454,7 +17465,8 @@
         "name": "brantevik device query in",
         "links": [
             "56e4449c.aa565c",
-            "187857b3.a24488"
+            "187857b3.a24488",
+            "efc341f5.3b27c"
         ],
         "x": 345,
         "y": 100,
@@ -17471,7 +17483,8 @@
         "name": "brantevik device query out",
         "links": [
             "6b2597a0.5798c8",
-            "f42dd5f2.45fce8"
+            "f42dd5f2.45fce8",
+            "f5fe39ed.3730c8"
         ],
         "x": 1055,
         "y": 120,
@@ -17618,8 +17631,7 @@
         "z": "2b074b3a.632fb4",
         "name": "brantevik-widget web socket out",
         "links": [
-            "6506cd6c.93ac74",
-            "56fef869.68a318"
+            "6506cd6c.93ac74"
         ],
         "x": 695,
         "y": 580,
@@ -18256,7 +18268,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "    <div id=\"status\" width=\"100%\" align=\"center\">\n        <table id=\"widgetTable\" width=\"100%\" background=\"/img/blinky-webcam/blinky-webcam-01.jpg\" style=\"background-size:100%;background-repeat:no-repeat;background-position:center;\">\n            <tr>\n                <td align='center' width=\"100%\" style=\"padding-top:0vw;padding-bottom:0vw;\">\n                    <span id=\"waterTempDate\" style=\"font-size: 5vw; color:white;\"></span> \n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='airTempLabel' style='font-size: 6vw; color:white;' >Luft</span>\n                            </td>\n                            <td align='right' width=\"60%\" style=\"padding-right:10vw;\"> \n                                <span id='airTemp' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left'  width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='waterTempLabel' style='font-size: 6vw; color:white;' >Vatten</span>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:10vw;\">\n                                <span id='waterTemp' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left'  width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='windLabel' style='font-size: 6vw; color:white;' >Vindstyrka</span>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:10vw;\">\n                                <span id='wind' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left'  width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='gustsLabel' style='font-size: 6vw; color:white;' >Vindbyar</span>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:10vw;\">\n                                <span id='gusts' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left'  width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='levelLabel' style='font-size: 6vw; color:white;' >Havsnivå</span>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:10vw;\">\n                                <span id='level' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td align='center' style=\"padding-top:1vw;padding-bottom:1vw;\">\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' style=\"padding-left:3vw;\">\n                                <span id='powerWhite' style=\"font-size: 3vw; color:white;\">Powered by </span><a href='https://www.bl-mc.se' id='blinkyLinkWhite' style=\"font-size: 3vw; color: white;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                            </td>\n                            <td align='right' style=\"padding-right:3vw;\">\n                                <span id=\"dataFetchMessage\" style=\"font-size: 3vw; color:white;\"></span>\n                            </td>\n                            <td align='right' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"historyButton\" style=\"font-size: 3vw; color:white; border-color:white;\" onclick=\"getArchive(168)\" >Historia</button>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>\n    <div id=\"historyChartContainer\" width=\"100%\" align=\"center\">\n        <table width=\"100%\">\n            <tr>\n                <td width=\"100%\">\n                    <div id=\"historyChart\" width=\"100%\" align=\"center\" style=\"border-width: 2px; border-style: solid; border-color: '#557a95'; border-radius: 3vw;background-color: #ecf2fe;\"></div>\n                </td>\n            </tr>\n            <tr>\n                <td align='center' >\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' style=\"padding-left:3vw;\">\n                                <span id='powerBlack' style=\"font-size: 3vw; color:black;\">Powered by </span><a href='https://www.bl-mc.se' id='blinkyLinkBlack' style=\"font-size: 3vw; color: black;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                            </td>\n                            <td align='center' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"tempButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"displayTemp()\" >Temp.</button>\n                            </td>\n                            <td align='center' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"windButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"displayWind()\" >Vind</button>\n                            </td>\n                            <td align='center' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"levelButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"displayLevel()\" >Nivå</button>\n                            </td>\n                            <td align='center' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"allButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"displayAll()\" >Allt</button>\n                            </td>\n                            <td align='right' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"backButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"getStatus()\" >tillbaka</button>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>\n",
+        "template": "    <div id=\"status\" width=\"100%\" align=\"center\">\n        <table id=\"widgetTable\" width=\"100%\" background=\"/img/blinky-webcam/blinky-webcam-01.jpg\" style=\"background-size:100%;background-repeat:no-repeat;background-position:center;\">\n            <tr>\n                <td align='center' width=\"100%\" style=\"padding-top:0vw;padding-bottom:56vw;\"></td> \n            </tr>\n            <!--\n            <tr>\n                <td align='center' width=\"100%\" style=\"padding-top:0vw;padding-bottom:0vw;\">\n                    <span id=\"waterTempDate\" style=\"font-size: 5vw; color:white;\"></span> \n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='airTempLabel' style='font-size: 6vw; color:white;' >Luft</span>\n                            </td>\n                            <td align='right' width=\"60%\" style=\"padding-right:10vw;\"> \n                                <span id='airTemp' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left'  width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='waterTempLabel' style='font-size: 6vw; color:white;' >Vatten</span>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:10vw;\">\n                                <span id='waterTemp' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left'  width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='windLabel' style='font-size: 6vw; color:white;' >Vindstyrka</span>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:10vw;\">\n                                <span id='wind' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left'  width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='gustsLabel' style='font-size: 6vw; color:white;' >Vindbyar</span>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:10vw;\">\n                                <span id='gusts' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left'  width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='levelLabel' style='font-size: 6vw; color:white;' >Havsnivå</span>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:10vw;\">\n                                <span id='level' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            -->\n            <tr>\n                <td align='center' style=\"padding-top:1vw;padding-bottom:1vw;\">\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' style=\"padding-left:3vw;\">\n                                <span id='powerWhite' style=\"font-size: 3vw; color:white;\">Powered by </span><a href='https://www.bl-mc.se' id='blinkyLinkWhite' style=\"font-size: 3vw; color: white;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                            </td>\n                            <td align='right' style=\"padding-right:3vw;\">\n                                <span id=\"dataFetchMessage\" style=\"font-size: 3vw; color:white;\"></span>\n                            </td>\n                            <td align='right' style=\"padding-right:3vw;\">\n                                <!--\n                                <button class='btn button-link' id=\"historyButton\" style=\"font-size: 3vw; color:white; border-color:white;\" onclick=\"getArchive(168)\" >Historia</button>\n                                -->\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>\n    <div id=\"historyChartContainer\" width=\"100%\" align=\"center\">\n        <table width=\"100%\">\n            <tr>\n                <td width=\"100%\">\n                    <div id=\"historyChart\" width=\"100%\" align=\"center\" style=\"border-width: 2px; border-style: solid; border-color: '#557a95'; border-radius: 3vw;background-color: #ecf2fe;\"></div>\n                </td>\n            </tr>\n            <tr>\n                <td align='center' >\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' style=\"padding-left:3vw;\">\n                                <span id='powerBlack' style=\"font-size: 3vw; color:black;\">Powered by </span><a href='https://www.bl-mc.se' id='blinkyLinkBlack' style=\"font-size: 3vw; color: black;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                            </td>\n                            <td align='center' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"tempButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"displayTemp()\" >Temp.</button>\n                            </td>\n                            <td align='center' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"windButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"displayWind()\" >Vind</button>\n                            </td>\n                            <td align='center' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"levelButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"displayLevel()\" >Nivå</button>\n                            </td>\n                            <td align='center' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"allButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"displayAll()\" >Allt</button>\n                            </td>\n                            <td align='right' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"backButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"getStatus()\" >tillbaka</button>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>\n",
         "output": "str",
         "x": 910,
         "y": 380,
@@ -18707,7 +18719,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "    <div width=\"100%\" align=\"center\">\n        <table width=\"100%\">\n            <tr>\n                <td width=\"100%\"  align=\"center\">\n                    <span style=\"font-size: 5vw; color:white;\">Live data from remote client sites</span> \n                </td>\n            </tr>\n            <tr>\n                <td  width=\"100%\">\n                    <table width=\"100%\">\n                        <tr >\n                            <td width=\"50%\" style=\"padding-right:1vw;\">\n                                <div style=\"height: 45vw; overflow:hidden;\">\n                                    <iframe scrolling=\"no\" width=\"100%\" height=\"100%\" style=\"border:0;background:none transparent;vertical-align: middle;\" src=\"/brantevik-widget\" allowtransparency=\"true\"></iframe>\n                                </div>\n                            </td>\n                            <td  width=\"50%\" style=\"padding-left:1vw;\">\n                                <div style=\"height: 45vw; overflow:hidden;\" >\n                                    <iframe scrolling=\"no\" width=\"100%\" height=\"100%\" style=\"border:0; background:none transparent;\" src=\"/kallis-widget\" allowtransparency=\"true\"></iframe>\n                                </div>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>",
+        "template": "    <div width=\"100%\" align=\"center\">\n        <table width=\"100%\">\n            <tr>\n                <td width=\"100%\"  align=\"center\">\n                    <span style=\"font-size: 5vw; color:white;\">Live data from remote client sites</span> \n                </td>\n            </tr>\n            <tr>\n                <td  width=\"100%\">\n                    <table width=\"100%\">\n                        <tr >\n                            <td width=\"50%\" style=\"padding-right:1vw;\">\n                                <div style=\"height: 45vw; overflow:hidden;\">\n                                    <iframe scrolling=\"no\" width=\"100%\" height=\"100%\" style=\"border:0;background:none transparent;vertical-align: middle;\" src=\"/mybrantevik-widget\" allowtransparency=\"true\"></iframe>\n                                </div>\n                            </td>\n                            <td  width=\"50%\" style=\"padding-left:1vw;\">\n                                <div style=\"height: 45vw; overflow:hidden;\" >\n                                    <iframe scrolling=\"no\" width=\"100%\" height=\"100%\" style=\"border:0; background:none transparent;\" src=\"/kallis-widget\" allowtransparency=\"true\"></iframe>\n                                </div>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>",
         "output": "str",
         "x": 930,
         "y": 1400,
@@ -20820,6 +20832,480 @@
         "wires": [
             [
                 "a4b0797a.9e83b8"
+            ]
+        ]
+    },
+    {
+        "id": "11446558.79091b",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Brantevik",
+        "output": "str",
+        "x": 480,
+        "y": 900,
+        "wires": [
+            [
+                "ca138de2.f6762"
+            ]
+        ]
+    },
+    {
+        "id": "2eb15a26.4e1336",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "BrantevikLogo.png",
+        "output": "str",
+        "x": 490,
+        "y": 860,
+        "wires": [
+            [
+                "11446558.79091b"
+            ]
+        ]
+    },
+    {
+        "id": "e2242fbb.bffa4",
+        "type": "http in",
+        "z": "2b074b3a.632fb4",
+        "name": "/mybrantevik-widget",
+        "url": "/mybrantevik-widget",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 860,
+        "wires": [
+            [
+                "2eb15a26.4e1336"
+            ]
+        ]
+    },
+    {
+        "id": "e14c805b.d1dae",
+        "type": "websocket out",
+        "z": "2b074b3a.632fb4",
+        "name": "/mybrantevik-widget/websocket",
+        "server": "e865fc91.88a2a",
+        "client": "",
+        "x": 1290,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "f5fe39ed.3730c8",
+        "type": "link in",
+        "z": "2b074b3a.632fb4",
+        "name": "mybrantevik-widget web socket input",
+        "links": [
+            "304b3835.9b6918",
+            "62fb9e33.02bff",
+            "6d200160.afc65",
+            "a988b405.392318",
+            "e4b5cdfb.1cf63"
+        ],
+        "x": 1125,
+        "y": 1160,
+        "wires": [
+            [
+                "e14c805b.d1dae"
+            ]
+        ]
+    },
+    {
+        "id": "2f1b0478.24543c",
+        "type": "json",
+        "z": "2b074b3a.632fb4",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 390,
+        "y": 1160,
+        "wires": [
+            [
+                "9c6fa88d.798128"
+            ]
+        ]
+    },
+    {
+        "id": "9c6fa88d.798128",
+        "type": "function",
+        "z": "2b074b3a.632fb4",
+        "name": "Shift msg",
+        "func": "return msg.payload;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 520,
+        "y": 1160,
+        "wires": [
+            [
+                "82d5a7b5.21ed68"
+            ]
+        ]
+    },
+    {
+        "id": "89399675.118c88",
+        "type": "websocket in",
+        "z": "2b074b3a.632fb4",
+        "name": "/mybrantevik-widget/websocket",
+        "server": "e865fc91.88a2a",
+        "client": "",
+        "x": 190,
+        "y": 1160,
+        "wires": [
+            [
+                "2f1b0478.24543c"
+            ]
+        ]
+    },
+    {
+        "id": "efc341f5.3b27c",
+        "type": "link out",
+        "z": "2b074b3a.632fb4",
+        "name": "mybrantevik-widget web socket out",
+        "links": [
+            "6506cd6c.93ac74"
+        ],
+        "x": 735,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "b744aba3.c55a18",
+        "type": "subflow:adce79c2.bd6fa8",
+        "z": "2b074b3a.632fb4",
+        "name": "",
+        "x": 1250,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "82d5a7b5.21ed68",
+        "type": "switch",
+        "z": "2b074b3a.632fb4",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "readDatabase",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "getDevices",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 650,
+        "y": 1160,
+        "wires": [
+            [
+                "b9a67318.b5255"
+            ],
+            [
+                "efc341f5.3b27c"
+            ]
+        ]
+    },
+    {
+        "id": "b9a67318.b5255",
+        "type": "link out",
+        "z": "2b074b3a.632fb4",
+        "name": "mybrantevik-widget archive request",
+        "links": [
+            "c4595efc.a717b"
+        ],
+        "x": 735,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "ca138de2.f6762",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Global Javascript\n        useWebSockets(true);\n        var programStarted = false;\n        var validArchiveData = false;\n\n        function onDocumentReady()\n        {\n/*\n            var picNum =  Math.floor(Math.random() * 22) + 1;\n            if (picNum < 10)\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic0\" + picNum.toString() +\".jpg\");\n            }\n            else\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic\" + picNum.toString() +\".jpg\");\n            }\n*/\n            $(\"#widgetTable\").attr(\"background\",'img/blinky-webcam/blinky-webcam-01.jpg' +'?t=' + new Date().getTime().toString());\n\n            setInterval(function()\n            {\n                $(\"#widgetTable\").attr(\"background\",'img/blinky-webcam/blinky-webcam-01.jpg' +'?t=' + new Date().getTime().toString());\n            }, 60000);\n\n            $(\"#historyChartContainer\").hide();\n            $(window).resize(function()\n            {\n                resizeText();\n            });\n        }\n        function onWebSocketOpen()\n        {\n            if (!programStarted)\n            {\n                programStarted = true;\n                var webSocketMsg = \n                {\n                    topic     : 'getDevices',\n                    payload   : {},\n                    userID    : userID,\n                };\n                ws.send(JSON.stringify(webSocketMsg));\n            }\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'readings':\n                    var device = JSON.parse(pako.inflate(msg.payload, { to: 'string' }));\n                    device.timeStamp = new Date().getTime();\n                    if ((device.deviceType == \"blinky-DS18B20\")     && (device.name == \"Brantevik\")) updateWaterTemp(device);\n                    if ((device.deviceType == \"blinky-wind\")     && (device.name == \"Brantevik\"))\n                    {\n                        updateWind(device);\n                        updateAirTemp(device);\n                    }\n                    break;\n                case 'readDatabase':\n                    if (msg.userID == userID)\n                    {\n                        putArchiveValues(msg.payload);\n                    }\n                    break;\n                case 'getDevices':\n                    if (msg.userID == userID)\n                    {\n                        updateWaterTemp(msg.payload[0]);\n                        updateWind(msg.payload[1]);\n                        updateAirTemp(msg.payload[1]);\n                     }\n                    break;\n                default:\n                    break;\n            }\n        }\n        function getStatus()\n        {\n            $(\"#historyChartContainer\").hide();\n            $(\"#status\").show();\n        }\n        function resizeText()\n        {\n            if($('#status').is(\":visible\")) return;\n            if (validArchiveData)\n            {\n                windowWidth = $( '#historyChartContainer' ).width();\n                var width = $(\"#historyChartContainer\").width() * 0.92;\n                var height = historyPlotHeightRatio * width;\n                historyPlotLayout.width = width.toFixed(0);\n                historyPlotLayout.height = height.toFixed(0);\n                Plotly.newPlot('historyChart', [historyPlotTrace1,historyPlotTrace2], historyPlotLayout, {displayModeBar: false, staticPlot: true});\n                return;\n            }\n        }\n",
+        "output": "str",
+        "x": 750,
+        "y": 860,
+        "wires": [
+            [
+                "de9d819b.fe1b9"
+            ]
+        ]
+    },
+    {
+        "id": "e2dfd322.f1489",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.global}}}\n{{{payload.script.updateReadings}}}\n{{{payload.script.archive}}}\n",
+        "output": "str",
+        "x": 740,
+        "y": 980,
+        "wires": [
+            [
+                "f1ac07b2.ceee48"
+            ]
+        ]
+    },
+    {
+        "id": "f1ac07b2.ceee48",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <div id=\"status\" width=\"100%\" align=\"center\">\n        <table id=\"widgetTable\" width=\"100%\" background=\"/img/blinky-webcam/blinky-webcam-01.jpg\" style=\"background-size:100%;background-repeat:no-repeat;background-position:center;\">\n            <tr>\n                <td align='center' width=\"100%\" style=\"padding-top:0vw;padding-bottom:0vw;\">\n                    <span id=\"waterTempDate\" style=\"font-size: 5vw; color:white;\"></span> \n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='airTempLabel' style='font-size: 6vw; color:white;' >Luft</span>\n                            </td>\n                            <td align='right' width=\"60%\" style=\"padding-right:10vw;\"> \n                                <span id='airTemp' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left'  width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='waterTempLabel' style='font-size: 6vw; color:white;' >Vatten</span>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:10vw;\">\n                                <span id='waterTemp' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left'  width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='windLabel' style='font-size: 6vw; color:white;' >Vindstyrka</span>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:10vw;\">\n                                <span id='wind' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left'  width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='gustsLabel' style='font-size: 6vw; color:white;' >Vindbyar</span>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:10vw;\">\n                                <span id='gusts' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <td align='left'  width=\"40%\" style=\"padding-left:10vw;\">\n                                <span id='levelLabel' style='font-size: 6vw; color:white;' >Havsnivå</span>\n                            </td>\n                            <td  align='right' width=\"60%\" style=\"padding-right:10vw;\">\n                                <span id='level' style='font-size: 6vw; color:white;' ></span>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td align='center' style=\"padding-top:1vw;padding-bottom:1vw;\">\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' style=\"padding-left:3vw;\">\n                                <span id='powerWhite' style=\"font-size: 3vw; color:white;\">Powered by </span><a href='https://www.bl-mc.se' id='blinkyLinkWhite' style=\"font-size: 3vw; color: white;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                            </td>\n                            <td align='right' style=\"padding-right:3vw;\">\n                                <span id=\"dataFetchMessage\" style=\"font-size: 3vw; color:white;\"></span>\n                            </td>\n                            <td align='right' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"historyButton\" style=\"font-size: 3vw; color:white; border-color:white;\" onclick=\"getArchive(168)\" >Historia</button>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>\n    <div id=\"historyChartContainer\" width=\"100%\" align=\"center\">\n        <table width=\"100%\">\n            <tr>\n                <td width=\"100%\">\n                    <div id=\"historyChart\" width=\"100%\" align=\"center\" style=\"border-width: 2px; border-style: solid; border-color: '#557a95'; border-radius: 3vw;background-color: #ecf2fe;\"></div>\n                </td>\n            </tr>\n            <tr>\n                <td align='center' >\n                    <table width=\"100%\">\n                        <tr>\n                            <td align='left' style=\"padding-left:3vw;\">\n                                <span id='powerBlack' style=\"font-size: 3vw; color:black;\">Powered by </span><a href='https://www.bl-mc.se' id='blinkyLinkBlack' style=\"font-size: 3vw; color: black;text-decoration: underline;\" target='_blank'>Blinky-Lite</a>\n                            </td>\n                            <td align='center' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"tempButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"displayTemp()\" >Temp.</button>\n                            </td>\n                            <td align='center' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"windButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"displayWind()\" >Vind</button>\n                            </td>\n                            <td align='center' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"levelButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"displayLevel()\" >Nivå</button>\n                            </td>\n                            <td align='center' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"allButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"displayAll()\" >Allt</button>\n                            </td>\n                            <td align='right' style=\"padding-right:3vw;\">\n                                <button class='btn button-link' id=\"backButton\" style=\"font-size: 3vw; color:black; border-color:black;\" onclick=\"getStatus()\" >tillbaka</button>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n        </table>\n    </div>\n",
+        "output": "str",
+        "x": 950,
+        "y": 980,
+        "wires": [
+            [
+                "eac0118b.f84"
+            ]
+        ]
+    },
+    {
+        "id": "de9d819b.fe1b9",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "script.updateReadings",
+        "field": "payload.script.updateReadings",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Update Readings Javascript\n        function updateAirTemp(device)\n        {\n//            var time = new Date(device.timeStamp).toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit', second: '2-digit'}).replace(',', '');\n//            $('#waterTempDate').text('Brantevik ' + time);\n            $('#airTemp').text(device.temperature.value.toFixed(0) + ' C');\n        }\n        function updateWaterTemp(device)\n        {\n           var time = new Date(device.timeStamp).toLocaleString('en-SE',{year: 'numeric', month: '2-digit', day : '2-digit', hour12:false, hour: '2-digit', minute: '2-digit', second: '2-digit'}).replace(',', '');\n            $('#waterTempDate').text('Brantevik ' + time);\n            $('#waterTemp').text(device.tempA.value.toFixed(0) + ' C');\n            var level = device.refDistance.value - device.ultraDistanceAvg.value;\n            $('#level').text(level.toFixed(0) + ' cm');\n//            $('#waterTemp').text('?');\n        }\n        function updateWind(device)\n        {\n            $('#wind').text(getDirectionText(device.windDirection1.value) + ' ' + device.windSpeed1.value.toFixed(1) + ' m/s');\n            $('#gusts').text(getDirectionText(device.windDirection2.value) + ' ' + device.gusts.value.toFixed(1) + ' m/s');\n        }\n        function getDirectionText(wd)\n        {\n            var dirText = '';           \n            if ((  0.0 <= wd) && (wd <=  22.5)) dirText = 'N ';\n            if (( 22.5 <  wd) && (wd <=  67.5)) dirText = 'NE';\n            if (( 67.5 <  wd) && (wd <= 112.5)) dirText = 'E ';\n            if ((112.5 <  wd) && (wd <= 157.5)) dirText = 'SE';\n            if ((157.5 <  wd) && (wd <= 202.5)) dirText = 'S ';\n            if ((202.5 <  wd) && (wd <= 247.5)) dirText = 'SW';\n            if ((247.5 <  wd) && (wd <= 292.5)) dirText = 'W ';\n            if ((292.5 <  wd) && (wd <= 337.5)) dirText = 'NW';\n            if ((337.5 <  wd) && (wd <= 360.0)) dirText = 'N ';\n            return dirText;\n        }\n",
+        "output": "str",
+        "x": 780,
+        "y": 900,
+        "wires": [
+            [
+                "e67f95a4.5dbfa8"
+            ]
+        ]
+    },
+    {
+        "id": "eac0118b.f84",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "CSS",
+        "field": "payload.css",
+        "fieldType": "msg",
+        "format": "css",
+        "syntax": "mustache",
+        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n            max-width: 100%;\n            background-color: transparent !important;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n        .button-link \n        {\n            background: none!important;\n            border-type: solid;\n            padding: 2px!important;\n            cursor: pointer;\n        }\n",
+        "output": "str",
+        "x": 1090,
+        "y": 980,
+        "wires": [
+            [
+                "b744aba3.c55a18"
+            ]
+        ]
+    },
+    {
+        "id": "e67f95a4.5dbfa8",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "script.archive",
+        "field": "payload.script.archive",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Archive JavaScript\n        var archiveRequestList = [];\n        var archiveList = [];\n        function getArchive(hours)\n        { \n            if (validArchiveData)\n            {\n                var width = $(\"#status\").width() * 0.92;\n                var height = $(\"#status\").height() * 0.87;\n                historyPlotLayout.width = width.toFixed(0);\n                historyPlotLayout.height = height.toFixed(0);\n                $(\"#status\").hide();\n                $(\"#historyChartContainer\").show();\n                Plotly.newPlot('historyChart', [historyPlotTrace1,historyPlotTrace2, historyPlotTrace3, historyPlotTrace5], historyPlotLayout, {displayModeBar: false, staticPlot: false});\n                return;\n            }\n            $(\"#historyButton\").hide();\n            $(\"#dataFetchMessage\").text('Hämtar data...');\n\n            archiveRequestList = [];\n            archiveList = [];\n            var stopDate = new Date().getTime();\n            var startDate = stopDate - hours * 3600000;\n            if (startDate < 1627166453473) startDate = 1627166453473; //when ultra distance was added\n            archiveRequestList[0] = \n            {\n                deviceType : 'blinky-DS18B20',\n                name : 'Brantevik', \n                attr : ['tempA','ultraDistanceAvg','refDistance'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n            archiveRequestList[1] = \n            {\n                deviceType : 'blinky-wind',\n                name : 'Brantevik', \n                attr : ['temperature','windSpeed2','windDirection2','gusts'],\n                startDate: startDate, \n                stopDate: stopDate,\n            };\n\n            getArchiveValues();\n        }\n        function getArchiveValues()\n        {\n            var actionMsg = \n                {\n                    device      : archiveRequestList[0]\n                };\n//            sendActionMsg('readDatabase','readDatabase', actionMsg);\n            var webSocketMsg = \n            {\n                topic     : 'readDatabase',\n                payload   : actionMsg,\n                userID    : userID,\n            };\n            ws.send(JSON.stringify(webSocketMsg));\n            archiveRequestList.shift();\n            return;\n        }\n        function putArchiveValues(data)\n        {\n            archiveList.push(data);\n            if (archiveRequestList.length > 0)\n            {\n                getArchiveValues();\n            }\n            else\n            {\n                plotArchive();\n            }\n        }\n        var historyPlotLayout = \n        {\n            plot_bgcolor:\"#ecf2fe\",\n            paper_bgcolor:\"#ecf2fe\",\n            showlegend  : true,\n            legend      : { x: 0, y: 1.15,\"orientation\": \"h\"},\n            height      : '100',\n            width       : '200',\n            xaxis       :\n            {\n//                    title: 'Hours since ' + new Date(archiveList[0].device.stopDate).toLocaleString(),\n                type: 'date',\n                tickformat: '%d-%m %H:%M', // For more time formatting types, see: https://github.com/d3/d3-time-format/blob/master/README.md\n                fixedrange      : true,\n                dtick : 86400000\n            },\n            yaxis:\n            {\n                title           : '',\n                titlefont       : {color: 'black'},\n                tickfont        : {color: 'black'},\n                gridcolor       : 'grey',\n                zerolinecolor   : 'grey',\n                linecolor       : 'grey',\n                fixedrange      : true\n//                    range           : [0,30],\n//                    dtick           :  5\n\n            },\n            margin: \n            {\n                l: 35,\n                r: 5,\n                b: 25,\n                t: 1,\n                pad: 0\n            }\n        };\n        var historyPlotTrace1 = \n        {\n            x: [],\n            y: [],\n            name: 'Hav (C)',\n            hovertemplate: '%{y}C',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: { color:  '#557a95',width:2},\n            visible: true\n\n        };\n        var historyPlotTrace2 = \n        {\n            x: [],\n            y: [],\n            name: 'Luft (C)',\n            hovertemplate: '%{y}C',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: { color:  '#f2a31f',width:2},\n            visible: true\n\n        };\n        var historyPlotTrace3 = \n        {\n            x: [],\n            y: [],\n            text: [],\n            name: 'Vind (m/s)',\n            hovertemplate: '<b>%{text}</b> %{y}m/S',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: { color:  'red',width:2},\n            visible: true\n\n        };\n        var historyPlotTrace4 = \n        {\n            x: [],\n            y: [],\n            name: 'byar (m/s)',\n            hovertemplate: '%{y}cm',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: { color:  'black',width:1, dash: 'dot',},\n            visible: true\n\n        };\n        var historyPlotTrace5 = \n        {\n            x: [],\n            y: [],\n            name: 'nivå (cm)',\n            hovertemplate: '%{y}cm',\n            yaxis: 'y1',\n            type: 'scatter',\n            mode: 'lines',\n            line: { color:  'green',width:2},\n            visible: true\n\n        };\n         var historyPlotHeightRatio = 1.0;\n        function plotArchive()\n        {\n            $(\"#dataFetchMessage\").text('');\n            $(\"#historyButton\").show();\n            \n            var width = $(\"#status\").width() * 0.92;\n            var height = $(\"#status\").height() * 0.87;\n            historyPlotHeightRatio = height / width;\n            historyPlotLayout.width = width.toFixed(0);\n            historyPlotLayout.height = height.toFixed(0);\n            \n            $(\"#status\").hide();\n            $(\"#historyChartContainer\").show();\n            validArchiveData = true;\n            historyPlotTrace1.x = [];\n            historyPlotTrace1.y = [];\n            historyPlotTrace2.x = [];\n            historyPlotTrace2.y = [];\n            historyPlotTrace3.x = [];\n            historyPlotTrace3.y = [];\n            historyPlotTrace3.text = [];\n            historyPlotTrace4.x = [];\n            historyPlotTrace4.y = [];\n            historyPlotTrace4.text = [];\n            historyPlotTrace5.x = [];\n            historyPlotTrace5.y = [];\n            var waterTempBeginTime = 1627166453473; //10pm July 24 2021 is 1627158411481\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                var x = archiveList[0].trace[ii].timeStamp;\n                var y = archiveList[0].trace[ii][archiveList[0].device.attr[0]];\n                if ((x > waterTempBeginTime) && (y > 0))\n                {\n                    historyPlotTrace1.x.push(x);\n                    historyPlotTrace1.y.push(y) ;\n                }\n            }\n            for (var ii = 0; ii < archiveList[1].trace.length; ++ii)\n            {\n                var x = archiveList[1].trace[ii].timeStamp;\n                if (x > waterTempBeginTime)\n                {\n                    historyPlotTrace2.x.push(x);\n                    historyPlotTrace2.y.push(archiveList[1].trace[ii][archiveList[1].device.attr[0]]) ;\n                    historyPlotTrace3.x.push(x);\n                    historyPlotTrace3.y.push(archiveList[1].trace[ii][archiveList[1].device.attr[1]]) ;\n                    historyPlotTrace3.text.push(getDirectionText(archiveList[1].trace[ii][archiveList[1].device.attr[2]]));\n                    historyPlotTrace4.x.push(x);\n                    historyPlotTrace4.y.push(archiveList[1].trace[ii][archiveList[1].device.attr[3]]) ;\n                    historyPlotTrace4.text.push(getDirectionText(archiveList[1].trace[ii][archiveList[1].device.attr[2]]));\n                }\n            }\n            for (var ii = 0; ii < archiveList[0].trace.length; ++ii)\n            {\n                var x = archiveList[0].trace[ii].timeStamp;\n                var ultraDistanceAvg = archiveList[0].trace[ii][archiveList[0].device.attr[1]];\n                var refDistance      = archiveList[0].trace[ii][archiveList[0].device.attr[2]];\n                if (x > waterTempBeginTime)\n                {\n                    historyPlotTrace5.x.push(x);\n                    historyPlotTrace5.y.push(refDistance - ultraDistanceAvg) ;\n                }\n            }\n            Plotly.newPlot('historyChart', [historyPlotTrace1,historyPlotTrace2,historyPlotTrace3,historyPlotTrace5], historyPlotLayout, {displayModeBar: false, staticPlot: false});\n        }\n        function displayTemp()\n        {\n            Plotly.newPlot('historyChart', [historyPlotTrace1,historyPlotTrace2], historyPlotLayout, {displayModeBar: false, staticPlot: false});\n            return;\n        }\n        function displayWind()\n        {\n            Plotly.newPlot('historyChart', [historyPlotTrace3,historyPlotTrace4], historyPlotLayout, {displayModeBar: false, staticPlot: false});\n            return;\n        }\n        function displayLevel()\n        {\n            Plotly.newPlot('historyChart', [historyPlotTrace5], historyPlotLayout, {displayModeBar: false, staticPlot: false});\n            return;\n        }\n        function displayAll()\n        {\n            Plotly.newPlot('historyChart', [historyPlotTrace1,historyPlotTrace2, historyPlotTrace3, historyPlotTrace5], historyPlotLayout, {displayModeBar: false, staticPlot: false});\n            return;\n        }\n",
+        "output": "str",
+        "x": 750,
+        "y": 940,
+        "wires": [
+            [
+                "e2dfd322.f1489"
+            ]
+        ]
+    },
+    {
+        "id": "9bf7fd2e.f506c",
+        "type": "subflow:ca529822.9112f8",
+        "z": "2b074b3a.632fb4",
+        "name": "",
+        "x": 1270,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "f892d30a.3c77f",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "navBar",
+        "field": "payload.navBar",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- navBar -->\n    <div style=\"padding-top:10px;\" >\n        <table width=\"100%\" background=\"/img/brantevikBanner.png\" style=\"background-repeat: no-repeat;background-size: 100% 15vw;\">\n            <tr>\n                <td style=\"text-align:left; vertical-align:middle; padding-left:2vw; padding-top:2vw; padding-bottom:2vw;\"  width=\"20%\">\n                    <a href='/' >\n                        <img src=\"/img/bl-mc-icon-inverse.png\" width=\"40%\"/>\n                    </a>                \n                </td>\n                <td width=\"60%\" style=\"text-align:center; vertical-align:middle;\">\n                </td>\n                <td style=\"text-align:right; vertical-align:middle; padding-right:2vw;\" width=\"20%\">\n                   <a href=\"https://www.brantevik.se\" >\n                       <img src=\"/img/brantevikYellow.png\" width=\"40%\"/>\n                   </a>\n                </td>\n            </tr>\n        </table>\n    </div>",
+        "output": "str",
+        "x": 1140,
+        "y": 1320,
+        "wires": [
+            [
+                "9bf7fd2e.f506c"
+            ]
+        ]
+    },
+    {
+        "id": "84bc95d0.2e5828",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "CSS",
+        "field": "payload.css",
+        "fieldType": "msg",
+        "format": "css",
+        "syntax": "mustache",
+        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n            background-color: white !important;\n            margin: auto;\n            padding-left:25px;\n            padding-right:25px;\n        }\n        \n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n",
+        "output": "str",
+        "x": 1010,
+        "y": 1320,
+        "wires": [
+            [
+                "f892d30a.3c77f"
+            ]
+        ]
+    },
+    {
+        "id": "a972d9ab.0fcfd8",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <div width=\"100%\" align=\"center\">\n        <table width=\"100%\">\n            <tr >\n                <td  width=\"100%\" style=\"padding-top:10px;\">\n                    <div class='card'>\n                        <div class='row'>\n                            <div class='col-md-2'>\n                            </div>\n                            <div class='col-md-8'>\n                                <p class='card-title' style=\"font-size: 4vw;\">Brantevik Väder</p>\n                             </div>\n                            <div class='col-md-2'>\n                            </div>\n                        </div>\n                        <div class='card-body' align=\"center\">\n                            <div class='row'>\n                                <div class='col-md-12'>\n\n                                    <div style=\"height: 60vw; overflow:hidden;\">\n                                        <iframe scrolling=\"no\" width=\"100%\" height=\"100%\" style=\"border:0;background: #9eb5c7;\" src=\"/mybrantevik-widget\" allowtransparency=\"true\"></iframe>\n                                    </div>\n                               </div>\n                            </div>\n                        </div>\n                    </div>\n                </td>\n            </tr>\n        </table>\n    </div>",
+        "output": "str",
+        "x": 870,
+        "y": 1320,
+        "wires": [
+            [
+                "84bc95d0.2e5828"
+            ]
+        ]
+    },
+    {
+        "id": "736640bd.dccde",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.global}}}\n",
+        "output": "str",
+        "x": 640,
+        "y": 1320,
+        "wires": [
+            [
+                "a972d9ab.0fcfd8"
+            ]
+        ]
+    },
+    {
+        "id": "5e3b8709.00aa88",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Global Javascript\n        useWebSockets(false);\n\n        function onDocumentReady()\n        {\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n",
+        "output": "str",
+        "x": 650,
+        "y": 1280,
+        "wires": [
+            [
+                "736640bd.dccde"
+            ]
+        ]
+    },
+    {
+        "id": "d8e50beb.98d0b8",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Brantevik Väder",
+        "output": "str",
+        "x": 360,
+        "y": 1320,
+        "wires": [
+            [
+                "5e3b8709.00aa88"
+            ]
+        ]
+    },
+    {
+        "id": "5c6e29b6.055de8",
+        "type": "template",
+        "z": "2b074b3a.632fb4",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "BrantevikLogo.png",
+        "output": "str",
+        "x": 370,
+        "y": 1280,
+        "wires": [
+            [
+                "d8e50beb.98d0b8"
+            ]
+        ]
+    },
+    {
+        "id": "fafa9afc.e8fb48",
+        "type": "http in",
+        "z": "2b074b3a.632fb4",
+        "name": "/mybrantevik",
+        "url": "/mybrantevik",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 1280,
+        "wires": [
+            [
+                "5c6e29b6.055de8"
             ]
         ]
     }
