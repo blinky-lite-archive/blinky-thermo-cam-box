@@ -694,12 +694,6 @@
         "wholemsg": "false"
     },
     {
-        "id": "4d01cc56.b625c4",
-        "type": "websocket-listener",
-        "path": "/brantevik-widget/websocket",
-        "wholemsg": "false"
-    },
-    {
         "id": "dddd1a95.f87278",
         "type": "websocket-listener",
         "path": "/blinky-webcam/websocket",
@@ -712,9 +706,9 @@
         "wholemsg": "false"
     },
     {
-        "id": "e865fc91.88a2a",
+        "id": "aecd7ec4.0f27",
         "type": "websocket-listener",
-        "path": "/mybrantevik-widget/websocket",
+        "path": "/blinky-bake/websocket",
         "wholemsg": "false"
     },
     {
@@ -6745,7 +6739,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "                <div class='card'>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >App</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"application\" onchange=\"appSelected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"blinky-basic\">blinky-basic</option>\n                                    <option value=\"blinky-cosmic-interval\">blinky-cosmic-interval</option>\n                                    <option value=\"blinky-DS18B20\">blinky-DS18B20</option>\n                                    <option value=\"blinky-env\">blinky-env</option>\n                                    <option value=\"blinky-power-relay\">blinky-power-relay</option>\n                                    <option value=\"blinky-relay-bake\">blinky-relay-bake</option>\n                                    <option value=\"blinky-shaker\">blinky-shaker</option>\n                                    <option value=\"blinky-shiver-expert\">blinky-shiver-expert</option>\n                                    <option value=\"blinky-shiver-simple\">blinky-shiver-simple</option>\n                                    <option value=\"blinky-stepper\">blinky-stepper</option>\n                                    <option value=\"blinky-ssr-bake\">blinky-ssr-bake</option>\n                                    <option value=\"blinky-thermo\">blinky-thermo</option>\n                                    <option value=\"blinky-thermo-cam\">blinky-thermo-cam</option>\n                                    <option value=\"blinky-thermo-cam-archive\">blinky-thermo-cam-archive</option>\n                                    <option value=\"blinky-turnstile\">blinky-turnstile</option>\n                                    <option value=\"blinky-wind\">blinky-wind</option>\n                                    <option value=\"blinky-webcam\">blinky-webcam</option>\n                                    <option value=\"solar-regulator\">solar-regulator</option>\n                                    <option value=\"nb-freezer-mon\">nb-freezer-mon</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >Device</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"deviceA\" onchange=\"deviceAselected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"01\">01</option>\n                                    <option value=\"02\">02</option>\n                                    <option value=\"03\">03</option>\n                                    <option value=\"04\">04</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                                <button class='btn btn-block card-button big-text' id='launchAppButton' onclick=\"launchApp()\" >Launch</button>\n                            </div>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                        </div>\n                    </div>\n                </div>",
+        "template": "                <div class='card'>\n                    <div class='card-body' align=\"center\">\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >App</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"application\" onchange=\"appSelected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"blinky-bake\">blinky-bake</option>\n                                    <option value=\"blinky-basic\">blinky-basic</option>\n                                    <option value=\"blinky-cosmic-interval\">blinky-cosmic-interval</option>\n                                    <option value=\"blinky-DS18B20\">blinky-DS18B20</option>\n                                    <option value=\"blinky-env\">blinky-env</option>\n                                    <option value=\"blinky-power-relay\">blinky-power-relay</option>\n                                    <option value=\"blinky-relay-bake\">blinky-relay-bake</option>\n                                    <option value=\"blinky-shaker\">blinky-shaker</option>\n                                    <option value=\"blinky-shiver-expert\">blinky-shiver-expert</option>\n                                    <option value=\"blinky-shiver-simple\">blinky-shiver-simple</option>\n                                    <option value=\"blinky-stepper\">blinky-stepper</option>\n                                    <option value=\"blinky-ssr-bake\">blinky-ssr-bake</option>\n                                    <option value=\"blinky-thermo\">blinky-thermo</option>\n                                    <option value=\"blinky-thermo-cam\">blinky-thermo-cam</option>\n                                    <option value=\"blinky-thermo-cam-archive\">blinky-thermo-cam-archive</option>\n                                    <option value=\"blinky-turnstile\">blinky-turnstile</option>\n                                    <option value=\"blinky-wind\">blinky-wind</option>\n                                    <option value=\"blinky-webcam\">blinky-webcam</option>\n                                    <option value=\"solar-regulator\">solar-regulator</option>\n                                    <option value=\"nb-freezer-mon\">nb-freezer-mon</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-4\" align=\"center\">\n                                <span class='card-text' >Device</span>\n                            </div>\n                            <div class=\"col-md-8\" align=\"center\">\n                                <select class=\"custom-select big-text\" id=\"deviceA\" onchange=\"deviceAselected()\">\n                                    <option value=\"none\">none</option>\n                                    <option value=\"01\">01</option>\n                                    <option value=\"02\">02</option>\n                                    <option value=\"03\">03</option>\n                                    <option value=\"04\">04</option>\n                                </select>\n                            </div>\n                        </div>\n                        <div class='row' style='padding-bottom: 25px;'>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                            </div>\n                            <div class=\"col-md-5\" align=\"center\">\n                                <button class='btn btn-block card-button big-text' id='launchAppButton' onclick=\"launchApp()\" >Launch</button>\n                            </div>\n                            <div class=\"col-md-1\" align=\"center\">\n                            </div>\n                        </div>\n                    </div>\n                </div>",
         "output": "str",
         "x": 920,
         "y": 60,
@@ -13282,7 +13276,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "thermoYellow.png",
+        "template": "cameraYellow.png",
         "output": "str",
         "x": 470,
         "y": 120,
@@ -19442,5 +19436,287 @@
                 "3b51ff66.14a1c"
             ]
         ]
+    },
+    {
+        "id": "f8ce9ccf.19387",
+        "type": "http in",
+        "z": "a858ad3a.95706",
+        "name": "/blinky-bake",
+        "url": "/blinky-bake",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 110,
+        "y": 2580,
+        "wires": [
+            [
+                "7e40b45.080304c"
+            ]
+        ]
+    },
+    {
+        "id": "a5bf3885.f45528",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Blinky Bake 01",
+        "output": "str",
+        "x": 320,
+        "y": 2620,
+        "wires": [
+            [
+                "8dcad286.bceb6"
+            ]
+        ]
+    },
+    {
+        "id": "5c92bb.59d42d44",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "ovenYellow.png",
+        "output": "str",
+        "x": 330,
+        "y": 2580,
+        "wires": [
+            [
+                "a5bf3885.f45528"
+            ]
+        ]
+    },
+    {
+        "id": "7e40b45.080304c",
+        "type": "function",
+        "z": "a858ad3a.95706",
+        "name": "Allowed Roles",
+        "func": "msg.payload.allowedRoles = ['appView','coreView'];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 120,
+        "y": 2620,
+        "wires": [
+            [
+                "7c62f58b.f6278c"
+            ]
+        ]
+    },
+    {
+        "id": "2b9e3859.21a6b8",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Body HTML -->\n    <div class='container' width=\"100%\">\n        <div class='row vert-pad' >\n            <div class='col-md-12'>\n                <a class=\"btn jumbotron-button btn-block big-text bold-text\" width='80%' href=\"/blinky-thermo?name=01\" target=\"_blank\">\n                    <table width=\"100%\" alight=\"left\">\n                        <tr>\n                            <td width=\"30%\" align='center'> <img src=\"/img/thermoYellow.png\" height=\"70px\"/></td>\n                            <td width=\"70%\" align=\"left\">Thermo 01</td>\n                        </tr>\n                    </table>\n                </a>\n            </div>\n        </div>\n        <div class='row vert-pad' >\n            <div class='col-md-12'>\n                <a class=\"btn jumbotron-button btn-block big-text bold-text\" width='80%' href=\"/blinky-ssr-bake?name=01\" target=\"_blank\">\n                    <table width=\"100%\" alight=\"left\">\n                        <tr>\n                            <td width=\"30%\" align='center'> <img src=\"/img/ovenYellow.png\" height=\"70px\"/></td>\n                            <td width=\"70%\" align=\"left\">SSR Bake 01</td>\n                        </tr>\n                    </table>\n                </a>\n            </div>\n        </div>\n        <div class='row vert-pad' >\n            <div class='col-md-12'>\n                <a class=\"btn jumbotron-button btn-block big-text bold-text\" width='80%' href=\"/blinky-thermo-cam?name=01\" target=\"_blank\">\n                    <table width=\"100%\" alight=\"left\">\n                        <tr>\n                            <td width=\"30%\" align='center'> <img src=\"/img/cameraYellow.png\" height=\"70px\"/></td>\n                            <td width=\"70%\" align=\"left\">Thermo Cam 01</td>\n                        </tr>\n                    </table>\n                </a>\n            </div>\n        </div>\n        <div class='row' style='padding-top: 25px;'>\n            <div class=\"col-md-3\" align=\"center\">\n            </div>\n            <div class=\"col-md-6\" align=\"center\">\n                <a class='btn btn-block card-button big-text' href='/core' >Utilites</a>\n            </div>\n            <div class=\"col-md-3\" align=\"center\">\n            </div>\n        </div>\n        <div class='row' style='padding-top: 25px;'>\n            <div class=\"col-md-12\" align=\"center\">\n{{{payload.html.user}}}\n            </div>\n        </div>\n    </div>\n",
+        "output": "str",
+        "x": 890,
+        "y": 2620,
+        "wires": [
+            [
+                "c7f74c2f.0651"
+            ]
+        ]
+    },
+    {
+        "id": "b216393d.2621e8",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.global}}}\n{{{payload.script.launcher}}}\n{{{payload.script.user}}}\n",
+        "output": "str",
+        "x": 540,
+        "y": 2660,
+        "wires": [
+            [
+                "7cf9d7cb.663aa8"
+            ]
+        ]
+    },
+    {
+        "id": "7cf9d7cb.663aa8",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "html.user",
+        "field": "payload.html.user",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "                <div class='card' id='userCardId'>\n                    <div class='card-body' align=\"center\">\n                        <table width=\"100%\">\n                            <tr>\n                                <td  align=\"left\">\n                                     <span class='card-text' style='color:black;'>User:</span>\n                                </td>\n                                <td  align=\"right\">\n                                     <span class='card-text' id='usernameId'></span>\n                                </td>\n                            </tr>\n                            <tr>\n                                <td  align=\"left\">\n                                    <span class='card-text' style='color:black;'>Time left:</span>\n                                </td>\n                                <td  align=\"right\">\n                                     <span class='card-text' id='expTimeId'></span>\n                                </td>\n                            </tr>\n                        </table>\n                        <table width=\"100%\">\n                            <tr>\n                                <td width=\"40%\">\n                                    <button class='btn btn-block card-button big-text' id='logoutButton' onclick=\"renew()\" >Renew</button>\n                                </td>\n                                <td width=\"10%\"></td>\n                                <td width=\"40%\">\n                                    <button class='btn btn-block card-button big-text' id='logoutButton' onclick=\"logout()\" >Logout</button>\n                                </td>\n                            </tr>\n                        </table>\n                    </div>\n                </div>\n",
+        "output": "str",
+        "x": 900,
+        "y": 2580,
+        "wires": [
+            [
+                "2b9e3859.21a6b8"
+            ]
+        ]
+    },
+    {
+        "id": "8dcad286.bceb6",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        useWebSockets(true);\n        function onDocumentReady()\n        {\n            getCreds();\n            setInterval(function(){getCreds();}, 1000);\n\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n            switch(msg.topic)\n            {\n                case 'renew':\n                    if (msg.userID == userID)\n                    {\n                        updateCookie(msg);\n                    }\n                    break;\n                case 'permissionError':\n                    if (msg.userID == userID)\n                    {\n                        acknowledgeDialog('Permission', 'Error', msg.payload);\n                    }\n                    break;\n                case 'loginExpired':\n                    if (msg.userID == userID)\n                    {\n                       location.reload();\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n",
+        "output": "str",
+        "x": 550,
+        "y": 2580,
+        "wires": [
+            [
+                "41f39b62.3fd984"
+            ]
+        ]
+    },
+    {
+        "id": "41f39b62.3fd984",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "script.user",
+        "field": "payload.script.user",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        function getCreds()\n        {\n            var now = new Date().getTime();\n            var expDate = Number(getCookie('ExpDate'));\n            if (expDate > 0)\n            {\n                expDate = expDate - now;\n                if(expDate < 0)\n                {\n                    logout();\n                }\n                else\n                {\n                    var hours = Math.floor(expDate / 3600000);\n                    var minutes = expDate - hours * 3600000;\n                    minutes = Math.floor(minutes / 60000);\n                    var seconds = expDate - (hours * 3600000) - (minutes * 60000);\n                    seconds = Math.floor(seconds / 1000);\n                    hours = hours.toString();\n                    if (hours.length == 1) hours = '0' + hours; \n                    minutes = minutes.toString();\n                    if (minutes.length == 1) minutes = '0' + minutes; \n                    seconds = seconds.toString();\n                    if (seconds.length == 1) seconds = '0' + seconds; \n                    var timeString = hours + ':' + minutes + ':' + seconds;\n                    $('#usernameId').text(getCookie('Username'));\n                    $('#expTimeId').text(timeString);\n                }\n            }\n            else\n            {\n                $('#usernameId').text(getCookie('Username'));\n                $('#expTimeId').text('Forever');\n            }\n        }\n        function logout()\n        {\n            document.cookie = project + \"Role= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            document.cookie = project + \"ExpDate= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            document.cookie = project + \"Username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT\";\n            window.location.href = \"/\";\n        }\n        function renew()\n        {\n            var actionMsg = {};\n            sendActionMsg('renew', 'renew', actionMsg);\n        }\n        function updateCookie(msg)\n        {\n            document.cookie = project + \"Role=\" + msg.role;\n            document.cookie = project + \"ExpDate=\" + msg.expDate;\n            document.cookie = project + \"Username=\" + msg.username;\n        }\n        function downloadToken()\n        {\n            downloadString(getCookie(\"Role\"), \"text/plain\", project + \"-token.txt\");\n        }\n// from https://gist.github.com/danallison/3ec9d5314788b337b682\n        function downloadString(text, fileType, fileName) \n        {\n            var blob = new Blob([text], { type: fileType });\n            \n            var a = document.createElement('a');\n            a.download = fileName;\n            a.href = URL.createObjectURL(blob);\n            a.dataset.downloadurl = [fileType, a.download, a.href].join(':');\n            a.style.display = \"none\";\n            document.body.appendChild(a);\n            a.click();\n            document.body.removeChild(a);\n            setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);\n        }",
+        "output": "str",
+        "x": 550,
+        "y": 2620,
+        "wires": [
+            [
+                "b216393d.2621e8"
+            ]
+        ]
+    },
+    {
+        "id": "c7f74c2f.0651",
+        "type": "subflow:8341090a.df9758",
+        "z": "a858ad3a.95706",
+        "name": "",
+        "x": 1130,
+        "y": 2620,
+        "wires": []
+    },
+    {
+        "id": "7c62f58b.f6278c",
+        "type": "subflow:2d027d69.1fdeb2",
+        "z": "a858ad3a.95706",
+        "name": "",
+        "x": 120,
+        "y": 2660,
+        "wires": [
+            [
+                "5c92bb.59d42d44"
+            ]
+        ]
+    },
+    {
+        "id": "1ce6674f.2121d9",
+        "type": "websocket in",
+        "z": "a858ad3a.95706",
+        "name": "/blinky-bake/websocket",
+        "server": "aecd7ec4.0f27",
+        "client": "",
+        "x": 140,
+        "y": 2800,
+        "wires": [
+            [
+                "455eed11.123224"
+            ]
+        ]
+    },
+    {
+        "id": "455eed11.123224",
+        "type": "subflow:fee416c.fb205e8",
+        "z": "a858ad3a.95706",
+        "name": "",
+        "x": 390,
+        "y": 2800,
+        "wires": [
+            [
+                "f9565341.e4955"
+            ],
+            [
+                "3d548203.5917be"
+            ]
+        ]
+    },
+    {
+        "id": "f9565341.e4955",
+        "type": "function",
+        "z": "a858ad3a.95706",
+        "name": "Renew Token",
+        "func": "msg.token.expDate = new Date().getTime() + msg.token.timeoutMin * 60000;\ndelete msg.token['iat']\nmsg.payload = JSON.parse(JSON.stringify(msg.token));\ndelete msg['token'];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 600,
+        "y": 2760,
+        "wires": [
+            [
+                "65748db3.936724"
+            ]
+        ]
+    },
+    {
+        "id": "65748db3.936724",
+        "type": "JsonWebToken",
+        "z": "a858ad3a.95706",
+        "name": "encrypt token",
+        "tokenconfig": "6acefdd9.69f124",
+        "x": 780,
+        "y": 2760,
+        "wires": [
+            [
+                "596b278b.3a03b8"
+            ]
+        ]
+    },
+    {
+        "id": "596b278b.3a03b8",
+        "type": "function",
+        "z": "a858ad3a.95706",
+        "name": "Renew Cookies",
+        "func": "var newMsg = \n{\n    topic : 'renew',\n    payload: \n    {\n        topic       : 'renew',\n        userID      : msg.userID,\n        role        : msg.token,\n        expDate     : msg.payload.expDate.toString(),\n        username    : msg.payload.username\n    }\n}\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 960,
+        "y": 2760,
+        "wires": [
+            [
+                "3d548203.5917be"
+            ]
+        ]
+    },
+    {
+        "id": "3d548203.5917be",
+        "type": "websocket out",
+        "z": "a858ad3a.95706",
+        "name": "/blinky-bake/websocket",
+        "server": "aecd7ec4.0f27",
+        "client": "",
+        "x": 1170,
+        "y": 2760,
+        "wires": []
     }
 ]
