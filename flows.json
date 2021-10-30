@@ -19638,88 +19638,6 @@
         "wires": []
     },
     {
-        "id": "a14c1a99.226548",
-        "type": "http in",
-        "z": "a858ad3a.95706",
-        "name": "/overviewOld",
-        "url": "/overviewOld",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 110,
-        "y": 600,
-        "wires": [
-            [
-                "531ee7cf.b0bf98"
-            ]
-        ]
-    },
-    {
-        "id": "531ee7cf.b0bf98",
-        "type": "template",
-        "z": "a858ad3a.95706",
-        "name": "title",
-        "field": "payload.title",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "Overview",
-        "output": "str",
-        "x": 250,
-        "y": 600,
-        "wires": [
-            [
-                "4758b2.1d86775"
-            ]
-        ]
-    },
-    {
-        "id": "bd775f4.000bba",
-        "type": "template",
-        "z": "a858ad3a.95706",
-        "name": "javascript",
-        "field": "payload.javascript",
-        "fieldType": "msg",
-        "format": "javascript",
-        "syntax": "mustache",
-        "template": "        useWebSockets(false);\n        function onDocumentReady()\n        {\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n\n",
-        "output": "str",
-        "x": 500,
-        "y": 600,
-        "wires": [
-            [
-                "3ec7366b.6f768a"
-            ]
-        ]
-    },
-    {
-        "id": "4758b2.1d86775",
-        "type": "template",
-        "z": "a858ad3a.95706",
-        "name": "body",
-        "field": "payload.body",
-        "fieldType": "msg",
-        "format": "html",
-        "syntax": "mustache",
-        "template": "<!-- Body HTML -->\n    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr style='padding-bottom: 10px;'>\n                <td align=\"center\">\n                    <img src=\"/img/infoPics/ControlBox.png\" width=\"800px\" style=\"padding-bottom:1px;\"/>\n                </td>\n            </tr>\n            <tr style='padding-bottom: 10px;'>\n                <td>\n                        <ul class=\"card-text\">\n                            <li>We bring your remote sensor data to wherever you want it.</li>\n                            <li>How do we do this? \n                                <ul>\n                                    <li>We have developed a full-stack Internet of Things control system.</li>\n                                    <li>Full stack means Top to Bottom - User to Sensor. </li>\n                                    <li><b>IoT means we can go anywhere!</b></li>\n                                </ul>\n                            </li>\n                            <li>Blinky Lite is completely cloud-based so no expensive computers and no messy cable plants.</li>\n                            <li>Blinky-Lite is a complete system! It covers everything from  sensors all the way to user web-apps.</li>\n                            <li>With Blinky-Lite, if you can blink an LED, you can blink a nuclear power plant. So if you need to get sensor data from hard to reach places quickly and easily, come talk to us. You can read more about the Blinky-Lite platform \n                                <a href='/docs/BlinkyLiteOverview.pdf' style='color:var(--color2);text-decoration: underline;'>here</a>\n                                .\n                            </li>\n                        </ul>\n                </td>\n            </tr>\n        </table>\n        <hr>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\" background=\"/img/rappsField.png\">\n                    <tr>\n                        <td width=\"262px\"></td>\n                        <td width=\"125px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"><a href=\"https://www.undp.org/sustainable-development-goals#good-health\" target=\"_blank\"><img src=\"/img/SDG3.png\" width=\"100px\"/></a></td>\n                        <td width=\"125px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"><a href=\"https://www.undp.org/sustainable-development-goals#affordable-and-clean-energy\" target=\"_blank\"><img src=\"/img/SDG7.png\" width=\"100px\"/></a></td>\n                        <td width=\"125px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"><a href=\"https://www.undp.org/sustainable-development-goals#industry-innovation-and-infrastructure\" target=\"_blank\"><img src=\"/img/SDG9.png\" width=\"100px\"/></a></td>\n                        <td width=\"262px\"></td>\n                   </tr>\n                </table>\n            </div>\n        </div>\n    </div>\n",
-        "output": "str",
-        "x": 370,
-        "y": 600,
-        "wires": [
-            [
-                "bd775f4.000bba"
-            ]
-        ]
-    },
-    {
-        "id": "3ec7366b.6f768a",
-        "type": "subflow:d7162906.0afcd8",
-        "z": "a858ad3a.95706",
-        "x": 670,
-        "y": 600,
-        "wires": []
-    },
-    {
         "id": "39d0114c.3dfb4e",
         "type": "http in",
         "z": "a858ad3a.95706",
@@ -19783,7 +19701,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Body HTML -->\n    <div width=\"100%\" >\n        <table width=\"900px\" align=\"center\">\n            <tr>\n                <td width=\"100%\">\n                    <div style=\"width: 900px; height: 660px; overflow:hidden; max-height:660px;\"  >\n                        <iframe src=\"https://docs.google.com/presentation/d/e/2PACX-1vRcMDyOYFOHqIrz6C1w3BthUvsmdzMcIfNh9rKyN0XFrRYbjweYPZk5hVnJ8JOca4rO-z4gyorgS323/embed?start=true&loop=true&delayms=3000\" frameborder=\"0\"  style=\"width:99%;\" width=\"99%\" height=\"704px\" allowfullscreen=\"true\" mozallowfullscreen=\"true\" webkitallowfullscreen=\"true\"></iframe>\n                    </div>\n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    <table width=\"900px\">\n                        <tr>\n                            <td width=\"50%\"><a class=\"btn  btn-primary btn-lg btn-block\" href='/overview'>Overview</a></td>\n                            <td width=\"50%\"><a class=\"btn  btn-primary btn-lg btn-block\" href='/people'>People</a></td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    <table width=\"900px\">\n                        <tr>\n                            <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/apps'>Apps</a></td>\n                            <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/remote-sensing'>Remote Sensing</a></td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    <table width=\"900px\">\n                        <tr>\n                            <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\" href='/components'>Components</a></td>\n                            <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/blinky-thermal-suite'>Thermal</a></td>\n                            <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/blinky-medical-suite'>Medical</a></td>\n                            <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/blinky-env-suite'>Environment</a></td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    \n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    \n                </td>\n            </tr>\n        </table>\n        <hr>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\" background=\"/img/rappsSea.png\">\n                    <tr>\n                        <td width=\"262px\"></td>\n                        <td width=\"125px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"><a href=\"https://www.undp.org/sustainable-development-goals#good-health\" target=\"_blank\"><img src=\"/img/SDG3.png\" width=\"100px\"/></a></td>\n                        <td width=\"125px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"><a href=\"https://www.undp.org/sustainable-development-goals#affordable-and-clean-energy\" target=\"_blank\"><img src=\"/img/SDG7.png\" width=\"100px\"/></a></td>\n                        <td width=\"125px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"><a href=\"https://www.undp.org/sustainable-development-goals#industry-innovation-and-infrastructure\" target=\"_blank\"><img src=\"/img/SDG9.png\" width=\"100px\"/></a></td>\n                        <td width=\"262px\"></td>\n                   </tr>\n                </table>\n            </div>\n        </div>\n    </div>\n",
+        "template": "<!-- Body HTML -->\n    <div width=\"100%\" >\n        <table width=\"900px\" align=\"center\">\n            <tr>\n                <td width=\"100%\">\n                    <div style=\"width: 900px; height: 660px; overflow:hidden; max-height:660px;\"  >\n                        <iframe src=\"https://docs.google.com/presentation/d/e/2PACX-1vRcMDyOYFOHqIrz6C1w3BthUvsmdzMcIfNh9rKyN0XFrRYbjweYPZk5hVnJ8JOca4rO-z4gyorgS323/embed?start=true&loop=true&delayms=3000\" frameborder=\"0\"  style=\"width:99%;\" width=\"99%\" height=\"704px\" allowfullscreen=\"true\" mozallowfullscreen=\"true\" webkitallowfullscreen=\"true\"></iframe>\n                    </div>\n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    <table width=\"900px\">\n                        <tr>\n                            <td width=\"50%\"><a class=\"btn  btn-primary btn-lg btn-block\" href='/'>Home</a></td>\n                            <td width=\"50%\"><a class=\"btn  btn-primary btn-lg btn-block\" href='/people'>People</a></td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    <table width=\"900px\">\n                        <tr>\n                            <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/apps'>Apps</a></td>\n                            <td width=\"50%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/remote-sensing'>Remote Sensing</a></td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    <table width=\"900px\">\n                        <tr>\n                            <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\" href='/components'>Components</a></td>\n                            <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/blinky-thermal-suite'>Thermal</a></td>\n                            <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/blinky-medical-suite'>Medical</a></td>\n                            <td width=\"25%\"><a class=\"btn btn-primary btn-lg btn-block\"  href='/blinky-env-suite'>Environment</a></td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    \n                </td>\n            </tr>\n            <tr>\n                <td width=\"100%\">\n                    \n                </td>\n            </tr>\n        </table>\n        <hr>\n        <div class='row'>\n            <div class='col-12' align='center'>\n                <table width=\"900px\" background=\"/img/rappsSea.png\">\n                    <tr>\n                        <td width=\"262px\"></td>\n                        <td width=\"125px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"><a href=\"https://www.undp.org/sustainable-development-goals#good-health\" target=\"_blank\"><img src=\"/img/SDG3.png\" width=\"100px\"/></a></td>\n                        <td width=\"125px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"><a href=\"https://www.undp.org/sustainable-development-goals#affordable-and-clean-energy\" target=\"_blank\"><img src=\"/img/SDG7.png\" width=\"100px\"/></a></td>\n                        <td width=\"125px\" align=\"center\" style=\"padding-top:25px;padding-bottom:25px;\"><a href=\"https://www.undp.org/sustainable-development-goals#industry-innovation-and-infrastructure\" target=\"_blank\"><img src=\"/img/SDG9.png\" width=\"100px\"/></a></td>\n                        <td width=\"262px\"></td>\n                   </tr>\n                </table>\n            </div>\n        </div>\n    </div>\n",
         "output": "str",
         "x": 350,
         "y": 520,
