@@ -13515,11 +13515,12 @@
         "type": "function",
         "z": "ec67d8c2.3f3c98",
         "name": "Prep MQTT",
-        "func": "var newMsg = msg.payload;\nnewMsg.userID = msg.userID\nreturn newMsg;",
+        "func": "var newMsg = msg.payload;\nnewMsg.userID = msg.userID\nnewMsg.username = msg.token.username;\nreturn newMsg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
+        "libs": [],
         "x": 890,
         "y": 780,
         "wires": [
@@ -19762,5 +19763,107 @@
                 "f61a7798.228648"
             ]
         ]
+    },
+    {
+        "id": "5d6c17ec.a34b68",
+        "type": "http in",
+        "z": "a858ad3a.95706",
+        "name": "/blinky-shiver-demo",
+        "url": "/blinky-shiver-demo",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 3320,
+        "wires": [
+            [
+                "6f7bfd42.3b5994"
+            ]
+        ]
+    },
+    {
+        "id": "92c2e795.aedbb8",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Body HTML -->\n    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-shiver-expert?name=02\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/shiverYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Expert 02 </td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-shiver-simple?name=02\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/shiverYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Simple 02</td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n        </table>\n    </div>\n",
+        "output": "str",
+        "x": 810,
+        "y": 3320,
+        "wires": [
+            [
+                "5d2b5545.85f2bc"
+            ]
+        ]
+    },
+    {
+        "id": "6f7bfd42.3b5994",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "shiverYellow.png",
+        "output": "str",
+        "x": 310,
+        "y": 3320,
+        "wires": [
+            [
+                "9c5f7ac4.2fde28"
+            ]
+        ]
+    },
+    {
+        "id": "9c5f7ac4.2fde28",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Blinky-Shiver Demo",
+        "output": "str",
+        "x": 480,
+        "y": 3320,
+        "wires": [
+            [
+                "a8f728b7.feb5d8"
+            ]
+        ]
+    },
+    {
+        "id": "a8f728b7.feb5d8",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "JavaScript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        useWebSockets(false);\n        function onDocumentReady()\n        {\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n",
+        "output": "str",
+        "x": 650,
+        "y": 3320,
+        "wires": [
+            [
+                "92c2e795.aedbb8"
+            ]
+        ]
+    },
+    {
+        "id": "5d2b5545.85f2bc",
+        "type": "subflow:8341090a.df9758",
+        "z": "a858ad3a.95706",
+        "name": "",
+        "x": 970,
+        "y": 3320,
+        "wires": []
     }
 ]
