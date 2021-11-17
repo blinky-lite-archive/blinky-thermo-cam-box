@@ -19790,7 +19790,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "<!-- Body HTML -->\n    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-shiver-expert?name=02\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/shiverYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Expert 02 </td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-shiver-simple?name=02\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/shiverYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Simple 02</td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n        </table>\n    </div>\n",
+        "template": "<!-- Body HTML -->\n    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-shiver-expert?name=02\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/shiverYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Expert 02 </td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-shiver-simple?name=02\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/shiverYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Simple 02</td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-shaker?name=01\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/shakerYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Shaker</td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n        </table>\n    </div>\n",
         "output": "str",
         "x": 810,
         "y": 3320,
@@ -19864,6 +19864,108 @@
         "name": "",
         "x": 970,
         "y": 3320,
+        "wires": []
+    },
+    {
+        "id": "306aae90.0ebbc2",
+        "type": "http in",
+        "z": "a858ad3a.95706",
+        "name": "/blinky-thermo-demo",
+        "url": "/blinky-thermo-demo",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 3400,
+        "wires": [
+            [
+                "d2522fea.2aee2"
+            ]
+        ]
+    },
+    {
+        "id": "16c6321e.54c43e",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!-- Body HTML -->\n    <div width=\"100%\" align=\"center\">\n        <table width=\"900px\">\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-thermo?name=01\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/thermoYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Thermo 01</td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-thermo-cam?name=01\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/thermoYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">Thermo Cam 01</td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n            <tr>\n                <td width='10%'></td>\n                <td width='60%' style='padding-bottom: 25px;'>\n                    <a class=\"btn jumbotron-button btn-block big-text bold-text\" href=\"/blinky-ssr-bake?name=01\">\n                        <table width=\"100%\" alight=\"left\">\n                            <tr>\n                                <td width=\"30%\" align='center'> <img src=\"/img/ovenYellow.png\" height=\"70px\"/></td>\n                                <td width=\"70%\" align=\"left\">SSR Bake 01</td>\n                            </tr>\n                        </table>\n                    </a>\n                </td>\n                <td width='10%'></td>\n            </tr>\n        </table>\n    </div>\n",
+        "output": "str",
+        "x": 810,
+        "y": 3400,
+        "wires": [
+            [
+                "b6dcae18.58602"
+            ]
+        ]
+    },
+    {
+        "id": "d2522fea.2aee2",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "thermoYellow.png",
+        "output": "str",
+        "x": 310,
+        "y": 3400,
+        "wires": [
+            [
+                "323afdee.2ac9c2"
+            ]
+        ]
+    },
+    {
+        "id": "323afdee.2ac9c2",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Blinky-Thermo Demo",
+        "output": "str",
+        "x": 480,
+        "y": 3400,
+        "wires": [
+            [
+                "88e190d1.89844"
+            ]
+        ]
+    },
+    {
+        "id": "88e190d1.89844",
+        "type": "template",
+        "z": "a858ad3a.95706",
+        "name": "JavaScript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "        useWebSockets(false);\n        function onDocumentReady()\n        {\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n",
+        "output": "str",
+        "x": 650,
+        "y": 3400,
+        "wires": [
+            [
+                "16c6321e.54c43e"
+            ]
+        ]
+    },
+    {
+        "id": "b6dcae18.58602",
+        "type": "subflow:8341090a.df9758",
+        "z": "a858ad3a.95706",
+        "name": "",
+        "x": 970,
+        "y": 3400,
         "wires": []
     }
 ]
