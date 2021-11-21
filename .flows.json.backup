@@ -16973,7 +16973,7 @@
         "fieldType": "msg",
         "format": "html",
         "syntax": "mustache",
-        "template": "    <div width=\"100%\" align=\"center\">\n        <div class='row'>\n            <div class='col-md-12'>\n                <div class='card-body' align=\"center\">\n                    <div class='row'>\n                        <div class='col-md-12'>\n                            <div style=\"height: 43vw; max-height:43vw; overflow:hidden;\">\n                                <iframe scrolling=\"no\" width=\"100%\" height=\"100%\" style=\"border:0;background: #9eb5c7;\" src=\"/sea-temp-widget\" allowtransparency=\"true\"></iframe>\n                            </div>\n                       </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>",
+        "template": "    <div width=\"100%\" align=\"center\">\n        <div class='row'>\n            <div class='col-md-12'>\n                <div class='card-body' align=\"center\">\n                    <div class='row'>\n                        <div class='col-md-12'>\n                            <div style=\"height: 45vw; max-height:45vw; overflow:hidden;\">\n                                <iframe scrolling=\"no\" width=\"100%\" height=\"100%\" style=\"border:0;background: #9eb5c7;\" src=\"/sea-temp-widget\" allowtransparency=\"true\"></iframe>\n                            </div>\n                       </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>",
         "output": "str",
         "x": 950,
         "y": 380,
