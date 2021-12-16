@@ -30,7 +30,7 @@
     {
         "id": "ec67d8c2.3f3c98",
         "type": "tab",
-        "label": "Cam Web Apps",
+        "label": "ThermoCam Web Apps",
         "disabled": false,
         "info": ""
     },
@@ -19687,5 +19687,164 @@
         "x": 970,
         "y": 3400,
         "wires": []
+    },
+    {
+        "id": "2eb15a26.4e1336",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "navBarIcon",
+        "field": "payload.navBarIcon",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "BrantevikLogo.png",
+        "output": "str",
+        "x": 310,
+        "y": 860,
+        "wires": [
+            [
+                "5ddc0ece.1a1b6"
+            ]
+        ]
+    },
+    {
+        "id": "e2242fbb.bffa4",
+        "type": "http in",
+        "z": "d6667d7b.35cd6",
+        "name": "/webcam",
+        "url": "/webcam",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 100,
+        "y": 820,
+        "wires": [
+            [
+                "ab820cd2.040d1"
+            ]
+        ]
+    },
+    {
+        "id": "ca138de2.f6762",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "script.global",
+        "field": "payload.script.global",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "// Global Javascript\n        useWebSockets(false);\n        var restfulDevice = \n        {\n            deviceType  : '{{{payload.script.deviceType}}}',\n            name        : '{{{payload.script.name}}}',\n            project     : '{{{payload.script.project}}}'\n        };\n\n        function onDocumentReady()\n        {\n/*\n            var picNum =  Math.floor(Math.random() * 22) + 1;\n            if (picNum < 10)\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic0\" + picNum.toString() +\".jpg\");\n            }\n            else\n            {\n                $(\"#widgetTable\").attr(\"background\",\"/img/brantevikPics/BrantePic\" + picNum.toString() +\".jpg\");\n            }\n*/\n            $(\"#widgetTable\").attr(\"background\",'img/blinky-webcam/' + restfulDevice.deviceType + '-'+ restfulDevice.name + '.jpg' +'?t=' + new Date().getTime().toString());\n\n            setInterval(function()\n            {\n                $(\"#widgetTable\").attr(\"background\",'img/blinky-webcam/' + restfulDevice.deviceType + '-'+ restfulDevice.name + '.jpg' +'?t=' + new Date().getTime().toString());\n            }, 60000);\n        }\n        function onWebSocketOpen()\n        {\n        }\n        function onWebSocketClose()\n        {\n            \n        }\n        function onWebSocketMessage(msg)\n        {\n        }\n",
+        "output": "str",
+        "x": 710,
+        "y": 820,
+        "wires": [
+            [
+                "e2dfd322.f1489"
+            ]
+        ]
+    },
+    {
+        "id": "e2dfd322.f1489",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "javascript",
+        "field": "payload.javascript",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "mustache",
+        "template": "{{{payload.script.global}}}\n",
+        "output": "str",
+        "x": 700,
+        "y": 880,
+        "wires": [
+            [
+                "f1ac07b2.ceee48"
+            ]
+        ]
+    },
+    {
+        "id": "f1ac07b2.ceee48",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "body",
+        "field": "payload.body",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "    <div id=\"status\" width=\"100%\" align=\"center\">\n        <table id=\"widgetTable\" width=\"100%\" background=\"/img/bl-mc-icon.png\" style=\"background-size:100%;background-repeat:no-repeat;background-position:center;height:75vw;\">\n            <tr>\n                <td align='center' width=\"100%\" style=\"padding-bottom:5vw;padding-top:5vw;\">\n                    <span  style=\"font-size: 5vw; color:white;\"></span> \n                </td>\n            </tr>\n            <tr>\n                <td align='center' width=\"100%\" style=\"padding-bottom:38vw;\">\n                </td>\n            </tr>\n        </table>\n    </div>\n",
+        "output": "str",
+        "x": 910,
+        "y": 880,
+        "wires": [
+            [
+                "eac0118b.f84"
+            ]
+        ]
+    },
+    {
+        "id": "eac0118b.f84",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "CSS",
+        "field": "payload.css",
+        "fieldType": "msg",
+        "format": "css",
+        "syntax": "mustache",
+        "template": "        :root \n        {\n          --color1: #415c71;\n          --color2: #547792;\n          --color3: #9eb5c7;\n          --color4: #c6c2bb;\n          --color5: #fdc300;\n          --big-text-size :300%;\n          --bold-text :900;\n          --vert-pad : 25px;\n          --horz-pad : 25px;\n        }\n        body \n        {\n            max-width: 100%;\n            background-color: transparent !important;\n        }\n        .widget-line-height\n        {\n            line-height: 7.3vw;\n        }\n        img \n        {\n          object-fit: contain;\n        }\n        a\n        {\n            color: white;\n        }\n        a:visited \n        { \n            color: var(--white);\n        }\n        a:hover \n        { \n            color: var(--color5);\n        }\n\n        .jumbotron \n        {\n          background-color: var(--color2) !important;\n          color: white;\n          padding-top:25px;\n          padding-bottom:25px;\n        }\n        .jumbotron-title\n        {\n          color:var(--color5);\n        }\n        .jumbotron-button\n        {\n          color: white;\n          background-color: var(--color1);\n       }\n        .card\n        {\n          background-color: var(--color2) !important;\n          text-align: center;\n        }\n        .card-body\n        {\n          background-color: var(--color3);;\n        }\n        .card-button\n        {\n          color: var(--color5) !important;\n          background-color: var(--color1) !important;\n          font-weight: bold;\n        }\n        .card-title\n        {\n          color: var(--color5);\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .danger-card\n        {\n          background-color: yellow !important;\n          text-align: center;\n        }\n        .danger-card-body\n        {\n          background-color: yellow;\n        }\n        .danger-card-button\n        {\n          color: yellow !important;\n          background-color: red !important;\n          font-weight: bold;\n        }\n        .danger-card-title\n        {\n          color: red;\n          font-weight: var(--bold-text);\n          font-size: var(--big-text-size);\n         }\n        .danger-card-text\n        {\n          color: white;\n          text-align: left;\n          font-size: var(--big-text-size);\n        }\n        .tableHeading\n        {\n          color:var(--container-title-color);\n        }\n        .tableText\n        {\n          color:var(--container-text-color);\n          font-size: var(--big-text-size);\n        }\n       .vert-pad\n        {\n            padding-top:var(--vert-pad);;\n            padding-bottom:var(--vert-pad);;\n        }\n        .horz-pad\n        {\n            padding-left:var(--horz-pad);;\n            padding-right:var(--horz-pad);;\n        }\n        .big-text\n        {\n            font-size: var(--big-text-size);\n        }\n        .bold-text\n        {\n            font-weight: var(--bold-text);\n        }\n       .ui-dialog-titlebar-close \n        {\n            visibility: hidden;\n        }\n        input.inputLarger \n        { \n            transform: scale(3); \n            margin: 1px;\n        }\n        .googleSlide4by3-container \n        {\n            position: relative;\n            overflow: hidden;\n            padding-top: 75.0%;\n        }\n        .googleSlide4by3-iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }        \n        .custom-select\n        {\n            color: black;\n            background-color: white;\n            height:80px;\n            line-height:70px;\n        }\n        .button-link \n        {\n            background: none!important;\n            border-type: solid;\n            padding: 2px!important;\n            cursor: pointer;\n        }\n",
+        "output": "str",
+        "x": 1050,
+        "y": 880,
+        "wires": [
+            [
+                "a89434e7.dbb898"
+            ]
+        ]
+    },
+    {
+        "id": "a89434e7.dbb898",
+        "type": "subflow:adce79c2.bd6fa8",
+        "z": "d6667d7b.35cd6",
+        "name": "",
+        "x": 1190,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "ab820cd2.040d1",
+        "type": "function",
+        "z": "d6667d7b.35cd6",
+        "name": "Set Name And Device Type",
+        "func": "msg.payload['script'] = {};\nmsg.payload['script']['name'] = msg.payload.name\nmsg.payload['script']['deviceType'] = 'blinky-webcam';\nmsg.payload['script']['project'] = global.get('project');\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 820,
+        "wires": [
+            [
+                "2eb15a26.4e1336"
+            ]
+        ]
+    },
+    {
+        "id": "5ddc0ece.1a1b6",
+        "type": "template",
+        "z": "d6667d7b.35cd6",
+        "name": "Set Title",
+        "field": "payload.title",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "Blinky WebCam {{{payload.script.name}}}",
+        "output": "str",
+        "x": 300,
+        "y": 900,
+        "wires": [
+            [
+                "ca138de2.f6762"
+            ]
+        ]
     }
 ]
