@@ -714,7 +714,7 @@
     {
         "id": "acb0a931.1c8f08",
         "type": "websocket-listener",
-        "path": "/waterMe/websocket",
+        "path": "/water-me/websocket",
         "wholemsg": "false"
     },
     {
@@ -20115,8 +20115,8 @@
         "id": "521f885d.f571d8",
         "type": "http in",
         "z": "9c854ea3.68416",
-        "name": "/waterMe",
-        "url": "/waterMe",
+        "name": "/water-me",
+        "url": "/water-me",
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
@@ -20162,10 +20162,10 @@
         "id": "fe154f30.6fde5",
         "type": "websocket in",
         "z": "9c854ea3.68416",
-        "name": "/waterMe/websocket",
+        "name": "/water-me/websocket",
         "server": "acb0a931.1c8f08",
         "client": "",
-        "x": 170,
+        "x": 180,
         "y": 4880,
         "wires": [
             [
@@ -20177,7 +20177,7 @@
         "id": "e68de2ba.7dcf9",
         "type": "websocket out",
         "z": "9c854ea3.68416",
-        "name": "/waterMe/websocket",
+        "name": "/water-me/websocket",
         "server": "acb0a931.1c8f08",
         "client": "",
         "x": 1110,
@@ -20188,7 +20188,7 @@
         "id": "385f8bce.8f9864",
         "type": "link out",
         "z": "9c854ea3.68416",
-        "name": "waterMe websocket out",
+        "name": "water-me websocket out",
         "links": [
             "231ccb57.2806a4"
         ],
@@ -20200,12 +20200,12 @@
         "id": "ade9fe92.75e2b",
         "type": "link in",
         "z": "9c854ea3.68416",
-        "name": "waterMe websocket in",
+        "name": "water-me websocket in",
         "links": [
-            "f1e13e6e.d9099",
-            "224d9b05.f92104",
             "1e710224.de723e",
-            "baefdf48.ffa12"
+            "224d9b05.f92104",
+            "baefdf48.ffa12",
+            "f1e13e6e.d9099"
         ],
         "x": 975,
         "y": 4860,
